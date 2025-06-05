@@ -21,6 +21,9 @@ public class VoucherDTO {
         this.fecha = fecha;
     }
 
+    public VoucherDTO() {
+    }
+
     public int getIdVoucher() {
         return idVoucher;
     }

@@ -2,8 +2,7 @@
 package Utilitarios;
 
 import dao.UsuarioDAO;
-import dao.VendedorDAO;
-import dao.ProductoInventarioDAO;
+import dao.ProductoDAO;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -50,7 +49,7 @@ public class IconButtonEditor extends DefaultCellEditor {
                         new UsuarioRegister_Modf((Frame) SwingUtilities.getWindowAncestor(table), usuario, usuarioView, true, id).setVisible(true);
                     } else {
                         UsuarioDAO usuarioDAO = new UsuarioDAO();
-                        int result = usuarioDAO.eliminarUsuario(id);
+                        int result = usuarioDAO.eliminar(id);
 
                         if (result > 0) {
                             JOptionPane.showMessageDialog(button, "Usuario eliminado exitosamente.");

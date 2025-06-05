@@ -1,68 +1,66 @@
-
 package dto;
 
-import java.util.Date;
-/**
- *
- * @author Eduardo
- */
+import java.time.LocalDateTime;
+
 public class MovimientoInventario {
-  private int idMovimiento;
-    private int idInventario;
-    private String tipo;
-    private Double cantidad;
-    private Date fecha;
+
+    private int id;
+    private Producto producto;
+    private char tipo;
+    private int cantidad;
+    private LocalDateTime fecha;
     private String descripcion;
 
-    public MovimientoInventario(int idMovimiento, int idInventario, String tipo, Double cantidad, Date fecha, String descripcion) {
-        this.idMovimiento = idMovimiento;
-        this.idInventario = idInventario;
+    public MovimientoInventario() {
+    }
+
+    public MovimientoInventario(int id, Producto producto, char tipo,
+            int cantidad, LocalDateTime fecha, String descripcion) {
+        this.id = id;
+        this.producto = producto;
         this.tipo = tipo;
         this.cantidad = cantidad;
         this.fecha = fecha;
         this.descripcion = descripcion;
     }
 
-    public MovimientoInventario() {
+    public int getId() {
+        return id;
     }
 
-    public int getIdMovimiento() {
-        return idMovimiento;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setIdMovimiento(int idMovimiento) {
-        this.idMovimiento = idMovimiento;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public int getIdInventario() {
-        return idInventario;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
-    public void setIdInventario(int idInventario) {
-        this.idInventario = idInventario;
-    }
-
-    public String getTipo() {
+    public char getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(char tipo) {
         this.tipo = tipo;
     }
 
-    public Double getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Double cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 
-    public Date getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 
@@ -73,5 +71,4 @@ public class MovimientoInventario {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
 }

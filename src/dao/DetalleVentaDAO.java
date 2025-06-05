@@ -1,8 +1,11 @@
 
 package dao;
 
+import dto.DetalleVenta;
+import dto.Producto;
+import dto.Venta;
+
 import db.DBConnection;
-import dto.DetalleVentaDTO;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -14,66 +17,51 @@ import java.sql.ResultSet;
  * @author Eduardo
  */
 public class DetalleVentaDAO {
-    
-    public int insertarDetalleVenta(DetalleVentaDTO detalleVenta, Connection conn) {
-        int result = 0;
-        CallableStatement stmt = null;
+    private Connection conn;
 
-        try {
-            String query = "{call sp_insertar_detalle_venta(?, ?, ?, ?, ?)}";
-            stmt = conn.prepareCall(query);
-            stmt.setInt(1, detalleVenta.getIdVenta());
-            stmt.setInt(2, detalleVenta.getIdProducto());
-            stmt.setInt(3, detalleVenta.getCantidad());
-            stmt.setDouble(4, detalleVenta.getPrecioUnitario());
-            stmt.setDouble(5, detalleVenta.getSubTotal());
-
-            result = stmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DBConnection.close(null, stmt, null);
-        }
-
-        return result;
+    public DetalleVentaDAO(Connection conn) {
+        this.conn = conn;
     }
-    
-    public List<DetalleVentaDTO> obtenerDetallesVentaPorId(int idVenta) {
-        List<DetalleVentaDTO> detallesVenta = new ArrayList<>();
-        Connection conn = null;
-        CallableStatement stmt = null;
-        ResultSet rs = null;
 
-        try {
-            DBConnection conexionSQL = new DBConnection();
-            conn = conexionSQL.getConnection();
-
-            String query = "{call sp_obtener_detalles_venta_por_id(?)}";
-            stmt = conn.prepareCall(query);
-            stmt.setInt(1, idVenta);
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                int idDetalle = rs.getInt("ID_Detalle");
-                int idProducto = rs.getInt("ID_PRODUCTO");
-                String Producto = rs.getString("ProductoNombre");
-                int cantidad = rs.getInt("CANTIDAD");
-                double precioUnitario = rs.getDouble("PRECIO_UNITARIO");
-                double subTotal = rs.getDouble("SUBTOTAL");
-
-                DetalleVentaDTO detalle = new DetalleVentaDTO(idDetalle, idVenta, idProducto, cantidad, precioUnitario, subTotal);
-                detalle.setProducto(Producto);
-                detallesVenta.add(detalle);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DBConnection.close(conn, stmt, rs);
+    public boolean insertarDetalleVenta(DetalleVenta detalle) throws SQLException {
+        String sql = "{CALL sp_insert_detalleventa(?, ?, ?, ?, ?)}";
+        try (CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, detalle.getVenta().getId());
+            cs.setInt(2, detalle.getProducto().getId());
+            cs.setInt(3, detalle.getCantidad());
+            cs.setDouble(4, detalle.getPrecioUnitario());
+            cs.setDouble(5, detalle.getSubtotal());
+            return cs.executeUpdate() > 0;
         }
+    }
 
-        return detallesVenta;
+    public List<DetalleVenta> listarDetallesPorVenta(int idVenta) throws SQLException {
+        List<DetalleVenta> lista = new ArrayList<>();
+        String sql = "{CALL sp_get_detalleventa_by_venta(?)}";
+        try (CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, idVenta);
+            try (ResultSet rs = cs.executeQuery()) {
+                while (rs.next()) {
+                    DetalleVenta detalle = new DetalleVenta();
+                    detalle.setId(rs.getInt("id_detalle"));
+                    
+                    Venta venta = new Venta();
+                    venta.setId(rs.getInt("id_venta"));
+                    detalle.setVenta(venta);
+                    
+                    Producto producto = new Producto();
+                    producto.setId(rs.getInt("id_producto"));
+                    detalle.setProducto(producto);
+                    
+                    detalle.setCantidad(rs.getInt("cantidad"));
+                    detalle.setPrecioUnitario(rs.getDouble("precio_unitario"));
+                    detalle.setSubTotal(rs.getDouble("subtotal"));
+                    
+                    lista.add(detalle);
+                }
+            }
+        }
+        return lista;
     }
 }
 

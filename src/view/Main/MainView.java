@@ -116,7 +116,7 @@ public class MainView extends javax.swing.JFrame {
 
         conPanel.setBackground(new java.awt.Color(188, 47, 33));
         conPanel.setLayout(new java.awt.BorderLayout());
-        menuPanel.add(conPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 1080, 460));
+        menuPanel.add(conPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 1080, 520));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -216,11 +216,13 @@ public class MainView extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(menuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(menuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(menuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
+            .addComponent(menuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
         );
 
         pack();

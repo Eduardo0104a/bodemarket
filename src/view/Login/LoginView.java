@@ -58,12 +58,12 @@ public class LoginView extends javax.swing.JFrame {
 
         lblCorreo.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
         lblCorreo.setForeground(new java.awt.Color(188, 47, 33));
-        lblCorreo.setText("CORREO ELECTRÓNICO");
+        lblCorreo.setText("USUARIO");
         jPanel1.add(lblCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, -1, -1));
 
         txtCorreo.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         txtCorreo.setForeground(new java.awt.Color(204, 204, 204));
-        txtCorreo.setText("Ingrese su correo electrónico");
+        txtCorreo.setText("Ingrese su nombre de usuario");
         txtCorreo.setBorder(null);
         txtCorreo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -136,24 +136,9 @@ public class LoginView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtCorreoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCorreoFocusLost
-        
-    }//GEN-LAST:event_txtCorreoFocusLost
-
     private void txtContraFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtContraFocusLost
         
     }//GEN-LAST:event_txtContraFocusLost
-
-    private void txtCorreoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCorreoMousePressed
-        if(txtCorreo.getText().equals("Ingrese su correo electrónico")){
-           txtCorreo.setText("");
-           txtCorreo.setForeground(Color.black);
-        }
-        if(String.valueOf(txtContra.getPassword()).isEmpty()){
-           txtContra.setText("*********");
-           txtContra.setForeground(Color.gray);
-        }
-    }//GEN-LAST:event_txtCorreoMousePressed
 
     private void txtContraMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtContraMousePressed
         if(String.valueOf(txtContra.getPassword()).equals("*********")){
@@ -192,6 +177,21 @@ public class LoginView extends javax.swing.JFrame {
                             "Error de Inicio de Sesión", JOptionPane.ERROR_MESSAGE);
                 }
     }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void txtCorreoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCorreoMousePressed
+        if(txtCorreo.getText().equals("Ingrese su nombre de usuario")){
+           txtCorreo.setText("");
+           txtCorreo.setForeground(Color.black);
+        }
+        if(String.valueOf(txtContra.getPassword()).isEmpty()){
+           txtContra.setText("*********");
+           txtContra.setForeground(Color.gray);
+        }
+    }//GEN-LAST:event_txtCorreoMousePressed
+
+    private void txtCorreoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCorreoFocusLost
+
+    }//GEN-LAST:event_txtCorreoFocusLost
 
 
     public static void main(String args[]) {

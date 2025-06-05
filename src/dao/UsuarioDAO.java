@@ -10,204 +10,175 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.CallableStatement;
+
 /**
  *
  * @author Eduardo
  */
 public class UsuarioDAO {
-    public Usuario validarUsuario(String correoElectronico, String contraseña) {
-        Connection conn = null;
-        CallableStatement stmt = null;
-        ResultSet rs = null;
-        Usuario usuario = null;
 
-        try {
-            DBConnection conexionSQL = new DBConnection();
-            conn = conexionSQL.getConnection();
+    private DBConnection dbConnection;
 
-            String query = "{CALL sp_validarUsuario(?, ?)}";
-            stmt = conn.prepareCall(query);
-            stmt.setString(1, correoElectronico);
-            stmt.setString(2, contraseña);
-            rs = stmt.executeQuery();
+    public UsuarioDAO() {
+        dbConnection = new DBConnection();
+    }
 
-            if (rs.next()) {
-                int idUsuario = rs.getInt("ID_Usuario");
-                String nombre = rs.getString("Nombre");
-                String apellido = rs.getString("Apellido");
-                String rol = rs.getString("Rol");
+    public Usuario validarUsuario(String nombreUsuario, String clave) {
+        String sql = "{CALL validar_usuario(?, ?)}";
+        try (Connection conn = dbConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
 
-                usuario = new Usuario(idUsuario, nombre, apellido, correoElectronico, contraseña, rol);
+            cs.setString(1, nombreUsuario);
+            cs.setString(2, clave);
+
+            try (ResultSet rs = cs.executeQuery()) {
+                if (rs.next()) {
+                    return new Usuario(
+                            rs.getInt("id_usuario"),
+                            rs.getString("nombre"),
+                            rs.getString("apellido"),
+                            rs.getString("correo"),
+                            rs.getString("telefono"),
+                            rs.getString("nombre_usuario"),
+                            rs.getString("clave"),
+                            rs.getString("rol")                           
+                    );
+                }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            DBConnection.close(conn, stmt, rs); 
+        }
+        return null;
+    }
+
+    public Usuario obtenerUsuarioPorId(int idUsuario) {
+        Usuario usuario = null;
+        String sql = "{CALL sp_obtener_usuario_por_id(?)}";
+
+        try (Connection conn = new DBConnection().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+
+            cs.setInt(1, idUsuario);
+            try (ResultSet rs = cs.executeQuery()) {
+                if (rs.next()) {
+                    usuario = new Usuario();
+                    usuario.setIdUsuario(rs.getInt("id_usuario"));
+                    usuario.setNombre(rs.getString("nombre"));
+                    usuario.setApellido(rs.getString("apellido"));
+                    usuario.setCorreo(rs.getString("correo"));
+                    usuario.setTelefono(rs.getString("telefono"));
+                    usuario.setUsuario(rs.getString("nombre_usuario"));
+                    usuario.setPassword(rs.getString("clave"));
+                    usuario.setRol(rs.getString("rol"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return usuario;
     }
 
-    public List<Usuario> obtenerUsuarios() {
-        List<Usuario> usuarios = new ArrayList<>();
-        Connection conn = null;
-        CallableStatement stmt = null;
-        ResultSet rs = null;
+    public int insertar(Usuario usuario) {
+        String sql = "{CALL insertar_usuario(?, ?, ?, ?, ?, ?, ?)}";
+        try (Connection conn = dbConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
 
-        try {
-            DBConnection conexionSQL = new DBConnection(); 
-            conn = conexionSQL.getConnection(); 
+            cs.setString(1, usuario.getNombre());
+            cs.setString(2, usuario.getApellido());
+            cs.setString(3, usuario.getCorreo());
+            cs.setString(4, usuario.getTelefono());
+            cs.setString(5, usuario.getUsuario());
+            cs.setString(6, usuario.getPassword());
+            cs.setString(7, usuario.getRol());
 
-            String query = "{call sp_obtener_usuarios()}";
-            stmt = conn.prepareCall(query);
-            rs = stmt.executeQuery();
+            return cs.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;  // o cualquier valor para indicar error
+        }
+    }
+
+    public int actualizar(Usuario usuario) {
+        String sql = "{CALL actualizar_usuario(?, ?, ?, ?, ?, ?, ?, ?)}";
+        try (Connection conn = dbConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+
+            cs.setInt(1, usuario.getIdUsuario());
+            cs.setString(2, usuario.getNombre());
+            cs.setString(3, usuario.getApellido());
+            cs.setString(4, usuario.getCorreo());
+            cs.setString(5, usuario.getTelefono());
+            cs.setString(6, usuario.getUsuario());
+            cs.setString(7, usuario.getPassword());
+            cs.setString(8, usuario.getRol());
+
+            return cs.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public int eliminar(int idUsuario) {
+        String sql = "{CALL eliminar_usuario(?)}";
+        try (Connection conn = dbConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+
+            cs.setInt(1, idUsuario);
+
+            return cs.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public Usuario buscar(int idUsuario) {
+        String sql = "{CALL buscar_usuario(?)}";
+        try (Connection conn = dbConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+
+            cs.setInt(1, idUsuario);
+            try (ResultSet rs = cs.executeQuery()) {
+                if (rs.next()) {
+                    return new Usuario(
+                            rs.getInt("id_usuario"),
+                            rs.getString("nombre"),
+                            rs.getString("apellido"),
+                            rs.getString("correo"),
+                            rs.getString("telefono"),
+                            rs.getString("nombre_usuario"),
+                            rs.getString("clave"),
+                            rs.getString("rol"));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Usuario> listar() {
+        List<Usuario> lista = new ArrayList<>();
+        String sql = "{CALL listar_usuarios()}";
+        try (Connection conn = dbConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql); ResultSet rs = cs.executeQuery()) {
 
             while (rs.next()) {
-                int idUsuario = rs.getInt("ID_Usuario");
-                String nombre = rs.getString("Nombre");
-                String apellido = rs.getString("Apellido");
-                String correoElectronico = rs.getString("correo_electronico");
-                String contraseña = rs.getString("contraseña");
-                String rol = rs.getString("Rol");
-
-                Usuario usuario = new Usuario(idUsuario, nombre, apellido, correoElectronico, contraseña, rol);
-                usuarios.add(usuario);
+                Usuario usuario = new Usuario(
+                        rs.getInt("id_usuario"),
+                            rs.getString("nombre"),
+                            rs.getString("apellido"),
+                            rs.getString("correo"),
+                            rs.getString("telefono"),
+                            rs.getString("nombre_usuario"),
+                            rs.getString("clave"),
+                            rs.getString("rol") );
+                lista.add(usuario);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            DBConnection.close(conn, stmt, rs); 
         }
-
-        return usuarios;
-    }
-    
-    public int insertarUsuario(Usuario usuario) {
-        Connection conn = null;
-        CallableStatement stmt = null;
-        int errorCode = 0;
-
-        try {
-            DBConnection conexionSQL = new DBConnection();
-            conn = conexionSQL.getConnection();
-
-            String query = "{CALL sp_insertarUsuario(?, ?, ?, ?, ?, ?, ?)}";
-            stmt = conn.prepareCall(query);
-            stmt.setString(1, usuario.getNombre());
-            stmt.setString(2, usuario.getApellido());
-            stmt.setString(3, usuario.getCorreoElectronico());
-            stmt.setString(4, usuario.getContraseña());
-            stmt.setString(5, usuario.getRol());
-            stmt.registerOutParameter(6, java.sql.Types.INTEGER);
-            stmt.registerOutParameter(7, java.sql.Types.INTEGER);
-            stmt.executeUpdate();
-
-            errorCode = stmt.getInt(7);
-
-            if (errorCode == 0) {
-                int idGenerado = stmt.getInt(6);
-                usuario.setIdUsuario(idGenerado);
-            } else {
-                System.out.println("Error: El correo electrónico ya está registrado.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DBConnection.close(conn, stmt, null); 
-        }
-
-        return errorCode;
-    }
-    
-    public Usuario obtenerUsuarioPorId(int idUsuario) {
-        Connection conn = null;
-        CallableStatement stmt = null;
-        ResultSet rs = null;
-        Usuario usuario = null;
-
-        try {
-            DBConnection conexionSQL = new DBConnection();
-            conn = conexionSQL.getConnection();
-
-            String query = "{CALL sp_obtenerUsuarioPorId(?)}";
-            stmt = conn.prepareCall(query);
-            stmt.setInt(1, idUsuario);
-            rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                String nombre = rs.getString("Nombre");
-                String apellido = rs.getString("Apellido");
-                String correoElectronico = rs.getString("Correo_Electronico");
-                String contraseña = rs.getString("Contraseña");
-                String rol = rs.getString("Rol");
-
-                usuario = new Usuario(idUsuario, nombre, apellido, correoElectronico, contraseña, rol);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DBConnection.close(conn, stmt, rs);
-        }
-
-        return usuario;
-    }
-    
-        public int modificarUsuario(Usuario usuario) {
-        Connection conn = null;
-        CallableStatement stmt = null;
-        int resultado = -1;
-
-        try {
-            DBConnection conexionSQL = new DBConnection();
-            conn = conexionSQL.getConnection();
-
-            String query = "{CALL sp_modificarUsuario(?, ?, ?, ?, ?, ?, ?)}";
-            stmt = conn.prepareCall(query);
-            stmt.setInt(1, usuario.getIdUsuario());
-            stmt.setString(2, usuario.getNombre());
-            stmt.setString(3, usuario.getApellido());
-            stmt.setString(4, usuario.getCorreoElectronico());
-            stmt.setString(5, usuario.getContraseña());
-            stmt.setString(6, usuario.getRol());
-            stmt.registerOutParameter(7, java.sql.Types.INTEGER);
-
-            stmt.execute();
-            resultado = stmt.getInt(7); // Obtener el valor del parámetro de salida
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DBConnection.close(conn, stmt, null); 
-        }
-
-        return resultado;
-    }
-        
-        public int eliminarUsuario(int idUsuario) {
-        Connection conn = null;
-        CallableStatement stmt = null;
-        int result = -1;
-
-        try {
-            DBConnection conexionSQL = new DBConnection();
-            conn = conexionSQL.getConnection();
-
-            String query = "{CALL sp_eliminarUsuario(?)}";
-            stmt = conn.prepareCall(query);
-            stmt.setInt(1, idUsuario);
-            result = stmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DBConnection.close(conn, stmt, null);
-        }
-
-        return result;
+        return lista;
     }
 }
-

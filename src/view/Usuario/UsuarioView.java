@@ -9,28 +9,24 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseMotionAdapter;
 import java.util.List;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableColumn;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableRowSorter;
 
 public class UsuarioView extends javax.swing.JPanel {
 
     private JTable tblUsuario;
-    private JButton btnInsertar;
-    private JButton btnModificar;
-    private JButton btnEliminar;
     private Usuario usuario;
-    private int hoveredRow = -1;
-    private int hoveredColumn = -1;
-
+    private JTextField txtBuscar;
+    private TableRowSorter<DefaultTableModel> sorter;
 
     public UsuarioView(Usuario usuario) {
         this.usuario = usuario;
-        setBackground(new Color(146, 152, 130)); // Fondo general
+        setBackground(new Color(188, 47, 33)); // Fondo del panel de contenido
         initComponents();
         inicio();
         loadUsuarios();
@@ -39,28 +35,30 @@ public class UsuarioView extends javax.swing.JPanel {
     private void inicio() {
         setLayout(new BorderLayout());
 
-        JPanel panelTituloBotones = new JPanel(new BorderLayout());
-        panelTituloBotones.setBackground(new Color(83, 86, 75)); 
+        JPanel panelTituloBuscar = new JPanel(new BorderLayout());
+        panelTituloBuscar.setBackground(new Color(188, 47, 33));
 
         JLabel lblTitulo = new JLabel("GESTIÓN DE USUARIOS");
         lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        lblTitulo.setForeground(new Color(255, 255, 255));
+        lblTitulo.setForeground(Color.WHITE);
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 0));
-        panelTituloBotones.add(lblTitulo, BorderLayout.WEST);
 
-        JPanel panelBotones = new JPanel();
-        panelBotones.setBackground(new Color(83, 86, 75));
+        // Campo de búsqueda
+        txtBuscar = new JTextField();
+        txtBuscar.setPreferredSize(new Dimension(250, 40));
+        txtBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        txtBuscar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(188, 47, 33), 2),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+        
+        JPanel panelBuscar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelBuscar.setOpaque(false);
+        panelBuscar.add(txtBuscar);
 
-        btnInsertar = new JButton("Insertar Usuario");
-        btnInsertar.setBackground(new Color(184, 199, 148));
-        btnInsertar.setForeground(Color.BLACK);
-        btnInsertar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        btnInsertar.setFocusPainted(false);
-        btnInsertar.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
-        panelBotones.add(btnInsertar);
-
-        panelTituloBotones.add(panelBotones, BorderLayout.EAST);
-        add(panelTituloBotones, BorderLayout.NORTH);
+        panelTituloBuscar.add(lblTitulo, BorderLayout.WEST);
+        panelTituloBuscar.add(panelBuscar, BorderLayout.EAST);
+        add(panelTituloBuscar, BorderLayout.NORTH);
 
         tblUsuario = new JTable(new DefaultTableModel(
                 new Object[][]{},
@@ -68,21 +66,20 @@ public class UsuarioView extends javax.swing.JPanel {
         ));
         tblUsuario.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tblUsuario.setRowHeight(32);
-        tblUsuario.setForeground(Color.DARK_GRAY);
-        tblUsuario.setBackground(new Color(220, 224, 203));
-        tblUsuario.setSelectionBackground(new Color(174, 187, 145));
+        tblUsuario.setForeground(Color.BLACK);
+        tblUsuario.setBackground(Color.WHITE); // Tonalidad cálida cercana al amarillo
+        tblUsuario.setSelectionBackground(new Color(255,153,153)); // Amarillo fuerte
         tblUsuario.setSelectionForeground(Color.BLACK);
-        tblUsuario.setGridColor(new Color(180, 180, 180));
-
-        Color headerColor = new Color(105, 108, 95);
+        tblUsuario.setGridColor(Color.LIGHT_GRAY);
 
         JTableHeader header = tblUsuario.getTableHeader();
         header.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        header.setBackground(headerColor);
+        header.setBackground(new Color(120, 30, 20));
         header.setForeground(Color.WHITE);
-        header.setBorder(BorderFactory.createLineBorder(headerColor));
+        header.setBorder(BorderFactory.createLineBorder(header.getBackground()));
 
         TableColumnModel columnModel = tblUsuario.getColumnModel();
+
         TableColumn modificarColumn = columnModel.getColumn(0);
         modificarColumn.setCellRenderer(new IconButtonRenderer());
         modificarColumn.setCellEditor(new IconButtonEditor(new JCheckBox(), tblUsuario, usuario, this));
@@ -95,33 +92,20 @@ public class UsuarioView extends javax.swing.JPanel {
 
         JScrollPane scrollPane = new JScrollPane(tblUsuario);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.getViewport().setBackground(new Color(146, 152, 130)); 
+        scrollPane.getViewport().setBackground(new Color(188, 47, 33));
         add(scrollPane, BorderLayout.CENTER);
-        
-        btnInsertar.addActionListener(e -> abrirFormularioRegistro());
-        btnInsertar.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnInsertar.setBackground(new Color(168, 185, 132)); 
-            }
-
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnInsertar.setBackground(new Color(184, 199, 148)); 
-            }
-        });
 
     }
 
     private void loadUsuarios() {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios();
+        List<Usuario> usuarios = usuarioDAO.listar();
         DefaultTableModel model = (DefaultTableModel) tblUsuario.getModel();
         for (Usuario usuario : usuarios) {
             int idUsuario = usuario.getIdUsuario();
             String nombre = usuario.getNombre();
             String apellido = usuario.getApellido();
-            String correoElectronico = usuario.getCorreoElectronico();
+            String correoElectronico = usuario.getCorreo();
             String rol = usuario.getRol();
 
             Object[] rowData = new Object[model.getColumnCount()];
@@ -134,12 +118,33 @@ public class UsuarioView extends javax.swing.JPanel {
 
             model.addRow(rowData);
         }
-    }
 
-    private void abrirFormularioRegistro() {
-        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        UsuarioRegister_Modf registroUsuarioForm = new UsuarioRegister_Modf(parentFrame, usuario, UsuarioView.this, false, 0);
-        registroUsuarioForm.setVisible(true);
+        txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filtrar();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filtrar();
+            }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                filtrar();
+            }
+        });
+    }
+    
+
+    private void filtrar() {
+        if (sorter != null) {
+            String texto = txtBuscar.getText();
+            if (texto.trim().isEmpty()) {
+                sorter.setRowFilter(null);
+            } else {
+                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+            }
+        }
     }
 
     public void refreshUsuarios() {
@@ -147,10 +152,6 @@ public class UsuarioView extends javax.swing.JPanel {
         model.setRowCount(0);
 
         loadUsuarios();
-    }
-
-    public JButton getBtnInsertar() {
-        return btnInsertar;
     }
 
     @SuppressWarnings("unchecked")

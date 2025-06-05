@@ -1,212 +1,127 @@
 package dao;
 
 import db.DBConnection;
-import dto.VentaDTO;
-import dto.DetalleVentaDTO;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.ArrayList;
+import dto.Venta;
+import dto.Usuario;
 
+import java.sql.Timestamp;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.CallableStatement;
 /**
  *
- * @author Eduardo
+ * @author EduardoPC
  */
 public class VentaDAO {
-    public int insertarVenta(VentaDTO venta, List<DetalleVentaDTO> detallesVenta) {
-        int result = 0;
-        Connection conn = null;
-        CallableStatement stmt = null;
-        int idVentaGenerado = 0;
 
-        try {
-            DBConnection conexionSQL = new DBConnection();
-            conn = conexionSQL.getConnection();
-            conn.setAutoCommit(false);
+    private final DBConnection dbConnection = new DBConnection();
 
-            String queryVenta = "{call sp_insertar_venta(?, ?, ?, ?)}";
-            stmt = conn.prepareCall(queryVenta);
-            stmt.setInt(1, venta.getIdVendedor());
-            stmt.setDate(2, new java.sql.Date(venta.getFecha().getTime()));
-            stmt.setDouble(3, venta.getTotal());
-            stmt.registerOutParameter(4, java.sql.Types.INTEGER);
+    // Insertar venta
+    public boolean insertar(Venta venta) {
+        String sql = "{CALL insertarVenta(?, ?, ?)}";
+        try (Connection conn = dbConnection.getConnection();
+             CallableStatement cs = conn.prepareCall(sql)) {
 
-            result = stmt.executeUpdate();
-            idVentaGenerado = stmt.getInt(4);
+            cs.setTimestamp(1, Timestamp.valueOf(venta.getFecha()));
+            cs.setInt(2, venta.getUsuario().getIdUsuario());
+            cs.setDouble(3, venta.getTotal());
 
-            if (idVentaGenerado > 0) {
-                DetalleVentaDAO detalleVentaDAO = new DetalleVentaDAO();
-                for (DetalleVentaDTO detalle : detallesVenta) {
-                    detalle.setIdVenta(idVentaGenerado);
-                    detalleVentaDAO.insertarDetalleVenta(detalle, conn);
-                }
-            }
-
-            conn.commit();
+            return cs.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
-            }
-        } finally {
-            DBConnection.close(conn, stmt, null);
+            return false;
         }
-
-        return result;
     }
-    
-    public int modificarVenta(VentaDTO venta, List<DetalleVentaDTO> detallesVenta) {
-        int result = 0;
-        Connection conn = null;
-        CallableStatement stmt = null;
 
-        try {
-            DBConnection conexionSQL = new DBConnection();
-            conn = conexionSQL.getConnection();
-            conn.setAutoCommit(false);
+    public boolean actualizar(Venta venta) {
+        String sql = "{CALL actualizarVenta(?, ?, ?, ?)}";
+        try (Connection conn = dbConnection.getConnection();
+             CallableStatement cs = conn.prepareCall(sql)) {
 
-            String queryModificarVenta = "{call sp_modificar_venta(?, ?, ?, ?)}";
-            stmt = conn.prepareCall(queryModificarVenta);
-            stmt.setInt(1, venta.getIdVenta());
-            stmt.setInt(2, venta.getIdVendedor());
-            stmt.setDate(3, new java.sql.Date(venta.getFecha().getTime()));
-            stmt.setDouble(4, venta.getTotal());
+            cs.setInt(1, venta.getId());
+            cs.setTimestamp(2, Timestamp.valueOf(venta.getFecha()));
+            cs.setInt(3, venta.getUsuario().getIdUsuario());
+            cs.setDouble(4, venta.getTotal());
 
-            result = stmt.executeUpdate();
-
-            String queryBorrarDetalles = "{call sp_borrar_detalles_venta(?)}";
-            stmt = conn.prepareCall(queryBorrarDetalles);
-            stmt.setInt(1, venta.getIdVenta());
-            stmt.executeUpdate();
-
-            DetalleVentaDAO detalleVentaDAO = new DetalleVentaDAO();
-            for (DetalleVentaDTO detalle : detallesVenta) {
-                detalle.setIdVenta(venta.getIdVenta());
-                detalleVentaDAO.insertarDetalleVenta(detalle, conn);
-            }
-
-            conn.commit();
+            return cs.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
-            }
-        } finally {
-            DBConnection.close(conn, stmt, null);
+            return false;
         }
-
-        return result;
     }
-    
-    public int eliminarVenta(int idVenta) {
-        int result = 0;
-        Connection conn = null;
-        CallableStatement stmt = null;
 
-        try {
-            DBConnection conexionSQL = new DBConnection();
-            conn = conexionSQL.getConnection();
-            conn.setAutoCommit(false);
+    public boolean eliminar(int id) {
+        String sql = "{CALL eliminarVenta(?)}";
+        try (Connection conn = dbConnection.getConnection();
+             CallableStatement cs = conn.prepareCall(sql)) {
 
-            String queryEliminarVenta = "{call sp_eliminar_venta(?)}";
-            stmt = conn.prepareCall(queryEliminarVenta);
-            stmt.setInt(1, idVenta);
-
-            result = stmt.executeUpdate();
-
-            conn.commit();
+            cs.setInt(1, id);
+            return cs.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
-            }
-        } finally {
-            DBConnection.close(conn, stmt, null);
+            return false;
         }
-
-        return result;
     }
-    
-    public List<VentaDTO> obtenerTodasVentas() {
-        List<VentaDTO> ventas = new ArrayList<>();
-        Connection conn = null;
-        CallableStatement stmt = null;
-        ResultSet rs = null;
 
-        try {
-            DBConnection conexionSQL = new DBConnection();
-            conn = conexionSQL.getConnection();
+    public List<Venta> listar() {
+        List<Venta> lista = new ArrayList<>();
+        String sql = "{CALL listarVentas()}";
 
-            String query = "{call sp_obtener_todas_ventas()}";
-            stmt = conn.prepareCall(query);
-            rs = stmt.executeQuery();
+        try (Connection conn = dbConnection.getConnection();
+             CallableStatement cs = conn.prepareCall(sql);
+             ResultSet rs = cs.executeQuery()) {
 
             while (rs.next()) {
-                int idVenta = rs.getInt("ID_Venta");
-                int idVendedor = rs.getInt("ID_Vendedor");
-                String vendedor = rs.getString("VendedorRazonSocial");
-                Date fecha = rs.getDate("Fecha");
-                double total = rs.getDouble("Total");
+                Venta venta = new Venta();
+                venta.setId(rs.getInt("id_venta"));
+                venta.setFecha(rs.getTimestamp("fecha").toLocalDateTime());
+                
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(rs.getInt("id_usuario"));
+                venta.setUsuario(usuario); 
 
-                VentaDTO venta = new VentaDTO(idVenta, idVendedor, fecha, total);
-                venta.setVendedor(vendedor);
-                ventas.add(venta);
+                venta.setTotal(rs.getDouble("total"));
+                lista.add(venta);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            DBConnection.close(conn, stmt, rs);
         }
 
-        return ventas;
+        return lista;
     }
-    
-    public VentaDTO obtenerVentaPorId(int idVenta) {
-        VentaDTO venta = null;
-        Connection conn = null;
-        CallableStatement stmt = null;
-        ResultSet rs = null;
 
-        try {
-            DBConnection conexionSQL = new DBConnection();
-            conn = conexionSQL.getConnection();
+    public Venta obtenerPorId(int id) {
+        Venta venta = null;
+        String sql = "{CALL obtenerVentaPorId(?)}";
 
-            String query = "{call sp_obtener_venta_por_id(?)}";
-            stmt = conn.prepareCall(query);
-            stmt.setInt(1, idVenta);
-            rs = stmt.executeQuery();
+        try (Connection conn = dbConnection.getConnection();
+             CallableStatement cs = conn.prepareCall(sql)) {
 
-            if (rs.next()) {
-                int idVendedor = rs.getInt("ID_Vendedor");
-                Date fecha = rs.getDate("Fecha");
-                double total = rs.getDouble("Total");
+            cs.setInt(1, id);
+            try (ResultSet rs = cs.executeQuery()) {
+                if (rs.next()) {
+                    venta = new Venta();
+                    venta.setId(rs.getInt("id_venta"));
+                    venta.setFecha(rs.getTimestamp("fecha").toLocalDateTime());
 
-                venta = new VentaDTO(idVenta, idVendedor, fecha, total);
+                    Usuario usuario = new Usuario();
+                    usuario.setIdUsuario(rs.getInt("id_usuario"));
+                    venta.setUsuario(usuario);
+
+                    venta.setTotal(rs.getDouble("total"));
+                }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            DBConnection.close(conn, stmt, rs);
         }
 
         return venta;

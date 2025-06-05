@@ -24,7 +24,7 @@ public class MovimientoInventarioDAO {
         this.conn = conn;
     }
 
-    public boolean insertarMovimiento(MovimientoInventario movimiento) throws SQLException {
+    public int insertarMovimiento(MovimientoInventario movimiento) throws SQLException {
         String sql = "{CALL sp_insert_movimiento_inventario(?, ?, ?, ?, ?)}";
         try (CallableStatement cs = conn.prepareCall(sql)) {
             cs.setInt(1, movimiento.getProducto().getId());
@@ -32,7 +32,7 @@ public class MovimientoInventarioDAO {
             cs.setInt(3, movimiento.getCantidad());
             cs.setTimestamp(4, Timestamp.valueOf(movimiento.getFecha()));
             cs.setString(5, movimiento.getDescripcion());
-            return cs.executeUpdate() > 0;
+            return cs.executeUpdate();
         }
     }
 

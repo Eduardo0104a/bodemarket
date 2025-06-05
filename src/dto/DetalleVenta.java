@@ -2,48 +2,51 @@ package dto;
 
 public class DetalleVenta {
 
-    private int id;
-    private Venta venta;
-    private Producto producto;
+    private int idDetalle;
+    private int idVenta;
+    private int idProducto;
     private int cantidad;
     private double precioUnitario;
-    private double subtotal;
+    private double subTotal;
+    private String producto;
 
-    public DetalleVenta() {
-    }
-
-    public DetalleVenta(int id, Venta venta, Producto producto,
-            int cantidad, double precioUnitario) {
-        this.id = id;
-        this.venta = venta;
-        this.producto = producto;
+    public DetalleVenta(int idDetalle, int idVenta, int idProducto, int cantidad, double precioUnitario, double subTotal, String producto) {
+        this.idDetalle = idDetalle;
+        this.idVenta = idVenta;
+        this.idProducto = idProducto;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
-        this.subtotal = cantidad * precioUnitario;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Venta getVenta() {
-        return venta;
-    }
-
-    public void setVenta(Venta venta) {
-        this.venta = venta;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
+        this.subTotal = subTotal;
         this.producto = producto;
+    }
+
+    public DetalleVenta() {
+    
+    }
+
+
+    public int getIdDetalle() {
+        return idDetalle;
+    }
+
+    public void setIdDetalle(int idDetalle) {
+        this.idDetalle = idDetalle;
+    }
+
+    public int getIdVenta() {
+        return idVenta;
+    }
+
+    public void setIdVenta(int idVenta) {
+        this.idVenta = idVenta;
+    }
+
+    public int getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
     }
 
     public int getCantidad() {
@@ -62,15 +65,20 @@ public class DetalleVenta {
         this.precioUnitario = precioUnitario;
     }
 
-    public double getSubtotal() {
-        return subtotal;
+    public double getSubTotal() {
+        return subTotal;
     }
-    
+
     public void setSubTotal(double subTotal) {
-        this.subtotal = subTotal;
+        this.subTotal = subTotal;
     }
-    
-    public void calcularSubtotal() {
-        this.subtotal = this.cantidad * this.precioUnitario;
+
+    public String getProducto() {
+        return producto;
     }
+
+    public void setProducto(String producto) {
+        this.producto = producto;
+    }
+
 }

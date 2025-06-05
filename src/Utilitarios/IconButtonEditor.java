@@ -11,8 +11,6 @@ import java.awt.event.*;
 import dto.Usuario;
 import view.Usuario.UsuarioRegister_Modf;
 import view.Usuario.UsuarioView;
-import view.Vendedor.VendedorView;
-import view.Vendedor.VendedorRegister_Modf;
 import view.Producto.ProductoInventarioView;
 import view.Producto.ProductoInventarioRegister_Mod;
 
@@ -26,7 +24,6 @@ public class IconButtonEditor extends DefaultCellEditor {
     private boolean isPushed;
     private JTable table;
     private UsuarioView usuarioView;
-    private VendedorView vendedorView;
     private ProductoInventarioView productoInventarioView;
 
     public IconButtonEditor(JCheckBox checkBox, JTable table, Usuario usuario, UsuarioView usuarioView) {
@@ -66,45 +63,7 @@ public class IconButtonEditor extends DefaultCellEditor {
             }
         });
     }
-    
-    public IconButtonEditor(JCheckBox checkBox, JTable table, Usuario usuario, VendedorView vendedorView) {
-        super(checkBox);
-        button = new JButton();
-        this.table = table;
-        this.vendedorView = vendedorView;
-        button.setOpaque(true);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fireEditingStopped();
-                
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow != -1) {
-                    int modelRow = table.convertRowIndexToModel(selectedRow);
-                    int id = (int) table.getModel().getValueAt(modelRow, 2);
-
-                    if (table.getSelectedColumn() == 0) {
-                        new VendedorRegister_Modf((Frame) SwingUtilities.getWindowAncestor(table), usuario, vendedorView, true, id).setVisible(true);
-                    } else {
-                        VendedorDAO vendedorDAO = new VendedorDAO();
-                        int result = vendedorDAO.eliminarVendedor(id);
-
-                        if (result > 0) {
-                            JOptionPane.showMessageDialog(button, "Vendedor eliminado exitosamente.");
-                            if (vendedorView != null) {
-                                vendedorView.refreshVendedores();
-                            }
-                        } else {
-                            JOptionPane.showMessageDialog(button, "Vendedor eliminado exitosamente.");
-                        }
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(button, "No hay fila seleccionada.");
-                }
-            }
-        });
-    }
-    
+     
     public IconButtonEditor(JCheckBox checkBox, JTable table, Usuario usuario, ProductoInventarioView productoInventarioView) {
         super(checkBox);
         button = new JButton();
@@ -124,8 +83,8 @@ public class IconButtonEditor extends DefaultCellEditor {
                     if (table.getSelectedColumn() == 0) {
                         new ProductoInventarioRegister_Mod((Frame) SwingUtilities.getWindowAncestor(table), usuario, productoInventarioView, true, id).setVisible(true);
                     } else {  
-                        ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
-                        int result = productoInventarioDAO.eliminarProductoInventario(id);
+                        ProductoDAO productoInventarioDAO = new ProductoDAO();
+                        int result = productoInventarioDAO.eliminarProducto(id);
 
                         if (result > 0) {
                             JOptionPane.showMessageDialog(button, "Producto eliminado exitosamente.");

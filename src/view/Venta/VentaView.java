@@ -2,8 +2,8 @@ package view.Venta;
 
 import dao.VentaDAO;
 import dao.DetalleVentaDAO;
-import dto.VentaDTO;
-import dto.DetalleVentaDTO;
+import dto.Venta;
+import dto.DetalleVenta;
 import dto.Usuario;
 
 import javax.swing.*;
@@ -35,15 +35,15 @@ public class VentaView extends javax.swing.JPanel {
     private JButton btnInsertar;
     private JButton btnVoucher;
     private Usuario usuario;
-    
+
     public VentaView(Usuario usuario) {
         this.usuario = usuario;
-        setBackground(new Color(175, 18, 128)); 
+        setBackground(new Color(175, 18, 128));
         initComponents();
         inicio();
         loadVentas();
     }
-    
+
     private void inicio() {
         setLayout(new BorderLayout());
 
@@ -52,7 +52,7 @@ public class VentaView extends javax.swing.JPanel {
 
         JLabel lblTitulo = new JLabel("VENTA");
         lblTitulo.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
-        lblTitulo.setForeground(new Color(255,238,0));
+        lblTitulo.setForeground(new Color(255, 238, 0));
         panelTituloBotones.add(lblTitulo, BorderLayout.CENTER);
 
         JPanel panelBotones = new JPanel();
@@ -63,9 +63,9 @@ public class VentaView extends javax.swing.JPanel {
         panelBotones.add(btnInsertar);
         panelBotones.add(btnVoucher);
 
-        btnInsertar.setBackground(new Color(255,238,0));
+        btnInsertar.setBackground(new Color(255, 238, 0));
         btnInsertar.setForeground(new Color(175, 18, 128));
-        btnVoucher.setBackground(new Color(255,238,0));
+        btnVoucher.setBackground(new Color(255, 238, 0));
         btnVoucher.setForeground(new Color(175, 18, 128));
         panelTituloBotones.add(panelBotones, BorderLayout.EAST);
         add(panelTituloBotones, BorderLayout.NORTH);
@@ -83,16 +83,15 @@ public class VentaView extends javax.swing.JPanel {
                 }
             }
         });
-        tblVenta.setBackground(new Color(220, 190, 255)); 
-        tblVenta.setForeground(new Color(75, 0, 130)); 
+        tblVenta.setBackground(new Color(220, 190, 255));
+        tblVenta.setForeground(new Color(75, 0, 130));
 
-        tblVenta.setSelectionBackground(new Color(180, 130, 255)); 
-        tblVenta.setSelectionForeground(Color.WHITE); 
+        tblVenta.setSelectionBackground(new Color(180, 130, 255));
+        tblVenta.setSelectionForeground(Color.WHITE);
 
-        tblVenta.getTableHeader().setBackground(new Color(75, 0, 130)); 
+        tblVenta.getTableHeader().setBackground(new Color(75, 0, 130));
         tblVenta.getTableHeader().setForeground(new Color(75, 0, 130));
-        
-        
+
         JScrollPane scrollPaneVenta = new JScrollPane(tblVenta);
         scrollPaneVenta.getViewport().setBackground(new Color(175, 18, 128)); // Amarillo suave
         scrollPaneVenta.setBorder(BorderFactory.createTitledBorder("Venta"));
@@ -101,15 +100,15 @@ public class VentaView extends javax.swing.JPanel {
                 new Object[][]{},
                 new String[]{"ID Detalle", "ID Venta", "Producto", "Cantidad", "Precio Unitario", "SubTotal"}
         ));
-        tblDetalleVenta.setBackground(new Color(220, 190, 255)); 
-        tblDetalleVenta.setForeground(new Color(75, 0, 130)); 
+        tblDetalleVenta.setBackground(new Color(220, 190, 255));
+        tblDetalleVenta.setForeground(new Color(75, 0, 130));
 
-        tblDetalleVenta.setSelectionBackground(new Color(180, 130, 255)); 
-        tblDetalleVenta.setSelectionForeground(Color.WHITE); 
+        tblDetalleVenta.setSelectionBackground(new Color(180, 130, 255));
+        tblDetalleVenta.setSelectionForeground(Color.WHITE);
 
-        tblDetalleVenta.getTableHeader().setBackground(new Color(75, 0, 130)); 
+        tblDetalleVenta.getTableHeader().setBackground(new Color(75, 0, 130));
         tblDetalleVenta.getTableHeader().setForeground(new Color(75, 0, 130));
-        
+
         JScrollPane scrollPaneDetalleVenta = new JScrollPane(tblDetalleVenta);
         scrollPaneDetalleVenta.getViewport().setBackground(new Color(175, 18, 128)); // Amarillo suave
         scrollPaneDetalleVenta.setBorder(BorderFactory.createTitledBorder("Detalle de Venta"));
@@ -132,16 +131,16 @@ public class VentaView extends javax.swing.JPanel {
             }
         });
     }
-    
+
     private void loadVentas() {
         VentaDAO ventaDAO = new VentaDAO();
-        List<VentaDTO> ventas = ventaDAO.obtenerTodasVentas();
+        List<Venta> ventas = ventaDAO.listar();
         DefaultTableModel model = (DefaultTableModel) tblVenta.getModel();
-        for (VentaDTO venta : ventas) {
+        for (Venta venta : ventas) {
             Object[] rowData = new Object[model.getColumnCount()];
-            rowData[0] = venta.getIdVenta();
-            rowData[1] = venta.getVendedor();
-            rowData[2] = venta.getFecha();
+            rowData[0] = venta.getId();
+            rowData[1] = venta.getFecha();
+            rowData[2] = venta.getUsuarioNombre();
             rowData[3] = venta.getTotal();
             model.addRow(rowData);
         }
@@ -150,7 +149,7 @@ public class VentaView extends javax.swing.JPanel {
             tblVenta.setRowSelectionInterval(0, 0);
         }
     }
-    
+
     private void cargarDetalleVenta() {
         int selectedRow = tblVenta.getSelectedRow();
         if (selectedRow == -1) {
@@ -159,109 +158,109 @@ public class VentaView extends javax.swing.JPanel {
 
         int idVenta = (int) tblVenta.getValueAt(selectedRow, 0);
         DetalleVentaDAO detalleVentaDAO = new DetalleVentaDAO();
-        List<DetalleVentaDTO> detalles = detalleVentaDAO.obtenerDetallesVentaPorId(idVenta);
+        List<DetalleVenta> detalles = detalleVentaDAO.obtenerDetallesVentaPorId(idVenta);
         DefaultTableModel model = (DefaultTableModel) tblDetalleVenta.getModel();
         model.setRowCount(0);
 
-        for (DetalleVentaDTO detalle : detalles) {
+        for (DetalleVenta detalle : detalles) {
             Object[] rowData = new Object[model.getColumnCount()];
             rowData[0] = detalle.getIdDetalle();
             rowData[1] = detalle.getIdVenta();
-            rowData[2] = detalle.getProducto();
-            rowData[3] = detalle.getCantidad();
+            rowData[2] = detalle.getIdProducto();
+            rowData[3] = detalle.getProducto();
             rowData[4] = detalle.getPrecioUnitario();
             rowData[5] = detalle.getSubTotal();
             model.addRow(rowData);
         }
     }
-    
+
     private void abrirFormularioRegistro() {
         JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         VentaRegister_Modf registroUsuarioForm = new VentaRegister_Modf(parentFrame, usuario, VentaView.this, false, 0);
         registroUsuarioForm.setVisible(true);
-        }
-    
+    }
+
     private void exportarVoucher() {
         int selectedRow = tblVenta.getSelectedRow();
-            if (selectedRow == -1) {
+        if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione una venta para exportar.");
             return;
         }
 
-    int idVenta = (int) tblVenta.getValueAt(selectedRow, 0);
-    String vendedor = tblVenta.getValueAt(selectedRow, 1).toString();
-    String fecha = tblVenta.getValueAt(selectedRow, 2).toString();
-    double total = (double) tblVenta.getValueAt(selectedRow, 3);
+        int idVenta = (int) tblVenta.getValueAt(selectedRow, 0);
+        String vendedor = tblVenta.getValueAt(selectedRow, 1).toString();
+        String fecha = tblVenta.getValueAt(selectedRow, 2).toString();
+        double total = (double) tblVenta.getValueAt(selectedRow, 3);
 
-    DefaultTableModel detalleModel = (DefaultTableModel) tblDetalleVenta.getModel();
+        DefaultTableModel detalleModel = (DefaultTableModel) tblDetalleVenta.getModel();
 
-    String desktopPath = System.getProperty("user.home") + "/OneDrive/Desktop/Vouchers";
-    File folder = new File(desktopPath);
-    if (!folder.exists()) {
-    folder.mkdirs();
-    }
+        String desktopPath = System.getProperty("user.home") + "/OneDrive/Desktop/Vouchers";
+        File folder = new File(desktopPath);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
 
-    String fileName = "Voucher_Venta_" + idVenta + ".pdf";
-    File file = new File(folder, fileName);
+        String fileName = "Voucher_Venta_" + idVenta + ".pdf";
+        File file = new File(folder, fileName);
 
-    Document document = new Document(PageSize.A4);
+        Document document = new Document(PageSize.A4);
         try (FileOutputStream fos = new FileOutputStream(file)) {
-        PdfWriter writer = PdfWriter.getInstance(document, fos);
-        document.open();
+            PdfWriter writer = PdfWriter.getInstance(document, fos);
+            document.open();
 
-        PdfPTable table = new PdfPTable(2);
-        table.setWidthPercentage(100);
-        float[] columnWidths = { 4f, 1f };
-        table.setWidths(columnWidths);
+            PdfPTable table = new PdfPTable(2);
+            table.setWidthPercentage(100);
+            float[] columnWidths = {4f, 1f};
+            table.setWidths(columnWidths);
 
-        PdfPCell contentCell = new PdfPCell();
-        contentCell.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
-        contentCell.setPadding(10);
+            PdfPCell contentCell = new PdfPCell();
+            contentCell.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+            contentCell.setPadding(10);
 
-        Paragraph title = new Paragraph("Voucher", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16));
-        title.setAlignment(Element.ALIGN_CENTER);
-        contentCell.addElement(title);
-        contentCell.addElement(Chunk.NEWLINE);
+            Paragraph title = new Paragraph("Voucher", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16));
+            title.setAlignment(Element.ALIGN_CENTER);
+            contentCell.addElement(title);
+            contentCell.addElement(Chunk.NEWLINE);
 
-        Paragraph ventaInfo = new Paragraph(
-        String.format("ID Venta: %d\nVendedor: %s\nFecha: %s\nTotal: %.2f",
-                      idVenta, vendedor, fecha, total),
-        FontFactory.getFont(FontFactory.HELVETICA, 12)
-        );
-        ventaInfo.setSpacingBefore(10);
-        ventaInfo.setSpacingAfter(10);
-        contentCell.addElement(ventaInfo);
+            Paragraph ventaInfo = new Paragraph(
+                    String.format("ID Venta: %d\nVendedor: %s\nFecha: %s\nTotal: %.2f",
+                            idVenta, vendedor, fecha, total),
+                    FontFactory.getFont(FontFactory.HELVETICA, 12)
+            );
+            ventaInfo.setSpacingBefore(10);
+            ventaInfo.setSpacingAfter(10);
+            contentCell.addElement(ventaInfo);
 
-        PdfPTable detalleTable = new PdfPTable(detalleModel.getColumnCount());
-        detalleTable.setWidthPercentage(100);
+            PdfPTable detalleTable = new PdfPTable(detalleModel.getColumnCount());
+            detalleTable.setWidthPercentage(100);
 
-        for (int i = 0; i < detalleModel.getColumnCount(); i++) {
-        PdfPCell headerCell = new PdfPCell(new Phrase(detalleModel.getColumnName(i)));
-        headerCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        detalleTable.addCell(headerCell);
-        }
-
-        for (int i = 0; i < detalleModel.getRowCount(); i++) {
-        for (int j = 0; j < detalleModel.getColumnCount(); j++) {
-            detalleTable.addCell(detalleModel.getValueAt(i, j).toString());
+            for (int i = 0; i < detalleModel.getColumnCount(); i++) {
+                PdfPCell headerCell = new PdfPCell(new Phrase(detalleModel.getColumnName(i)));
+                headerCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                detalleTable.addCell(headerCell);
             }
-        }
 
-        contentCell.addElement(detalleTable);
+            for (int i = 0; i < detalleModel.getRowCount(); i++) {
+                for (int j = 0; j < detalleModel.getColumnCount(); j++) {
+                    detalleTable.addCell(detalleModel.getValueAt(i, j).toString());
+                }
+            }
 
-        PdfPCell imageCell = new PdfPCell();
-        imageCell.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
-        imageCell.setPadding(10);
-        
-    table.addCell(contentCell);
-    table.addCell(imageCell);
+            contentCell.addElement(detalleTable);
 
-    document.add(table);
+            PdfPCell imageCell = new PdfPCell();
+            imageCell.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+            imageCell.setPadding(10);
 
-    document.close();
-    JOptionPane.showMessageDialog(this, "Voucher exportado correctamente.");
-} catch (DocumentException | IOException e) {
-    e.printStackTrace();
+            table.addCell(contentCell);
+            table.addCell(imageCell);
+
+            document.add(table);
+
+            document.close();
+            JOptionPane.showMessageDialog(this, "Voucher exportado correctamente.");
+        } catch (DocumentException | IOException e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al exportar el voucher: " + e.getMessage());
         }
     }

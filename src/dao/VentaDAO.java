@@ -1,6 +1,7 @@
 package dao;
 
 import db.DBConnection;
+import dto.DetalleVenta;
 import dto.Venta;
 import dto.Usuario;
 
@@ -12,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.CallableStatement;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 /**
  *
  * @author EduardoPC
@@ -21,52 +25,49 @@ public class VentaDAO {
     private final DBConnection dbConnection = new DBConnection();
 
     // Insertar venta
-    public boolean insertar(Venta venta) {
+    public int insertar(Venta venta, List<DetalleVenta> detallesVenta) {
         String sql = "{CALL insertarVenta(?, ?, ?)}";
-        try (Connection conn = dbConnection.getConnection();
-             CallableStatement cs = conn.prepareCall(sql)) {
+        try (Connection conn = dbConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
 
             cs.setTimestamp(1, Timestamp.valueOf(venta.getFecha()));
-            cs.setInt(2, venta.getUsuario().getIdUsuario());
+            cs.setInt(2, venta.getIdUsuario());
             cs.setDouble(3, venta.getTotal());
 
-            return cs.executeUpdate() > 0;
+            return cs.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;
         }
     }
 
-    public boolean actualizar(Venta venta) {
+    public int actualizar(Venta venta) {
         String sql = "{CALL actualizarVenta(?, ?, ?, ?)}";
-        try (Connection conn = dbConnection.getConnection();
-             CallableStatement cs = conn.prepareCall(sql)) {
+        try (Connection conn = dbConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
 
             cs.setInt(1, venta.getId());
             cs.setTimestamp(2, Timestamp.valueOf(venta.getFecha()));
-            cs.setInt(3, venta.getUsuario().getIdUsuario());
+            cs.setInt(3, venta.getIdUsuario());
             cs.setDouble(4, venta.getTotal());
 
-            return cs.executeUpdate() > 0;
+            return cs.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;
         }
     }
 
-    public boolean eliminar(int id) {
+    public int eliminar(int id) {
         String sql = "{CALL eliminarVenta(?)}";
-        try (Connection conn = dbConnection.getConnection();
-             CallableStatement cs = conn.prepareCall(sql)) {
+        try (Connection conn = dbConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
 
             cs.setInt(1, id);
-            return cs.executeUpdate() > 0;
+            return cs.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;
         }
     }
 
@@ -74,20 +75,16 @@ public class VentaDAO {
         List<Venta> lista = new ArrayList<>();
         String sql = "{CALL listarVentas()}";
 
-        try (Connection conn = dbConnection.getConnection();
-             CallableStatement cs = conn.prepareCall(sql);
-             ResultSet rs = cs.executeQuery()) {
+        try (Connection conn = dbConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql); ResultSet rs = cs.executeQuery()) {
 
             while (rs.next()) {
-                Venta venta = new Venta();
-                venta.setId(rs.getInt("id_venta"));
-                venta.setFecha(rs.getTimestamp("fecha").toLocalDateTime());
-                
-                Usuario usuario = new Usuario();
-                usuario.setIdUsuario(rs.getInt("id_usuario"));
-                venta.setUsuario(usuario); 
-
-                venta.setTotal(rs.getDouble("total"));
+                int idVenta = rs.getInt("id_venta");
+                LocalDateTime fecha = rs.getTimestamp("fecha").toLocalDateTime();
+                double total = rs.getDouble("Total");
+                int idUsuario = rs.getInt("id_usuario");
+                String nombreUsuario = rs.getString("nombreUsuario");
+                Venta venta = new Venta(idVenta, idUsuario, fecha, nombreUsuario, total);
+                venta.setUsuarioNombre(nombreUsuario);
                 lista.add(venta);
             }
 
@@ -100,23 +97,25 @@ public class VentaDAO {
 
     public Venta obtenerPorId(int id) {
         Venta venta = null;
-        String sql = "{CALL obtenerVentaPorId(?)}";
+        Connection conn = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
 
-        try (Connection conn = dbConnection.getConnection();
-             CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            DBConnection conexionSQL = new DBConnection();
+            conn = conexionSQL.getConnection();
 
-            cs.setInt(1, id);
-            try (ResultSet rs = cs.executeQuery()) {
+            String query = "{call obtenerVentaPorId}";
+            stmt = conn.prepareCall(query);
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
+            {
                 if (rs.next()) {
-                    venta = new Venta();
-                    venta.setId(rs.getInt("id_venta"));
-                    venta.setFecha(rs.getTimestamp("fecha").toLocalDateTime());
+                    int IdUsuario = rs.getInt("id_usuario");
+                    LocalDateTime fecha = rs.getTimestamp("fecha").toLocalDateTime();
+                    double total = rs.getDouble("total");
 
-                    Usuario usuario = new Usuario();
-                    usuario.setIdUsuario(rs.getInt("id_usuario"));
-                    venta.setUsuario(usuario);
-
-                    venta.setTotal(rs.getDouble("total"));
+                    venta = new Venta(id, IdUsuario, fecha, total);
                 }
             }
 
@@ -126,4 +125,5 @@ public class VentaDAO {
 
         return venta;
     }
+
 }

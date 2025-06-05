@@ -1,14 +1,14 @@
 package view.Venta;
 
-import dao.VendedorDAO;
+
 import dao.VentaDAO;
-import dto.VentaDTO;
-import dto.DetalleVentaDTO;
-import dao.ProductoInventarioDAO;
-import dto.Vendedor;
-import dto.ProductoInventario;
+import dto.Venta;
+import dto.DetalleVenta;
+import dao.ProductoDAO;
+import dto.Producto;
 import dto.Usuario;
 import Utilitarios.SpinnerEditor;
+import dao.UsuarioDAO;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 public class VentaRegister_Modf extends javax.swing.JDialog {
 
-    private JComboBox<Vendedor> cmbVendedor;
+    private JComboBox<Usuario> cmbVendedor;
     private JSpinner spnFecha;
     private JTextField txtTotal;
     private JTable tblProductosInventario;
@@ -289,10 +289,10 @@ public class VentaRegister_Modf extends javax.swing.JDialog {
    
     private void configureVendedores() {
         try {
-            VendedorDAO vendedorDAO = new VendedorDAO();
-            List<Vendedor> vendedores = vendedorDAO.obtenerVendedores();
-            for (Vendedor vendedor : vendedores) {
-                cmbVendedor.addItem(vendedor);
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            List<Usuario> usuarios = usuarioDAO.listar();
+            for (Usuario usuario : usuarios) {
+                cmbVendedor.addItem(usuario);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -301,15 +301,16 @@ public class VentaRegister_Modf extends javax.swing.JDialog {
     
     private void configureProductosInventario() {
         try {
-            ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
-            List<ProductoInventario> productosInventario = productoInventarioDAO.obtenerProductoInventario();
+            ProductoDAO productoDAO = new ProductoDAO();
+            List<Producto> productosInventario = productoDAO.listarProductos();
             DefaultTableModel model = (DefaultTableModel) tblProductosInventario.getModel();
-            for (ProductoInventario producto : productosInventario) {
+            for (Producto producto : productosInventario) {
                 model.addRow(new Object[]{
-                    producto.getIdProducto(),
+                    producto.getId(),
                     producto.getNombre(),
                     producto.getStock(),
                     producto.getPrecio(),
+                    producto.getCategoria(),
                     1
                 });
             }
@@ -336,14 +337,14 @@ public class VentaRegister_Modf extends javax.swing.JDialog {
                 return;
             }
 
-            VentaDTO venta = new VentaDTO();
-            venta.setIdVendedor(((Vendedor) cmbVendedor.getSelectedItem()).getIdVendedor());
-            venta.setFecha((java.util.Date) spnFecha.getValue());
+            Venta venta = new Venta();
+            venta.setIdUsuario(((Usuario) cmbVendedor.getSelectedItem()).getIdUsuario());
+            venta.setFecha((java.time.LocalDateTime) spnFecha.getValue());
             venta.setTotal(Double.parseDouble(txtTotal.getText()));
 
-            List<DetalleVentaDTO> detallesVenta = new ArrayList<>();
+            List<DetalleVenta> detallesVenta = new ArrayList<>();
             for (int i = 0; i < detalleModel.getRowCount(); i++) {
-                DetalleVentaDTO detalle = new DetalleVentaDTO();
+                DetalleVenta detalle = new DetalleVenta();
                 detalle.setIdProducto((int) detalleModel.getValueAt(i, 0));
                 detalle.setCantidad((int) detalleModel.getValueAt(i, 2));
                 detalle.setPrecioUnitario((double) detalleModel.getValueAt(i, 3));
@@ -352,7 +353,7 @@ public class VentaRegister_Modf extends javax.swing.JDialog {
             }
 
             VentaDAO ventaDAO = new VentaDAO();
-            int resultado = ventaDAO.insertarVenta(venta, detallesVenta);
+            int resultado = ventaDAO.insertar(venta, detallesVenta);
 
             if (resultado > 0) {
                 JOptionPane.showMessageDialog(this, "Venta registrada correctamente.");

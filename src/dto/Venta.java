@@ -5,19 +5,25 @@ import java.time.LocalDateTime;
 public class Venta {
 
     private int id;
+    private int idUsuario;
     private LocalDateTime fecha;
-    private Usuario usuario;
+    private String usuarioNombre;
     private double total;
+
+    public Venta(int id, int idUsuario, LocalDateTime fecha, String usuarioNombre, double total) {
+        this.id = id;
+        this.idUsuario = idUsuario;
+        this.fecha = fecha;
+        this.usuarioNombre = usuarioNombre;
+        this.total = total;
+    }
 
     public Venta() {
     }
 
-    public Venta(int id, LocalDateTime fecha, Usuario usuario, double total) {
-        this.id = id;
-        this.fecha = fecha;
-        this.usuario = usuario;
-        this.total = total;
+    public Venta(int id, int IdUsuario, LocalDateTime fecha, double total) {
     }
+
 
     public int getId() {
         return id;
@@ -25,6 +31,14 @@ public class Venta {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public LocalDateTime getFecha() {
@@ -35,12 +49,12 @@ public class Venta {
         this.fecha = fecha;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public String getUsuarioNombre() {
+        return usuarioNombre;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuarioNombre(String usuarioNombre) {
+        this.usuarioNombre = usuarioNombre;
     }
 
     public double getTotal() {
@@ -50,4 +64,5 @@ public class Venta {
     public void setTotal(double total) {
         this.total = total;
     }
+
 }

@@ -4,7 +4,6 @@ package view.Main;
 
 import dto.Usuario;
 import view.Usuario.UsuarioView;
-import view.Vendedor.VendedorView;
 import view.Login.LoginView;
 import view.Producto.ProductoInventarioView;
 import view.Movimiento.MovimientoInventarioView;
@@ -111,20 +110,21 @@ public class MainView extends javax.swing.JFrame {
         setLocationByPlatform(true);
         setResizable(false);
 
-        menuPanel.setBackground(new java.awt.Color(188, 47, 33));
+        menuPanel.setBackground(new java.awt.Color(255, 255, 255));
         menuPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        conPanel.setBackground(new java.awt.Color(188, 47, 33));
+        conPanel.setBackground(new java.awt.Color(255, 255, 255));
         conPanel.setLayout(new java.awt.BorderLayout());
-        menuPanel.add(conPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 1080, 520));
+        menuPanel.add(conPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 1080, 500));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(233, 164, 157));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bodemarketlogo (1).png"))); // NOI18N
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 130, 90));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 130, 90));
 
+        btnUsuarios.setBackground(new java.awt.Color(233, 164, 157));
         btnUsuarios.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/clientes.png"))); // NOI18N
         btnUsuarios.setText("Usuarios");
@@ -138,8 +138,9 @@ public class MainView extends javax.swing.JFrame {
                 btnUsuariosActionPerformed(evt);
             }
         });
-        jPanel1.add(btnUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 90, 80));
+        jPanel1.add(btnUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 80, 120));
 
+        btnCompras.setBackground(new java.awt.Color(233, 164, 157));
         btnCompras.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btnCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar-producto (1).png"))); // NOI18N
         btnCompras.setText("Compras");
@@ -147,8 +148,9 @@ public class MainView extends javax.swing.JFrame {
         btnCompras.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCompras.setIconTextGap(10);
         btnCompras.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(btnCompras, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, 90, 80));
+        jPanel1.add(btnCompras, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 0, 80, 120));
 
+        btnVenta.setBackground(new java.awt.Color(233, 164, 157));
         btnVenta.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btnVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/ventas.png"))); // NOI18N
         btnVenta.setText("Venta");
@@ -156,8 +158,9 @@ public class MainView extends javax.swing.JFrame {
         btnVenta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnVenta.setIconTextGap(5);
         btnVenta.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(btnVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, 80, 80));
+        jPanel1.add(btnVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 0, 80, 120));
 
+        btnReportes.setBackground(new java.awt.Color(233, 164, 157));
         btnReportes.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btnReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/generar_reporte.png"))); // NOI18N
         btnReportes.setText("Reportes");
@@ -165,15 +168,14 @@ public class MainView extends javax.swing.JFrame {
         btnReportes.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnReportes.setIconTextGap(3);
         btnReportes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(btnReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 20, 90, 80));
+        jPanel1.add(btnReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 0, 120, 120));
 
-        btnSalir.setBackground(new java.awt.Color(188, 47, 33));
         btnSalir.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        btnSalir.setForeground(new java.awt.Color(255, 255, 255));
         btnSalir.setText("Cerrar sesión");
         btnSalir.setBorder(null);
-        jPanel1.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 40, 120, 33));
+        jPanel1.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 50, 120, 33));
 
+        btnProveedores.setBackground(new java.awt.Color(233, 164, 157));
         btnProveedores.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btnProveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/proveedores.png"))); // NOI18N
         btnProveedores.setText("Proveedores");
@@ -181,8 +183,9 @@ public class MainView extends javax.swing.JFrame {
         btnProveedores.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnProveedores.setIconTextGap(5);
         btnProveedores.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(btnProveedores, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 20, 100, 80));
+        jPanel1.add(btnProveedores, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 0, 120, 120));
 
+        btnAdmin.setBackground(new java.awt.Color(233, 164, 157));
         btnAdmin.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btnAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/administracion.png"))); // NOI18N
         btnAdmin.setText("Administracion");
@@ -190,8 +193,9 @@ public class MainView extends javax.swing.JFrame {
         btnAdmin.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAdmin.setIconTextGap(5);
         btnAdmin.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 20, 110, 80));
+        jPanel1.add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 0, 120, 120));
 
+        btnProductos.setBackground(new java.awt.Color(233, 164, 157));
         btnProductos.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btnProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulos.png"))); // NOI18N
         btnProductos.setText("Productos");
@@ -199,8 +203,9 @@ public class MainView extends javax.swing.JFrame {
         btnProductos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnProductos.setIconTextGap(5);
         btnProductos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(btnProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, 90, 80));
+        jPanel1.add(btnProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 0, 80, 120));
 
+        btnInventario.setBackground(new java.awt.Color(233, 164, 157));
         btnInventario.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btnInventario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/proveedores.png"))); // NOI18N
         btnInventario.setText("Mov. Inventario");
@@ -208,9 +213,9 @@ public class MainView extends javax.swing.JFrame {
         btnInventario.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnInventario.setIconTextGap(5);
         btnInventario.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(btnInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 20, 120, 80));
+        jPanel1.add(btnInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 0, 120, 120));
 
-        menuPanel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1160, 100));
+        menuPanel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1160, 120));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

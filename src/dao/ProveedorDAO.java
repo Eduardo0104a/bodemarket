@@ -22,7 +22,7 @@ public class ProveedorDAO {
 
     private final DBConnection dbConnection = new DBConnection();
 
-    public boolean insertar(Proveedor proveedor) {
+    public int insertar(Proveedor proveedor) {
         String sql = "{CALL insertarProveedor(?, ?, ?, ?)}";
         try (Connection conn = dbConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
@@ -32,15 +32,15 @@ public class ProveedorDAO {
             cs.setString(3, proveedor.getTelefono());
             cs.setString(4, proveedor.getRuc());
 
-            return cs.executeUpdate() > 0;
+            return cs.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;  
         }
     }
 
-    public boolean actualizar(Proveedor proveedor) {
+    public int actualizar(Proveedor proveedor) {
         String sql = "{CALL actualizarProveedor(?, ?, ?, ?, ?)}";
         try (Connection conn = dbConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
@@ -51,25 +51,25 @@ public class ProveedorDAO {
             cs.setString(4, proveedor.getTelefono());
             cs.setString(5, proveedor.getRuc());
 
-            return cs.executeUpdate() > 0;
+            return cs.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;  
         }
     }
 
-    public boolean eliminar(int id) {
+    public int eliminar(int id) {
         String sql = "{CALL eliminarProveedor(?)}";
         try (Connection conn = dbConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 
             cs.setInt(1, id);
-            return cs.executeUpdate() > 0;
+            return cs.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;  
         }
     }
 

@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.CallableStatement;
+
 /**
  *
  * @author EduardoPC
@@ -25,7 +26,7 @@ public class VoucherDAO {
         db = new DBConnection();
     }
 
-    public boolean insertarVoucher(VoucherDTO voucher) {
+    public int insertarVoucher(VoucherDTO voucher) {
         Connection conn = null;
         CallableStatement cs = null;
         try {
@@ -36,11 +37,10 @@ public class VoucherDAO {
             cs.setDouble(3, voucher.getDescuento());
             cs.setDate(4, new java.sql.Date(voucher.getFecha().getTime()));
 
-            int filas = cs.executeUpdate();
-            return filas > 0;
+            return cs.executeUpdate(); 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1; 
         } finally {
             DBConnection.close(conn, cs);
         }

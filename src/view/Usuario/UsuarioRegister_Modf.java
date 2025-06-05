@@ -147,7 +147,7 @@ public class UsuarioRegister_Modf extends javax.swing.JDialog {
 
         if ("Admin".equalsIgnoreCase(usuario.getRol())) {
             if (isModify) {
-                errorCode = usuarioDAO.actualizar(nuevoUsuario);
+                errorCode = usuarioDAO.modificar(nuevoUsuario);
             } else {
                 errorCode = usuarioDAO.insertar(nuevoUsuario);
             }
@@ -181,11 +181,11 @@ public class UsuarioRegister_Modf extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void configureRoles() {
-        if ("Admin".equalsIgnoreCase(usuario.getRol())) {
-            cmbRol.addItem("Admin");
-            cmbRol.addItem("Usuario");
+        if ("admin".equalsIgnoreCase(usuario.getRol())) {
+            cmbRol.addItem("admin");
+            cmbRol.addItem("vendedor");
         } else {
-            cmbRol.addItem("Usuario");
+            cmbRol.addItem("vendedor");
         }
     }
 

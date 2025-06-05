@@ -28,8 +28,7 @@ public class Usuario {
 
     public Usuario() {
     }
-
-   
+    
     public int getIdUsuario() {
         return idUsuario;
     }
@@ -93,4 +92,10 @@ public class Usuario {
     public void setRol(String rol) {
         this.rol = rol;
     }
+    
+    @Override
+    public String toString() {
+        return nombre +""+ apellido;
+    }
 }
+

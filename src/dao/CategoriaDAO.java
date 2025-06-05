@@ -23,22 +23,22 @@ public class CategoriaDAO {
         dbConnection = new DBConnection();
     }
 
-    public boolean insertar(Categoria categoria) {
+    public int insertar(Categoria categoria) {
         String sql = "{CALL insertar_categoria(?)}";
         try (Connection conn = dbConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 
             cs.setString(1, categoria.getNombre());
 
-            return cs.executeUpdate() > 0;
+            return cs.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;  
         }
     }
 
-    public boolean actualizar(Categoria categoria) {
+    public int actualizar(Categoria categoria) {
         String sql = "{CALL actualizar_categoria(?, ?)}";
         try (Connection conn = dbConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
@@ -46,26 +46,26 @@ public class CategoriaDAO {
             cs.setInt(1, categoria.getId());
             cs.setString(2, categoria.getNombre());
 
-            return cs.executeUpdate() > 0;
+            return cs.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;  
         }
     }
 
-    public boolean eliminar(int idCategoria) {
+    public int eliminar(int idCategoria) {
         String sql = "{CALL eliminar_categoria(?)}";
         try (Connection conn = dbConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 
             cs.setInt(1, idCategoria);
 
-            return cs.executeUpdate() > 0;
+            return cs.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;  
         }
     }
 

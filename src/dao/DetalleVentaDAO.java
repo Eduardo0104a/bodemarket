@@ -19,49 +19,55 @@ import java.sql.ResultSet;
 public class DetalleVentaDAO {
     private Connection conn;
 
-    public DetalleVentaDAO(Connection conn) {
-        this.conn = conn;
-    }
-
-    public boolean insertarDetalleVenta(DetalleVenta detalle) throws SQLException {
+    public int insertarDetalleVenta(DetalleVenta detalle, Connection con) throws SQLException {
         String sql = "{CALL sp_insert_detalleventa(?, ?, ?, ?, ?)}";
         try (CallableStatement cs = conn.prepareCall(sql)) {
-            cs.setInt(1, detalle.getVenta().getId());
-            cs.setInt(2, detalle.getProducto().getId());
+            cs.setInt(1, detalle.getIdVenta());
+            cs.setInt(2, detalle.getIdProducto());  
+            cs.setString(3, detalle.getProducto());
             cs.setInt(3, detalle.getCantidad());
             cs.setDouble(4, detalle.getPrecioUnitario());
-            cs.setDouble(5, detalle.getSubtotal());
-            return cs.executeUpdate() > 0;
+            cs.setDouble(5, detalle.getSubTotal());
+            return cs.executeUpdate();
         }
     }
 
-    public List<DetalleVenta> listarDetallesPorVenta(int idVenta) throws SQLException {
-        List<DetalleVenta> lista = new ArrayList<>();
-        String sql = "{CALL sp_get_detalleventa_by_venta(?)}";
-        try (CallableStatement cs = conn.prepareCall(sql)) {
-            cs.setInt(1, idVenta);
-            try (ResultSet rs = cs.executeQuery()) {
-                while (rs.next()) {
-                    DetalleVenta detalle = new DetalleVenta();
-                    detalle.setId(rs.getInt("id_detalle"));
-                    
-                    Venta venta = new Venta();
-                    venta.setId(rs.getInt("id_venta"));
-                    detalle.setVenta(venta);
-                    
-                    Producto producto = new Producto();
-                    producto.setId(rs.getInt("id_producto"));
-                    detalle.setProducto(producto);
-                    
-                    detalle.setCantidad(rs.getInt("cantidad"));
-                    detalle.setPrecioUnitario(rs.getDouble("precio_unitario"));
-                    detalle.setSubTotal(rs.getDouble("subtotal"));
-                    
-                    lista.add(detalle);
-                }
+    public List<DetalleVenta> obtenerDetallesVentaPorId(int idVenta) {
+        List<DetalleVenta> detallesVenta = new ArrayList<>();
+        Connection conn = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            DBConnection conexionSQL = new DBConnection();
+            conn = conexionSQL.getConnection();
+
+            String query = "{call sp_get_detalleventa_by_venta}";
+            stmt = conn.prepareCall(query);
+            stmt.setInt(1, idVenta);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int idDetalle = rs.getInt("id_detalle");
+                int idVentas = rs.getInt("id_venta");
+                int idProducto = rs.getInt("id_producto");
+                String Producto = rs.getString("ProductoNombre");
+                int cantidad = rs.getInt("cantidad");
+                double precioUnitario = rs.getDouble("precio_unitario");
+                double subTotal = rs.getDouble("subtotal");
+
+                DetalleVenta detalle = new DetalleVenta(idDetalle, idVenta, idProducto, cantidad, precioUnitario, subTotal, Producto);
+                detalle.setProducto(Producto);
+                detallesVenta.add(detalle);
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBConnection.close(conn, stmt, rs);
         }
-        return lista;
+
+        return detallesVenta;
     }
 }
 

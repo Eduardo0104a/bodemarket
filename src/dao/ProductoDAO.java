@@ -18,12 +18,67 @@ import java.sql.CallableStatement;
  */
 public class ProductoDAO {
 
-    private DBConnection dbConnection;
+    public List<Producto> listar() {
+        List<Producto> productos = new ArrayList<>();
+        Connection conn = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
 
-    public ProductoDAO() {
-        dbConnection = new DBConnection();
+        try {
+            DBConnection conexionSQL = new DBConnection(); 
+            conn = conexionSQL.getConnection(); 
+            String query = "{CALL listar_productos()}";
+            stmt = conn.prepareCall(query);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int idProducto = rs.getInt("ID_Producto");
+                String nombre = rs.getString("Nombre");
+                String descripcion = rs.getString("Descripcion");
+                double precio = rs.getDouble("Precio");
+                int idInventario = rs.getInt("ID_Inventario");
+                int stock = rs.getInt("stock");
+                String categoria = rs.getString("Categoria");
+
+                ProductoInventario productoInventario = new ProductoInventario(idProducto, nombre, descripcion, precio, idInventario, stock, categoria);
+                productosInventario.add(productoInventario);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cerrarRecursos();
+        }
+
+        return productosInventario;
     }
+    public List<Producto> listarProductos() {
+        List<Producto> productos = new ArrayList<>();
+        String sql = "{CALL listar_productos()}";
 
+        try (Connection conn = dbConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql); ResultSet rs = cs.executeQuery()) {
+
+            while (rs.next()) {
+                Categoria categoria = new Categoria(
+                        rs.getInt("id_categoria"),
+                        rs.getString("nombre_categoria")
+                );
+                Producto producto = new Producto(
+                        rs.getInt("id_producto"),
+                        rs.getString("nombre"),
+                        rs.getDouble("precio"),
+                        rs.getInt("stock"),
+                        categoria
+                );
+                productos.add(producto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productos;
+    }
+    
     public int insertarProducto(Producto producto) {
         String sql = "{CALL insertar_producto(?, ?, ?, ?)}";
         try (Connection conn = dbConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
@@ -99,30 +154,5 @@ public class ProductoDAO {
         return null;
     }
 
-    public List<Producto> listarProductos() {
-        List<Producto> productos = new ArrayList<>();
-        String sql = "{CALL listar_productos()}";
-
-        try (Connection conn = dbConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql); ResultSet rs = cs.executeQuery()) {
-
-            while (rs.next()) {
-                Categoria categoria = new Categoria(
-                        rs.getInt("id_categoria"),
-                        rs.getString("nombre_categoria")
-                );
-                Producto producto = new Producto(
-                        rs.getInt("id_producto"),
-                        rs.getString("nombre"),
-                        rs.getDouble("precio"),
-                        rs.getInt("stock"),
-                        categoria
-                );
-                productos.add(producto);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return productos;
-    }
+    
 }

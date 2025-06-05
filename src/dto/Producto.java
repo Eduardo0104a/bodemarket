@@ -7,17 +7,17 @@ package dto;
 public class Producto {
 
     private int id;
-    private String nombre;
+    private String nombreProducto;
     private double precio;
     private int stock;
-    private Categoria categoria;
+    private String categoria;
 
     public Producto() {
     }
 
-    public Producto(int id, String nombre, double precio, int stock, Categoria categoria) {
+    public Producto(int id, String nombreProducto, double precio, int stock, String categoria) {
         this.id = id;
-        this.nombre = nombre;
+        this.nombreProducto = nombreProducto;
         this.precio = precio;
         this.stock = stock;
         this.categoria = categoria;
@@ -31,12 +31,12 @@ public class Producto {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreProducto() {
+        return nombreProducto;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
     }
 
     public double getPrecio() {
@@ -55,11 +55,12 @@ public class Producto {
         this.stock = stock;
     }
 
-    public Categoria getCategoria() {
+    public String getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
+    public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
+
 }

@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `bodemarketv1` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `bodemarketv1`;
 -- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
 -- Host: localhost    Database: bodemarketv1
@@ -26,9 +24,8 @@ DROP TABLE IF EXISTS `categoria`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categoria` (
   `id_categoria` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) NOT NULL,
-  PRIMARY KEY (`id_categoria`),
-  UNIQUE KEY `nombre` (`nombre`)
+  `descripcion_categoria` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id_categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -60,7 +57,7 @@ CREATE TABLE `detalle_venta` (
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `detalle_venta_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`),
   CONSTRAINT `detalle_venta_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +66,36 @@ CREATE TABLE `detalle_venta` (
 
 LOCK TABLES `detalle_venta` WRITE;
 /*!40000 ALTER TABLE `detalle_venta` DISABLE KEYS */;
+INSERT INTO `detalle_venta` VALUES (1,6,2,1,123.00,123.00),(2,6,1,1,12.00,12.00),(3,7,1,36,12.00,432.00),(4,7,2,11,123.00,1353.00),(5,8,1,1,12.00,12.00),(6,8,2,1,123.00,123.00),(7,9,1,1,12.00,12.00),(8,9,2,1,123.00,123.00),(9,10,2,5,123.00,615.00),(10,10,1,3,12.00,36.00);
 /*!40000 ALTER TABLE `detalle_venta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `inventario`
+--
+
+DROP TABLE IF EXISTS `inventario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `inventario` (
+  `id_inventario` int NOT NULL AUTO_INCREMENT,
+  `id_producto` int DEFAULT NULL,
+  `Stock` int DEFAULT NULL,
+  `Categoria` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id_inventario`),
+  KEY `id_producto` (`id_producto`),
+  CONSTRAINT `inventario_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inventario`
+--
+
+LOCK TABLES `inventario` WRITE;
+/*!40000 ALTER TABLE `inventario` DISABLE KEYS */;
+INSERT INTO `inventario` VALUES (1,1,118,'sad'),(2,2,143,'eqwdas');
+/*!40000 ALTER TABLE `inventario` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -81,15 +107,15 @@ DROP TABLE IF EXISTS `movimiento_inventario`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `movimiento_inventario` (
   `id_movimiento` int NOT NULL AUTO_INCREMENT,
-  `id_producto` int NOT NULL,
-  `tipo` enum('E','S') NOT NULL,
-  `cantidad` int NOT NULL,
-  `fecha` datetime NOT NULL,
-  `descripcion` varchar(255) DEFAULT NULL,
+  `id_inventario` int DEFAULT NULL,
+  `tipo` varchar(50) DEFAULT NULL,
+  `cantidad` int DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `descripcion` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_movimiento`),
-  KEY `id_producto` (`id_producto`),
-  CONSTRAINT `movimiento_inventario_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `id_inventario` (`id_inventario`),
+  CONSTRAINT `movimiento_inventario_ibfk_1` FOREIGN KEY (`id_inventario`) REFERENCES `inventario` (`id_inventario`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,6 +124,7 @@ CREATE TABLE `movimiento_inventario` (
 
 LOCK TABLES `movimiento_inventario` WRITE;
 /*!40000 ALTER TABLE `movimiento_inventario` DISABLE KEYS */;
+INSERT INTO `movimiento_inventario` VALUES (1,1,'E',123,'2025-06-06','Entrada'),(2,2,'E',123,'2025-06-06','Entrada'),(3,2,'E',27,'2025-06-07','Entrada'),(4,1,'S',1,'2025-06-07','Salida'),(5,2,'S',1,'2025-06-07','Salida'),(6,1,'S',1,'2025-06-07','Salida'),(7,2,'S',1,'2025-06-07','Salida'),(8,2,'S',5,'2025-06-07','Salida'),(9,1,'S',3,'2025-06-07','Salida');
 /*!40000 ALTER TABLE `movimiento_inventario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,13 +138,10 @@ DROP TABLE IF EXISTS `producto`;
 CREATE TABLE `producto` (
   `id_producto` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
   `precio` decimal(10,2) NOT NULL,
-  `stock` int DEFAULT '0',
-  `id_categoria` int NOT NULL,
-  PRIMARY KEY (`id_producto`),
-  KEY `id_categoria` (`id_categoria`),
-  CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id_categoria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id_producto`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,6 +150,7 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
+INSERT INTO `producto` VALUES (1,'qwe','qwe',12.00),(2,'eqw','wqe',123.00);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,7 +227,7 @@ CREATE TABLE `venta` (
   PRIMARY KEY (`id_venta`),
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -211,6 +236,7 @@ CREATE TABLE `venta` (
 
 LOCK TABLES `venta` WRITE;
 /*!40000 ALTER TABLE `venta` DISABLE KEYS */;
+INSERT INTO `venta` VALUES (3,'2025-06-06 00:00:00',1,135.00),(4,'2025-06-06 00:00:00',1,135.00),(5,'2025-06-06 00:00:00',1,135.00),(6,'2025-06-06 00:00:00',1,135.00),(7,'2025-06-07 00:00:00',1,1785.00),(8,'2025-06-07 00:00:00',1,135.00),(9,'2025-06-07 00:00:00',6,135.00),(10,'2025-06-07 00:00:00',1,651.00);
 /*!40000 ALTER TABLE `venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -252,4 +278,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-05 17:16:10
+-- Dump completed on 2025-06-07 15:04:59

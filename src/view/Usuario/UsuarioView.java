@@ -69,8 +69,8 @@ public class UsuarioView extends javax.swing.JPanel {
         tblUsuario.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tblUsuario.setRowHeight(32);
         tblUsuario.setForeground(Color.BLACK);
-        tblUsuario.setBackground(new Color(233, 164, 157)); // Tonalidad cálida cercana al amarillo
-        tblUsuario.setSelectionBackground(new Color(255, 153, 153)); // Amarillo fuerte
+        tblUsuario.setBackground(new Color(233, 164, 157));
+        tblUsuario.setSelectionBackground(new Color(255, 153, 153)); 
         tblUsuario.setSelectionForeground(Color.BLACK);
         tblUsuario.setGridColor(Color.LIGHT_GRAY);
         DefaultTableModel model = (DefaultTableModel) tblUsuario.getModel();

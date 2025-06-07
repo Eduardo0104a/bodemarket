@@ -1,30 +1,25 @@
 package dto;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Venta {
 
     private int id;
     private int idUsuario;
-    private LocalDateTime fecha;
+    private Date fecha;
     private String usuarioNombre;
     private double total;
 
-    public Venta(int id, int idUsuario, LocalDateTime fecha, String usuarioNombre, double total) {
+    public Venta(int id, int idUsuario, Date fecha, double total) {
         this.id = id;
         this.idUsuario = idUsuario;
         this.fecha = fecha;
-        this.usuarioNombre = usuarioNombre;
         this.total = total;
     }
-
-    public Venta() {
-    }
-
-    public Venta(int id, int IdUsuario, LocalDateTime fecha, double total) {
-    }
-
-
+    
+    public Venta() {}
+    
     public int getId() {
         return id;
     }
@@ -41,11 +36,11 @@ public class Venta {
         this.idUsuario = idUsuario;
     }
 
-    public LocalDateTime getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

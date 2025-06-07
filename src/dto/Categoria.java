@@ -5,37 +5,37 @@ package dto;
  * @author EduardoPC
  */
 public class Categoria {
+    private int idCat;
+    private String codigoCat;
+    private String descripcionCat;
 
-    private int id;
-    private String nombre;
-
-    public Categoria() {
+    public Categoria(int idCat, String codigoCat, String descripcionCat) {
+        this.idCat = idCat;
+        this.codigoCat = codigoCat;
+        this.descripcionCat = descripcionCat;
     }
 
-    public Categoria(int id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
+    public int getIdCat() {
+        return idCat;
     }
 
-    // Getters y Setters
-    public int getId() {
-        return id;
+    public void setIdCat(int idCat) {
+        this.idCat = idCat;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getCodigoCat() {
+        return codigoCat;
     }
 
-    public String getNombre() {
-        return nombre;
+    public void setCodigoCat(String codigoCat) {
+        this.codigoCat = codigoCat;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public String getDescripcionCat() {
+        return descripcionCat;
     }
 
-    @Override
-    public String toString() {
-        return nombre;
+    public void setDescripcionCat(String descripcionCat) {
+        this.descripcionCat = descripcionCat;
     }
 }

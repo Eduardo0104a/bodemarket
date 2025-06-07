@@ -29,7 +29,7 @@ public class UsuarioView extends javax.swing.JPanel {
 
     public UsuarioView(Usuario usuario) {
         this.usuario = usuario;
-        setBackground(new Color(233,164,157)); // Fondo del panel de contenido
+        setBackground(new Color(233, 164, 157)); 
         initComponents();
         inicio();
         loadUsuarios();
@@ -46,15 +46,14 @@ public class UsuarioView extends javax.swing.JPanel {
         lblTitulo.setForeground(new Color(120, 30, 20));
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 0));
 
-        // Campo de búsqueda
         txtBuscar = new JTextField();
-        txtBuscar.setPreferredSize(new Dimension(250, 40));
+        txtBuscar.setPreferredSize(new Dimension(250, 30));
         txtBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         txtBuscar.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(188,47,33), 2),
+                BorderFactory.createLineBorder(new Color(188, 47, 33), 2),
                 BorderFactory.createEmptyBorder(5, 10, 5, 10)
         ));
-        
+
         JPanel panelBuscar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelBuscar.setOpaque(false);
         panelBuscar.add(txtBuscar);
@@ -65,15 +64,18 @@ public class UsuarioView extends javax.swing.JPanel {
 
         tblUsuario = new JTable(new DefaultTableModel(
                 new Object[][]{},
-                new String[]{"", "", "ID", "Nombre", "Apellido", "Correo Electrónico","telefono","UserName", "Rol"}
+                new String[]{"", "", "ID", "Nombre", "Apellido", "Correo Electrónico", "telefono", "UserName", "Rol"}
         ));
         tblUsuario.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tblUsuario.setRowHeight(32);
         tblUsuario.setForeground(Color.BLACK);
-        tblUsuario.setBackground(new Color(233,164,157)); // Tonalidad cálida cercana al amarillo
-        tblUsuario.setSelectionBackground(new Color(255,153,153)); // Amarillo fuerte
+        tblUsuario.setBackground(new Color(233, 164, 157)); // Tonalidad cálida cercana al amarillo
+        tblUsuario.setSelectionBackground(new Color(255, 153, 153)); // Amarillo fuerte
         tblUsuario.setSelectionForeground(Color.BLACK);
         tblUsuario.setGridColor(Color.LIGHT_GRAY);
+        DefaultTableModel model = (DefaultTableModel) tblUsuario.getModel();
+        sorter = new TableRowSorter<>(model);
+        tblUsuario.setRowSorter(sorter);
 
         JTableHeader header = tblUsuario.getTableHeader();
         header.setFont(new Font("Segoe UI", Font.BOLD, 13));
@@ -130,49 +132,25 @@ public class UsuarioView extends javax.swing.JPanel {
             public void insertUpdate(DocumentEvent e) {
                 filtrar();
             }
+
             @Override
             public void removeUpdate(DocumentEvent e) {
                 filtrar();
             }
+
             @Override
             public void changedUpdate(DocumentEvent e) {
                 filtrar();
             }
         });
-        
-        JPanel panelTituloBotones = new JPanel(new BorderLayout());
-        panelTituloBotones.setBackground(new Color(175, 18, 128)); 
-
-        JLabel lblTitulo = new JLabel("USUARIO");
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setForeground(new Color(255,238,0)); 
-        panelTituloBotones.add(lblTitulo, BorderLayout.CENTER);
-
-        JPanel panelBotones = new JPanel();
-        btnInsertar = new JButton("Insertar");
-        panelBotones.setBackground(new Color(175, 18, 128));
-
-        panelBotones.add(btnInsertar);
-
-        btnInsertar.setBackground(new Color(255,238,0));
-        btnInsertar.setForeground(new Color(175, 18, 128));
-        panelTituloBotones.add(panelBotones, BorderLayout.EAST);
-        add(panelTituloBotones, BorderLayout.NORTH);
-        
-        btnInsertar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                abrirFormularioRegistro();
-            }
-        });
     }
-    
+
     private void abrirFormularioRegistro() {
         JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         UsuarioRegister_Modf registroUsuarioForm = new UsuarioRegister_Modf(parentFrame, usuario, UsuarioView.this, false, 0);
         registroUsuarioForm.setVisible(true);
     }
-    
+
     private void filtrar() {
         if (sorter != null) {
             String texto = txtBuscar.getText();

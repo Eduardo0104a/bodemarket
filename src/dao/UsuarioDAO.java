@@ -29,7 +29,7 @@ public class UsuarioDAO {
             DBConnection conexionSQL = new DBConnection();
             conn = conexionSQL.getConnection();
 
-            String query = "{CALL validar_usuario(?, ?)}";
+            String query = "{CALL sp_validar_usuario(?, ?)}";
             stmt = conn.prepareCall(query);
             stmt.setString(1, nombreUsuario);
             stmt.setString(2, clave);
@@ -65,7 +65,7 @@ public class UsuarioDAO {
             DBConnection conexionSQL = new DBConnection(); 
             conn = conexionSQL.getConnection(); 
 
-            String query = "{call listar_usuarios()}";
+            String query = "{call sp_listar_usuarios()}";
             stmt = conn.prepareCall(query);
             rs = stmt.executeQuery();
 
@@ -101,7 +101,7 @@ public class UsuarioDAO {
             DBConnection conexionSQL = new DBConnection();
             conn = conexionSQL.getConnection();
 
-            String query = "{CALL insertar_usuario(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+            String query = "{CALL sp_insertar_usuario(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
             stmt = conn.prepareCall(query);
             stmt.setString(1, usuario.getNombre());
             stmt.setString(2, usuario.getApellido());
@@ -177,7 +177,7 @@ public class UsuarioDAO {
             DBConnection conexionSQL = new DBConnection();
             conn = conexionSQL.getConnection();
 
-            String query = "{CALL actualizar_usuario(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+            String query = "{CALL sp_modificar_usuario(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
             stmt = conn.prepareCall(query);
             stmt.setInt(1, usuario.getIdUsuario());
             stmt.setString(2, usuario.getNombre());
@@ -210,7 +210,7 @@ public class UsuarioDAO {
             DBConnection conexionSQL = new DBConnection();
             conn = conexionSQL.getConnection();
 
-            String query = "{CALL eliminar_usuario(?)}";
+            String query = "{CALL sp_eliminar_usuario(?)}";
             stmt = conn.prepareCall(query);
             stmt.setInt(1, idUsuario);
             result = stmt.executeUpdate();

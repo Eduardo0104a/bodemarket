@@ -84,7 +84,7 @@ public class IconButtonEditor extends DefaultCellEditor {
                         new ProductoInventarioRegister_Mod((Frame) SwingUtilities.getWindowAncestor(table), usuario, productoInventarioView, true, id).setVisible(true);
                     } else {  
                         ProductoDAO productoInventarioDAO = new ProductoDAO();
-                        int result = productoInventarioDAO.eliminarProducto(id);
+                        int result = productoInventarioDAO.eliminar(id);
 
                         if (result > 0) {
                             JOptionPane.showMessageDialog(button, "Producto eliminado exitosamente.");

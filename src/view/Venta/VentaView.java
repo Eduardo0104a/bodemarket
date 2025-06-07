@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.awt.Font;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -27,6 +28,10 @@ import com.itextpdf.text.pdf.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableRowSorter;
 
 public class VentaView extends javax.swing.JPanel {
 
@@ -35,6 +40,8 @@ public class VentaView extends javax.swing.JPanel {
     private JButton btnInsertar;
     private JButton btnVoucher;
     private Usuario usuario;
+    private JTextField txtBuscar;
+    private TableRowSorter<DefaultTableModel> sorter;
 
     public VentaView(Usuario usuario) {
         this.usuario = usuario;
@@ -47,100 +54,147 @@ public class VentaView extends javax.swing.JPanel {
     private void inicio() {
         setLayout(new BorderLayout());
 
-        JPanel panelTituloBotones = new JPanel(new BorderLayout());
-        panelTituloBotones.setBackground(new Color(175, 18, 128));
+        // Panel superior con campo de búsqueda y botones
+        JPanel panelSuperior = new JPanel(new BorderLayout());
+        panelSuperior.setBackground(Color.WHITE);
 
-        JLabel lblTitulo = new JLabel("VENTA");
-        lblTitulo.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
-        lblTitulo.setForeground(new Color(255, 238, 0));
-        panelTituloBotones.add(lblTitulo, BorderLayout.CENTER);
+        txtBuscar = new JTextField();
+        txtBuscar.setPreferredSize(new Dimension(250, 30));
+        txtBuscar.setFont(new Font("SansSerif", Font.PLAIN, 14)); // Usamos SansSerif por compatibilidad
+        txtBuscar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(188, 47, 33), 2),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
 
-        JPanel panelBotones = new JPanel();
+        // Panel de búsqueda
+        JPanel panelBuscar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelBuscar.setOpaque(false);
+        panelBuscar.add(txtBuscar);
+
+        // Botones arriba
         btnInsertar = new JButton("Insertar");
         btnVoucher = new JButton("Voucher");
-        panelBotones.setBackground(new Color(175, 18, 128));
-
-        panelBotones.add(btnInsertar);
-        panelBotones.add(btnVoucher);
 
         btnInsertar.setBackground(new Color(255, 238, 0));
         btnInsertar.setForeground(new Color(175, 18, 128));
+
         btnVoucher.setBackground(new Color(255, 238, 0));
         btnVoucher.setForeground(new Color(175, 18, 128));
-        panelTituloBotones.add(panelBotones, BorderLayout.EAST);
-        add(panelTituloBotones, BorderLayout.NORTH);
+
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelBotones.setOpaque(false);
+        panelBotones.add(btnInsertar);
+        panelBotones.add(btnVoucher);
+
+        JPanel panelTop = new JPanel(new BorderLayout());
+        panelTop.setOpaque(false);
+        panelTop.add(panelBotones, BorderLayout.WEST);
+        panelTop.add(panelBuscar, BorderLayout.EAST);
+
+        panelSuperior.add(panelTop, BorderLayout.CENTER);
+        add(panelSuperior, BorderLayout.NORTH);
+
+        // Tabla de ventas
+        JLabel lblTablaVentas = new JLabel("Ventas");
+        lblTablaVentas.setFont(new Font("SansSerif", Font.BOLD, 20));
+        lblTablaVentas.setForeground(new Color(120, 30, 20));
+        lblTablaVentas.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 0));
 
         tblVenta = new JTable(new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"ID Venta", "Vendedor", "Fecha", "Total"}
         ));
-
+        tblVenta.setFont(new Font("SansSerif", Font.PLAIN, 13));
+        tblVenta.setRowHeight(32);
+        tblVenta.setForeground(Color.BLACK);
+        tblVenta.setBackground(new Color(233, 164, 157));
+        tblVenta.setSelectionBackground(new Color(255, 153, 153));
+        tblVenta.setSelectionForeground(Color.BLACK);
+        tblVenta.setGridColor(Color.LIGHT_GRAY);
         tblVenta.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tblVenta.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent event) {
-                if (!event.getValueIsAdjusting()) {
-                    cargarDetalleVenta();
-                }
+
+        DefaultTableModel modelVenta = (DefaultTableModel) tblVenta.getModel();
+        sorter = new TableRowSorter<>(modelVenta);
+        tblVenta.setRowSorter(sorter);
+
+        txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                filtrar();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                filtrar();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                filtrar();
             }
         });
-        tblVenta.setBackground(new Color(220, 190, 255));
-        tblVenta.setForeground(new Color(75, 0, 130));
 
-        tblVenta.setSelectionBackground(new Color(180, 130, 255));
-        tblVenta.setSelectionForeground(Color.WHITE);
+        tblVenta.getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {
+                cargarDetalleVenta();
+            }
+        });
 
-        tblVenta.getTableHeader().setBackground(new Color(75, 0, 130));
-        tblVenta.getTableHeader().setForeground(new Color(75, 0, 130));
+        JTableHeader headerVenta = tblVenta.getTableHeader();
+        headerVenta.setFont(new Font("SansSerif", Font.BOLD, 13));
+        headerVenta.setBackground(new Color(120, 30, 20));
+        headerVenta.setForeground(Color.WHITE);
+        headerVenta.setBorder(BorderFactory.createLineBorder(headerVenta.getBackground()));
 
-        JScrollPane scrollPaneVenta = new JScrollPane(tblVenta);
-        scrollPaneVenta.getViewport().setBackground(new Color(175, 18, 128)); // Amarillo suave
-        scrollPaneVenta.setBorder(BorderFactory.createTitledBorder("Venta"));
+        JPanel panelVenta = new JPanel(new BorderLayout());
+        panelVenta.setBackground(Color.WHITE);
+        panelVenta.add(lblTablaVentas, BorderLayout.NORTH);
+        panelVenta.add(new JScrollPane(tblVenta), BorderLayout.CENTER);
+
+        JLabel lblTablaDetalle = new JLabel("Detalle de Venta");
+        lblTablaDetalle.setFont(new Font("SansSerif", Font.BOLD, 20));
+        lblTablaDetalle.setForeground(new Color(175, 18, 128));
+        lblTablaDetalle.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 0));
 
         tblDetalleVenta = new JTable(new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"ID Detalle", "ID Venta", "Producto", "Cantidad", "Precio Unitario", "SubTotal"}
         ));
-        tblDetalleVenta.setBackground(new Color(220, 190, 255));
+        tblDetalleVenta.setFont(new Font("SansSerif", Font.PLAIN, 13));
+        tblDetalleVenta.setRowHeight(30);
         tblDetalleVenta.setForeground(new Color(75, 0, 130));
-
+        tblDetalleVenta.setBackground(Color.WHITE);
         tblDetalleVenta.setSelectionBackground(new Color(180, 130, 255));
         tblDetalleVenta.setSelectionForeground(Color.WHITE);
+        tblDetalleVenta.setGridColor(Color.LIGHT_GRAY);
 
-        tblDetalleVenta.getTableHeader().setBackground(new Color(75, 0, 130));
-        tblDetalleVenta.getTableHeader().setForeground(new Color(75, 0, 130));
+        JTableHeader headerDetalle = tblDetalleVenta.getTableHeader();
+        headerDetalle.setFont(new Font("SansSerif", Font.BOLD, 13));
+        headerDetalle.setBackground(new Color(175, 18, 128));
+        headerDetalle.setForeground(Color.WHITE);
 
-        JScrollPane scrollPaneDetalleVenta = new JScrollPane(tblDetalleVenta);
-        scrollPaneDetalleVenta.getViewport().setBackground(new Color(175, 18, 128)); // Amarillo suave
-        scrollPaneDetalleVenta.setBorder(BorderFactory.createTitledBorder("Detalle de Venta"));
+        JPanel panelDetalle = new JPanel(new BorderLayout());
+        panelDetalle.setBackground(Color.WHITE);
+        panelDetalle.add(lblTablaDetalle, BorderLayout.NORTH);
+        panelDetalle.add(new JScrollPane(tblDetalleVenta), BorderLayout.CENTER);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollPaneVenta, scrollPaneDetalleVenta);
-        splitPane.setDividerLocation(300);
+        // Panel dividido
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelVenta, panelDetalle);
+        splitPane.setDividerLocation(500);
+        splitPane.setResizeWeight(0.5);
         add(splitPane, BorderLayout.CENTER);
 
-        btnInsertar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                abrirFormularioRegistro();
-            }
-        });
-
-        btnVoucher.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                exportarVoucher();
-            }
-        });
+        // Acciones de botones
+        btnInsertar.addActionListener(e -> abrirFormularioRegistro());
+        btnVoucher.addActionListener(e -> exportarVoucher());
     }
 
     private void loadVentas() {
         VentaDAO ventaDAO = new VentaDAO();
-        List<Venta> ventas = ventaDAO.listar();
+        List<Venta> ventas = ventaDAO.obtenerTodasVentas();
         DefaultTableModel model = (DefaultTableModel) tblVenta.getModel();
         for (Venta venta : ventas) {
             Object[] rowData = new Object[model.getColumnCount()];
             rowData[0] = venta.getId();
-            rowData[1] = venta.getFecha();
-            rowData[2] = venta.getUsuarioNombre();
+            rowData[1] = venta.getUsuarioNombre();
+            rowData[2] = venta.getFecha();
             rowData[3] = venta.getTotal();
             model.addRow(rowData);
         }
@@ -166,11 +220,22 @@ public class VentaView extends javax.swing.JPanel {
             Object[] rowData = new Object[model.getColumnCount()];
             rowData[0] = detalle.getIdDetalle();
             rowData[1] = detalle.getIdVenta();
-            rowData[2] = detalle.getIdProducto();
-            rowData[3] = detalle.getProducto();
+            rowData[2] = detalle.getProducto();
+            rowData[3] = detalle.getCantidad();
             rowData[4] = detalle.getPrecioUnitario();
             rowData[5] = detalle.getSubTotal();
             model.addRow(rowData);
+        }
+    }
+
+    private void filtrar() {
+        if (sorter != null) {
+            String texto = txtBuscar.getText();
+            if (texto.trim().isEmpty()) {
+                sorter.setRowFilter(null);
+            } else {
+                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+            }
         }
     }
 

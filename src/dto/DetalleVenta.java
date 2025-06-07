@@ -10,18 +10,16 @@ public class DetalleVenta {
     private double subTotal;
     private String producto;
 
-    public DetalleVenta(int idDetalle, int idVenta, int idProducto, int cantidad, double precioUnitario, double subTotal, String producto) {
+    public DetalleVenta(int idDetalle, int idVenta, int idProducto, int cantidad, double precioUnitario, double subTotal) {
         this.idDetalle = idDetalle;
         this.idVenta = idVenta;
         this.idProducto = idProducto;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
         this.subTotal = subTotal;
-        this.producto = producto;
     }
 
     public DetalleVenta() {
-    
     }
 
 

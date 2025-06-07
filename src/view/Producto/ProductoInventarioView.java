@@ -1,7 +1,7 @@
 package view.Producto;
 
-import dao.ProductoInventarioDAO;
-import dto.ProductoInventario;
+import dao.ProductoDAO;
+import dto.Producto;
 import Utilitarios.IconButtonEditor;
 import Utilitarios.IconButtonRenderer;
 import dto.Usuario;
@@ -94,10 +94,10 @@ public class ProductoInventarioView extends javax.swing.JPanel {
     }
     
     private void loadProductosInventario() {
-        ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
-        List<ProductoInventario> productosInventario = productoInventarioDAO.obtenerProductoInventario();
+        ProductoDAO productoDAO = new ProductoDAO();
+        List<Producto> productos = productoDAO.listar();
         DefaultTableModel model = (DefaultTableModel) tblProductoInventario.getModel();
-        for (ProductoInventario productoInventario : productosInventario) {
+        for (Producto productoInventario : productos) {
             int idProducto = productoInventario.getIdProducto();
             String nombre = productoInventario.getNombre();
             String descripcion = productoInventario.getDescripcion();

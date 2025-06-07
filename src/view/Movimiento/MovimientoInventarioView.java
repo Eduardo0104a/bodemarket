@@ -28,7 +28,7 @@ public class MovimientoInventarioView extends javax.swing.JPanel {
     
     public MovimientoInventarioView(Usuario usuario) {
         this.usuario = usuario;
-        setBackground(new Color(175, 18, 128)); // Fondo morado para todo el panel principal
+        setBackground(new Color(175, 18, 128));
         initComponents();
         inicio();
         loadMovimientosInventario();
@@ -38,18 +38,18 @@ public class MovimientoInventarioView extends javax.swing.JPanel {
     setLayout(new BorderLayout());
 
     JPanel panelTituloBotones = new JPanel(new BorderLayout());
-    panelTituloBotones.setBackground(new Color(175, 18, 128)); // Color de fondo morado
+    panelTituloBotones.setBackground(new Color(175, 18, 128));
 
     JLabel lblTitulo = new JLabel("MOVIMIENTO INVENTARIO", SwingConstants.CENTER);
     lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-    lblTitulo.setForeground(new Color(255,238,0)); // Texto blanco
+    lblTitulo.setForeground(new Color(255,238,0)); 
 
     panelTituloBotones.add(lblTitulo, BorderLayout.CENTER);
     add(panelTituloBotones, BorderLayout.NORTH);
 
     tblMovimientoInventario = new JTable(new DefaultTableModel(
             new Object[][]{},
-            new String[]{"ID Movimiento", "ID Inventario", "Tipo", "Cantidad", "Fecha", "Descripción"}
+            new String[]{"ID Movimiento", "Producto", "Tipo", "Cantidad", "Fecha", "Descripción"}
     ));
     tblMovimientoInventario.setBackground(new Color(220, 190, 255)); 
     tblMovimientoInventario.setForeground(new Color(75, 0, 130)); 
@@ -60,9 +60,9 @@ public class MovimientoInventarioView extends javax.swing.JPanel {
     tblMovimientoInventario.getTableHeader().setBackground(new Color(75, 0, 130)); 
     tblMovimientoInventario.getTableHeader().setForeground(new Color(75, 0, 130));
         
-    tblMovimientoInventario.setForeground(Color.BLACK); // Texto blanco
+    tblMovimientoInventario.setForeground(Color.BLACK); 
     JScrollPane scrollPane = new JScrollPane(tblMovimientoInventario);
-    scrollPane.getViewport().setBackground(new Color(175, 18, 128)); // Amarillo suave
+    scrollPane.getViewport().setBackground(new Color(175, 18, 128)); 
     add(scrollPane, BorderLayout.CENTER);
 }
      
@@ -72,16 +72,16 @@ public class MovimientoInventarioView extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tblMovimientoInventario.getModel();
         for (MovimientoInventario movimiento : movimientos) {
             int idMovimiento = movimiento.getIdMovimiento();
-            int idInventario = movimiento.getIdInventario();
+            String nombreProducto = movimiento.getNombreProducto();
             String tipo = movimiento.getTipo();
-            double cantidad = movimiento.getCantidad();
+            int cantidad = movimiento.getCantidad();
             Date fecha = movimiento.getFecha();
             String descripcion = movimiento.getDescripcion();
     
             Object[] rowData = new Object[model.getColumnCount()]; 
 
             rowData[0] = idMovimiento; 
-            rowData[1] = idInventario;
+            rowData[1] = nombreProducto;
             rowData[2] = tipo;
             rowData[3] = cantidad;
             rowData[4] = fecha;

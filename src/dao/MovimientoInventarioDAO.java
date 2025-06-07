@@ -12,53 +12,49 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.CallableStatement;
+import java.util.Date;
 /**
 /**
  *
  * @author Eduardo
  */
 public class MovimientoInventarioDAO {
-    private Connection conn;
+ 
+    public List<MovimientoInventario> obtenerMovimientosInventario() {
+        List<MovimientoInventario> movimientos = new ArrayList<>();
+        Connection conn = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
 
-    public MovimientoInventarioDAO(Connection conn) {
-        this.conn = conn;
-    }
+        try {
+            DBConnection conexionSQL = new DBConnection(); 
+            conn = conexionSQL.getConnection(); 
 
-    public int insertarMovimiento(MovimientoInventario movimiento) throws SQLException {
-        String sql = "{CALL sp_insert_movimiento_inventario(?, ?, ?, ?, ?)}";
-        try (CallableStatement cs = conn.prepareCall(sql)) {
-            cs.setInt(1, movimiento.getProducto().getId());
-            cs.setString(2, String.valueOf(movimiento.getTipo()));
-            cs.setInt(3, movimiento.getCantidad());
-            cs.setTimestamp(4, Timestamp.valueOf(movimiento.getFecha()));
-            cs.setString(5, movimiento.getDescripcion());
-            return cs.executeUpdate();
-        }
-    }
+            String query = "{call sp_obtener_movimientos_inventario()}";
+            stmt = conn.prepareCall(query);
+            rs = stmt.executeQuery();
 
-    public List<MovimientoInventario> listarMovimientosPorProducto(int idProducto) throws SQLException {
-        List<MovimientoInventario> lista = new ArrayList<>();
-        String sql = "{CALL sp_get_movimientos_by_producto(?)}";
-        try (CallableStatement cs = conn.prepareCall(sql)) {
-            cs.setInt(1, idProducto);
-            try (ResultSet rs = cs.executeQuery()) {
-                while (rs.next()) {
-                    MovimientoInventario mov = new MovimientoInventario();
-                    mov.setId(rs.getInt("id_movimiento"));
+            while (rs.next()) {
+                int idMovimiento = rs.getInt("id_movimiento");
+                int idInventario = rs.getInt("id_inventario");
+                int idProducto = rs.getInt("id_producto");
+                String tipo = rs.getString("tipo");
+                int cantidad = rs.getInt("cantidad");
+                Date fecha = rs.getDate("fecha");
+                String nombreProducto = rs.getString("nombreProducto");
+                String descripcion = rs.getString("descripcion");
 
-                    Producto producto = new Producto();
-                    producto.setId(rs.getInt("id_producto"));
-                    mov.setProducto(producto);
-
-                    mov.setTipo(rs.getString("tipo").charAt(0));
-                    mov.setCantidad(rs.getInt("cantidad"));
-                    mov.setFecha(rs.getTimestamp("fecha").toLocalDateTime());
-                    mov.setDescripcion(rs.getString("descripcion"));
-
-                    lista.add(mov);
-                }
+                MovimientoInventario movimiento = new MovimientoInventario(idMovimiento, idInventario, idProducto, tipo, cantidad, fecha, descripcion);
+                movimiento.setNombreProducto(nombreProducto);
+                movimientos.add(movimiento);
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBConnection.close(conn, stmt, rs); 
         }
-        return lista;
+
+        return movimientos;
     }
 }

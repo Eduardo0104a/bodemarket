@@ -1,7 +1,7 @@
 package view.Producto;
 
-import dto.ProductoInventario;
-import dao.ProductoInventarioDAO;
+import dto.Producto;
+import dao.ProductoDAO;
 import dto.Usuario;
 
 import javax.swing.*;
@@ -57,14 +57,14 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
     }
     
     private void loadProductData() {
-        ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
-        ProductoInventario productoInventario = productoInventarioDAO.obtenerProductoInventarioPorId(idProducto);
-        if (productoInventario != null) {
-            txtNombre.setText(productoInventario.getNombre());
-            txtDescripcion.setText(productoInventario.getDescripcion());
-            txtPrecio.setText(String.valueOf(productoInventario.getPrecio()));
-            txtStock.setText(String.valueOf(productoInventario.getStock()));
-            txtCategoria.setText(productoInventario.getCategoria());
+        ProductoDAO productoDAO = new ProductoDAO();
+        Producto producto = productoDAO.obtenerProductoInventarioPorId(idProducto);
+        if (producto != null) {
+            txtNombre.setText(producto.getNombre());
+            txtDescripcion.setText(producto.getDescripcion());
+            txtPrecio.setText(String.valueOf(producto.getPrecio()));
+            txtStock.setText(String.valueOf(producto.getStock()));
+            txtCategoria.setText(producto.getCategoria());
         }
     }
 
@@ -83,9 +83,9 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
         txtDescripcion = new javax.swing.JTextField();
         txtPrecio = new javax.swing.JTextField();
         txtStock = new javax.swing.JTextField();
-        txtCategoria = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        txtCategoria = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -121,7 +121,6 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
         jPanel1.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 140, 220, -1));
         jPanel1.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, 220, -1));
         jPanel1.add(txtStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, 220, -1));
-        jPanel1.add(txtCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, 220, -1));
 
         btnGuardar.setBackground(new java.awt.Color(255, 238, 0));
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-lazo-marcapáginas-24.png"))); // NOI18N
@@ -142,6 +141,13 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
             }
         });
         jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 310, -1, -1));
+
+        txtCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCategoriaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, 220, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -164,15 +170,14 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
                 double precio = Double.parseDouble(txtPrecio.getText().trim());
                 int stock = Integer.parseInt(txtStock.getText().trim());
                 String categoria = txtCategoria.getText().trim();
-
-                ProductoInventario nuevoProductoInventario = new ProductoInventario(idProducto, nombre, descripcion, precio, 0, stock, categoria);
-                ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
+                Producto nuevoProducto = new Producto(idProducto, nombre, descripcion, precio, 0, stock, categoria);
+                ProductoDAO productoDAO = new ProductoDAO();
                 int errorCode;
                     
                 if (isModify) {
-                    errorCode = productoInventarioDAO.modificarProductoInventario(nuevoProductoInventario);
+                    errorCode = productoDAO.modificar(nuevoProducto);
                 } else {
-                    errorCode = productoInventarioDAO.insertarProductoInventario(nuevoProductoInventario);
+                    errorCode = productoDAO.insertar(nuevoProducto);
                 }    
 
                 if (errorCode == 0) {
@@ -198,6 +203,10 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
       
 
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void txtCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCategoriaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCategoriaActionPerformed
 
     /**
      * @param args the command line arguments

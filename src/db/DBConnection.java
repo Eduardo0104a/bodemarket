@@ -29,7 +29,7 @@ public class DBConnection {
     public Connection getConnection() {
         return connection;
     }
-
+    
     public void closeConnection() {
         if (connection != null) {
             try {
@@ -71,4 +71,5 @@ public class DBConnection {
         }
         close(conn, stmt);
     }
+    
 }

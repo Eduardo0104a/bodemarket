@@ -6,37 +6,49 @@ package dto;
  */
 public class Producto {
 
-    private int id;
-    private String nombreProducto;
+    private int idProducto;
+    private String nombre;
+    private String descripcion;
     private double precio;
+    private int idInventario;
     private int stock;
     private String categoria;
 
-    public Producto() {
-    }
-
-    public Producto(int id, String nombreProducto, double precio, int stock, String categoria) {
-        this.id = id;
-        this.nombreProducto = nombreProducto;
+    public Producto(int idProducto, String nombre, String descripcion, double precio, int idInventario, int stock, String categoria) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
         this.precio = precio;
+        this.idInventario = idInventario;
         this.stock = stock;
         this.categoria = categoria;
     }
 
-    public int getId() {
-        return id;
+    public Producto() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getIdProducto() {
+        return idProducto;
     }
 
-    public String getNombreProducto() {
-        return nombreProducto;
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
     }
 
-    public void setNombreProducto(String nombreProducto) {
-        this.nombreProducto = nombreProducto;
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public double getPrecio() {
@@ -45,6 +57,14 @@ public class Producto {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public int getIdInventario() {
+        return idInventario;
+    }
+
+    public void setIdInventario(int idInventario) {
+        this.idInventario = idInventario;
     }
 
     public int getStock() {
@@ -63,4 +83,8 @@ public class Producto {
         this.categoria = categoria;
     }
 
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

@@ -3,14 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/dao/ProductoDAO.java</file>
             <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/view/Main/MainView.java</file>
+            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/view/Venta/VentaView.java</file>
             <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/view/Usuario/UsuarioView.java</file>
-            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/view/Venta/VentaRegister_Modf.java</file>
+            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/dao/ProveedorDAO.java</file>
+            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/view/Proveedor/ProveedorView.java</file>
+            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/dto/Proveedor.java</file>
+            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/view/Producto/ProductoInventarioRegister_Mod.java</file>
             <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/view/Admin/AdminView.java</file>
-            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/view/Admin/AdminVista.java</file>
-            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/view/Producto/ProductoInventarioView.java</file>
-            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/view/Usuario/UsuarioRegister_Modf.java</file>
-            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/view/Movimiento/MovimientoInventarioView.java</file>
+            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/BodemarketCI/src/dto/Producto.java</file>
         </group>
     </open-files>
 </project-private>

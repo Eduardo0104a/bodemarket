@@ -6,12 +6,10 @@ package dto;
  */
 public class Categoria {
     private int idCat;
-    private String codigoCat;
     private String descripcionCat;
 
     public Categoria(int idCat, String codigoCat, String descripcionCat) {
         this.idCat = idCat;
-        this.codigoCat = codigoCat;
         this.descripcionCat = descripcionCat;
     }
 
@@ -21,14 +19,6 @@ public class Categoria {
 
     public void setIdCat(int idCat) {
         this.idCat = idCat;
-    }
-
-    public String getCodigoCat() {
-        return codigoCat;
-    }
-
-    public void setCodigoCat(String codigoCat) {
-        this.codigoCat = codigoCat;
     }
 
     public String getDescripcionCat() {

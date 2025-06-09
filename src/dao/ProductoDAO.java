@@ -33,15 +33,11 @@ public class ProductoDAO {
             rs = stmt.executeQuery();
 
             while (rs.next()) {
-                int idProducto = rs.getInt("id_producto");
-                String nombre = rs.getString("nombre");
-                String descripcion = rs.getString("descripcion");
-                double precio = rs.getDouble("Precio");
-                int idInventario = rs.getInt("id_inventario");
-                int stock = rs.getInt("stock");
-                String nombreCat = rs.getString("categoria");
-
-                Producto productoInv = new Producto(idProducto, nombre, descripcion, precio, idInventario, stock, nombreCat);
+                Producto productoInv = new Producto();
+                productoInv.setIdProducto(rs.getInt("id_producto"));
+                productoInv.setNombre(rs.getString("nombre"));
+                productoInv.setDescripcion(rs.getString("descripcion"));
+                productoInv.setStock(rs.getInt("stock"));
                 productos.add(productoInv);
             }
 
@@ -63,17 +59,18 @@ public class ProductoDAO {
             DBConnection conexionSQL = new DBConnection();
             conn = conexionSQL.getConnection();
 
-            String query = "{CALL sp_insertar_producto(?, ?, ?, ?, ?, ?)}";
+            String query = "{CALL sp_insertar_producto(?, ?, ?, ?, ?, ?, ?)}";
             stmt = conn.prepareCall(query);
             stmt.setString(1, producto.getNombre());
             stmt.setString(2, producto.getDescripcion());
             stmt.setDouble(3, producto.getPrecio());
-            stmt.setInt(4, producto.getStock());
-            stmt.setString(5, producto.getCategoria());
-            stmt.registerOutParameter(6, java.sql.Types.INTEGER);
+            stmt.setInt(4, producto.getIdProveedor());
+            stmt.setInt(5, producto.getIdMedida());
+            stmt.setInt(6, producto.getIdCategoria());
+            stmt.registerOutParameter(7, java.sql.Types.INTEGER);
             stmt.executeUpdate();
 
-            errorCode = stmt.getInt(6);
+            errorCode = stmt.getInt(7);
 
             if (errorCode != 0) {
                 System.out.println("Error: No se pudo insertar el producto en inventario.");
@@ -97,15 +94,16 @@ public class ProductoDAO {
             DBConnection conexionSQL = new DBConnection();
             conn = conexionSQL.getConnection();
 
-            String query = "{CALL sp_modificar_producto(?, ?, ?, ?, ?, ?, ?)}";
+            String query = "{CALL sp_modificar_producto(?, ?, ?, ?, ?, ?, ?, ?)}";
             stmt = conn.prepareCall(query);
             stmt.setInt(1, producto.getIdProducto());
             stmt.setString(2, producto.getNombre());
             stmt.setString(3, producto.getDescripcion());
             stmt.setDouble(4, producto.getPrecio());
-            stmt.setInt(5, producto.getStock());
-            stmt.setString(6, producto.getCategoria());
-            stmt.registerOutParameter(7, java.sql.Types.INTEGER);
+            stmt.setInt(5, producto.getIdProveedor());
+            stmt.setInt(6, producto.getIdMedida());
+            stmt.setInt(7, producto.getIdCategoria());
+            stmt.registerOutParameter(8, java.sql.Types.INTEGER);
             stmt.executeUpdate();
 
             stmt.execute();
@@ -161,16 +159,17 @@ public class ProductoDAO {
             stmt = conn.prepareCall(query);
             stmt.setInt(1, idProducto);
             rs = stmt.executeQuery();
-
             if (rs.next()) {
-                String nombre = rs.getString("Nombre");
-                String descripcion = rs.getString("Descripcion");
-                double precio = rs.getDouble("Precio");
-                int idInventario = rs.getInt("ID_Inventario");
-                int stock = rs.getInt("stock");
-                String categoria = rs.getString("Categoria");
+                Producto pro = new Producto();
+                pro.setNombre(rs.getString("nombre"));
+                pro.setDescripcion(rs.getString("descripcion"));
+                pro.setPrecio(rs.getDouble("Precio"));
+                pro.setIdInventario(rs.getInt("id_inventario"));
+                pro.setStock(rs.getInt("stock"));
+                pro.setIdProveedor(rs.getInt("id_proveedor"));
+                pro.setIdMedida(rs.getInt("id_medida"));
+                pro.setIdCategoria(rs.getInt("id_categoria"));
 
-                producto = new Producto(idProducto, nombre, descripcion, precio, idInventario, stock, categoria);
             }
 
         } catch (SQLException e) {

@@ -277,18 +277,20 @@ public class AdminView extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         lblProducto = new javax.swing.JLabel();
-        txtCategoria = new javax.swing.JTextField();
         lblDescripcion = new javax.swing.JLabel();
-        lblStock = new javax.swing.JLabel();
         lblCategoria = new javax.swing.JLabel();
         txtProducto = new javax.swing.JTextField();
         txtDescripcion = new javax.swing.JTextField();
-        txtStock = new javax.swing.JTextField();
         btnGuardarProducto = new javax.swing.JButton();
         btnLimpiarProducto = new javax.swing.JButton();
         lblPrecio = new javax.swing.JLabel();
         txtPrecio = new javax.swing.JTextField();
         lblTituloProducto = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        cmbCategoria = new javax.swing.JComboBox<>();
+        cmbProveedor = new javax.swing.JComboBox<>();
+        cmbMedida = new javax.swing.JComboBox<>();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblProducto = new javax.swing.JTable();
@@ -386,19 +388,14 @@ public class AdminView extends javax.swing.JPanel {
 
         lblProducto.setText("Nombre:");
         jPanel6.add(lblProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, -1, -1));
-        jPanel6.add(txtCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 310, 130, -1));
 
         lblDescripcion.setText("Descripcion:");
-        jPanel6.add(lblDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, -1, -1));
-
-        lblStock.setText("Stock:");
-        jPanel6.add(lblStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 260, -1, -1));
+        jPanel6.add(lblDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, -1, -1));
 
         lblCategoria.setText("Categoria:");
-        jPanel6.add(lblCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, -1, -1));
+        jPanel6.add(lblCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, -1, -1));
         jPanel6.add(txtProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 130, -1));
-        jPanel6.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 130, -1));
-        jPanel6.add(txtStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 260, 130, -1));
+        jPanel6.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 130, 130, -1));
 
         btnGuardarProducto.setText("Guardar");
         jPanel6.add(btnGuardarProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 400, -1, -1));
@@ -407,11 +404,23 @@ public class AdminView extends javax.swing.JPanel {
         jPanel6.add(btnLimpiarProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 400, -1, -1));
 
         lblPrecio.setText("Precio:");
-        jPanel6.add(lblPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
-        jPanel6.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 200, 130, -1));
+        jPanel6.add(lblPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, -1, -1));
+        jPanel6.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 180, 130, -1));
 
         lblTituloProducto.setText("REGISTRO PRODUCTO");
         jPanel6.add(lblTituloProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        jLabel1.setText("Medida:");
+        jPanel6.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, -1, -1));
+
+        jLabel2.setText("Proveedor:");
+        jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, -1, -1));
+
+        jPanel6.add(cmbCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 230, 130, -1));
+
+        jPanel6.add(cmbProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, 130, -1));
+
+        jPanel6.add(cmbMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 310, 130, -1));
 
         jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 360, 470));
 
@@ -532,8 +541,9 @@ public class AdminView extends javax.swing.JPanel {
         txtProducto.setText("");
         txtDescripcion.setText("");
         txtPrecio.setText("");
-        txtStock.setText("");
-        txtCategoria.setText("");
+        cmbCategoria.setSelectedIndex(0);
+        cmbProveedor.setSelectedIndex(0);
+        cmbMedida.setSelectedIndex(0);
     }
 
     //USUARIOS
@@ -585,7 +595,12 @@ public class AdminView extends javax.swing.JPanel {
     private javax.swing.JButton btnGuardarUsuario;
     private javax.swing.JButton btnLimpiarProducto;
     private javax.swing.JButton btnLimpiarUsuario;
+    private javax.swing.JComboBox<String> cmbCategoria;
+    private javax.swing.JComboBox<String> cmbMedida;
+    private javax.swing.JComboBox<String> cmbProveedor;
     private javax.swing.JComboBox<String> cmbRol;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -603,7 +618,6 @@ public class AdminView extends javax.swing.JPanel {
     private javax.swing.JLabel lblPrecio;
     private javax.swing.JLabel lblProducto;
     private javax.swing.JLabel lblRol;
-    private javax.swing.JLabel lblStock;
     private javax.swing.JLabel lblTelefono;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblTituloProducto;
@@ -612,14 +626,12 @@ public class AdminView extends javax.swing.JPanel {
     private javax.swing.JTable tblProducto;
     private javax.swing.JTable tblUsuario;
     private javax.swing.JTextField txtApellido;
-    private javax.swing.JTextField txtCategoria;
     private javax.swing.JPasswordField txtContrasena;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtProducto;
-    private javax.swing.JTextField txtStock;
     private javax.swing.JTextField txtTelefono;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables

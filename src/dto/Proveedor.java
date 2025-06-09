@@ -6,7 +6,7 @@ package dto;
  */
 public class Proveedor {
 
-    private int id;
+    private int idProveedor;
     private String nombre;     
     private String correo;
     private String telefono;
@@ -15,20 +15,20 @@ public class Proveedor {
     public Proveedor() {
     }
 
-    public Proveedor(int id, String nombre, String correo, String telefono, String ruc) {
-        this.id = id;
+    public Proveedor(int idProveedor, String nombre, String correo, String telefono, String ruc) {
+        this.idProveedor = idProveedor;
         this.nombre = nombre;
         this.correo = correo;
         this.telefono = telefono;
         this.ruc = ruc;
     }
 
-    public int getId() {
-        return id;
+    public int getIdProveedor() {
+        return idProveedor;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdProveedor(int idProveedor) {
+        this.idProveedor = idProveedor;
     }
 
     public String getNombre() {

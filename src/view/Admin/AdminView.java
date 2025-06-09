@@ -169,11 +169,14 @@ public class AdminView extends javax.swing.JPanel {
         lblPrecio.setFont(labelFont);
         lblPrecio.setForeground(labelColor);
 
-        lblStock.setFont(labelFont);
-        lblStock.setForeground(labelColor);
-
         lblCategoria.setFont(labelFont);
         lblCategoria.setForeground(labelColor);
+        
+        lblProveedor.setFont(labelFont);
+        lblProveedor.setForeground(labelColor);
+        
+        lblMedida.setFont(labelFont);
+        lblMedida.setForeground(labelColor);
 
         Font textFont = new Font("Segoe UI", Font.PLAIN, 14);
         Border textBorder = BorderFactory.createCompoundBorder(
@@ -189,12 +192,6 @@ public class AdminView extends javax.swing.JPanel {
 
         txtPrecio.setFont(textFont);
         txtPrecio.setBorder(textBorder);
-
-        txtStock.setFont(textFont);
-        txtStock.setBorder(textBorder);
-
-        txtCategoria.setFont(textFont);
-        txtCategoria.setBorder(textBorder);
 
         btnGuardarProducto.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnGuardarProducto.setBackground(new Color(188, 47, 33));
@@ -286,8 +283,8 @@ public class AdminView extends javax.swing.JPanel {
         lblPrecio = new javax.swing.JLabel();
         txtPrecio = new javax.swing.JTextField();
         lblTituloProducto = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblMedida = new javax.swing.JLabel();
+        lblProveedor = new javax.swing.JLabel();
         cmbCategoria = new javax.swing.JComboBox<>();
         cmbProveedor = new javax.swing.JComboBox<>();
         cmbMedida = new javax.swing.JComboBox<>();
@@ -410,11 +407,11 @@ public class AdminView extends javax.swing.JPanel {
         lblTituloProducto.setText("REGISTRO PRODUCTO");
         jPanel6.add(lblTituloProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
-        jLabel1.setText("Medida:");
-        jPanel6.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, -1, -1));
+        lblMedida.setText("Medida:");
+        jPanel6.add(lblMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, -1, -1));
 
-        jLabel2.setText("Proveedor:");
-        jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, -1, -1));
+        lblProveedor.setText("Proveedor:");
+        jPanel6.add(lblProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, -1, -1));
 
         jPanel6.add(cmbCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 230, 130, -1));
 
@@ -526,7 +523,8 @@ public class AdminView extends javax.swing.JPanel {
             model.addRow(new Object[]{
                 p.getNombre(),
                 p.getDescripcion(),
-                p.getCategoria(),});
+                p.getPrecio(),
+            });
         }
     }
 
@@ -541,9 +539,7 @@ public class AdminView extends javax.swing.JPanel {
         txtProducto.setText("");
         txtDescripcion.setText("");
         txtPrecio.setText("");
-        cmbCategoria.setSelectedIndex(0);
-        cmbProveedor.setSelectedIndex(0);
-        cmbMedida.setSelectedIndex(0);
+
     }
 
     //USUARIOS
@@ -589,7 +585,10 @@ public class AdminView extends javax.swing.JPanel {
         cmbRol.setSelectedIndex(0);
     }
 
-
+    private void a(){
+        
+    }
+            
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardarProducto;
     private javax.swing.JButton btnGuardarUsuario;
@@ -599,8 +598,6 @@ public class AdminView extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cmbMedida;
     private javax.swing.JComboBox<String> cmbProveedor;
     private javax.swing.JComboBox<String> cmbRol;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -614,9 +611,11 @@ public class AdminView extends javax.swing.JPanel {
     private javax.swing.JLabel lblContrasena;
     private javax.swing.JLabel lblCorreo;
     private javax.swing.JLabel lblDescripcion;
+    private javax.swing.JLabel lblMedida;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPrecio;
     private javax.swing.JLabel lblProducto;
+    private javax.swing.JLabel lblProveedor;
     private javax.swing.JLabel lblRol;
     private javax.swing.JLabel lblTelefono;
     private javax.swing.JLabel lblTitulo;

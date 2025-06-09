@@ -11,6 +11,7 @@ import view.Admin.AdminView;
 import javax.swing.*;
 import java.awt.*;
 import view.Admin.AdminView;
+import view.Proveedor.ProveedorView;
 
 /**
  *
@@ -53,6 +54,7 @@ public class MainView extends javax.swing.JFrame {
         });
         
         btnProveedores.addActionListener(e -> {
+            showProveedorView();
         });
         
         btnAdmin.addActionListener(e -> {
@@ -100,6 +102,13 @@ public class MainView extends javax.swing.JFrame {
     private void showMovimientoView() {
         conPanel.removeAll();
         conPanel.add(new MovimientoInventarioView(usuario), BorderLayout.CENTER);
+        conPanel.revalidate();
+        conPanel.repaint();
+    }
+    
+    private void showProveedorView(){
+        conPanel.removeAll();
+        conPanel.add(new ProveedorView(usuario), BorderLayout.CENTER);
         conPanel.revalidate();
         conPanel.repaint();
     }

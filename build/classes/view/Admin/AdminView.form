@@ -442,7 +442,7 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel1">
+                <Component class="javax.swing.JLabel" name="lblMedida">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Medida:"/>
                   </Properties>
@@ -452,7 +452,7 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel2">
+                <Component class="javax.swing.JLabel" name="lblProveedor">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Proveedor:"/>
                   </Properties>

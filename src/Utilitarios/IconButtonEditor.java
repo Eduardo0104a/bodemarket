@@ -1,8 +1,8 @@
-
 package Utilitarios;
 
 import dao.UsuarioDAO;
 import dao.ProductoDAO;
+import dao.ProveedorDAO;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -13,18 +13,22 @@ import view.Usuario.UsuarioRegister_Modf;
 import view.Usuario.UsuarioView;
 import view.Producto.ProductoInventarioView;
 import view.Producto.ProductoInventarioRegister_Mod;
+import view.Proveedor.ProveedorRegister_Modf;
+import view.Proveedor.ProveedorView;
 
 /**
  *
  * @author Eduardo
  */
 public class IconButtonEditor extends DefaultCellEditor {
+
     protected JButton button;
     private String label;
     private boolean isPushed;
     private JTable table;
     private UsuarioView usuarioView;
     private ProductoInventarioView productoInventarioView;
+    private ProveedorView proveedorView;
 
     public IconButtonEditor(JCheckBox checkBox, JTable table, Usuario usuario, UsuarioView usuarioView) {
         super(checkBox);
@@ -36,7 +40,7 @@ public class IconButtonEditor extends DefaultCellEditor {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fireEditingStopped();
-                
+
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
                     int modelRow = table.convertRowIndexToModel(selectedRow);
@@ -63,7 +67,7 @@ public class IconButtonEditor extends DefaultCellEditor {
             }
         });
     }
-     
+
     public IconButtonEditor(JCheckBox checkBox, JTable table, Usuario usuario, ProductoInventarioView productoInventarioView) {
         super(checkBox);
         button = new JButton();
@@ -74,7 +78,7 @@ public class IconButtonEditor extends DefaultCellEditor {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fireEditingStopped();
-                
+
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
                     int modelRow = table.convertRowIndexToModel(selectedRow);
@@ -82,17 +86,55 @@ public class IconButtonEditor extends DefaultCellEditor {
 
                     if (table.getSelectedColumn() == 0) {
                         new ProductoInventarioRegister_Mod((Frame) SwingUtilities.getWindowAncestor(table), usuario, productoInventarioView, true, id).setVisible(true);
-                    } else {  
+                    } else {
                         ProductoDAO productoInventarioDAO = new ProductoDAO();
                         int result = productoInventarioDAO.eliminar(id);
 
-                        if (result > 0) {
+                        if (result == 0) {
                             JOptionPane.showMessageDialog(button, "Producto eliminado exitosamente.");
                             if (productoInventarioView != null) {
                                 productoInventarioView.refreshProductosInventario();
                             }
                         } else {
-                            JOptionPane.showMessageDialog(button, "Error: Producto no encontrado.");
+                            JOptionPane.showMessageDialog(button, "Error al eliminar el producto.");
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(button, "No hay fila seleccionada.");
+                }
+            }
+        });
+    }
+
+    public IconButtonEditor(JCheckBox checkBox, JTable table, Usuario usuario, ProveedorView proveedorView) {
+        super(checkBox);
+        button = new JButton();
+        this.table = table;
+        this.proveedorView = proveedorView;
+        button.setOpaque(true);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fireEditingStopped();
+
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) {
+                    int modelRow = table.convertRowIndexToModel(selectedRow);
+                    int id = (int) table.getModel().getValueAt(modelRow, 2);
+
+                    if (table.getSelectedColumn() == 0) {
+                        new ProveedorRegister_Modf((Frame) SwingUtilities.getWindowAncestor(table), usuario, proveedorView, true, id).setVisible(true);
+                    } else {
+                        ProveedorDAO proveedorDAO = new ProveedorDAO();
+                        int result = proveedorDAO.eliminar(id);
+
+                        if (result == 0) {
+                            JOptionPane.showMessageDialog(button, "Proveedor eliminado exitosamente.");
+                            if (proveedorView != null) {
+                                proveedorView.refreshProveedor();
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(button, "Error al eliminar el Proveedor.");
                         }
                     }
                 } else {
@@ -104,7 +146,7 @@ public class IconButtonEditor extends DefaultCellEditor {
 
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value,
-                                                 boolean isSelected, int row, int column) {
+            boolean isSelected, int row, int column) {
         if (column == 0) {
             button.setIcon(new ImageIcon(getClass().getResource("/resources/edit_modify_icon_149489.png")));
         } else if (column == 1) {
@@ -132,4 +174,3 @@ public class IconButtonEditor extends DefaultCellEditor {
         super.fireEditingStopped();
     }
 }
-

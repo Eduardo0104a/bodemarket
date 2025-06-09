@@ -1,8 +1,14 @@
 package view.Admin;
 
+import dao.CategoriaDAO;
+import dao.MedidaDAO;
 import dao.ProductoDAO;
+import dao.ProveedorDAO;
 import dao.UsuarioDAO;
+import dto.Categoria;
+import dto.Medida;
 import dto.Producto;
+import dto.Proveedor;
 import dto.Usuario;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -39,6 +45,9 @@ public class AdminView extends javax.swing.JPanel {
         estilosProducto();
         loadProductosInventario();
         limpiarCamposProducto();
+        cargarProveedoresComboBox();
+        cargarCategoriasComboBox();
+        cargarMedidasComboBox();
     }
 
     private void estilosUsuario() {
@@ -106,7 +115,7 @@ public class AdminView extends javax.swing.JPanel {
         btnGuardarUsuario.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         btnGuardarUsuario.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         boton(btnGuardarUsuario);
-        
+
         btnLimpiarUsuario.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnLimpiarUsuario.setBackground(new Color(188, 47, 33));
         btnLimpiarUsuario.setForeground(Color.WHITE);
@@ -115,7 +124,6 @@ public class AdminView extends javax.swing.JPanel {
         btnLimpiarUsuario.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         boton(btnLimpiarUsuario);
 
-        
         tblUsuario.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tblUsuario.setRowHeight(32);
         tblUsuario.setForeground(Color.BLACK);
@@ -137,7 +145,7 @@ public class AdminView extends javax.swing.JPanel {
         }
 
         tbPanel.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        tbPanel.setBackground(new Color(233, 164, 157)); 
+        tbPanel.setBackground(new Color(233, 164, 157));
         tbPanel.setForeground(new Color(120, 30, 20));
         tbPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -150,7 +158,7 @@ public class AdminView extends javax.swing.JPanel {
                 contentBorderInsets = new Insets(0, 0, 0, 0);
             }
         });
-        
+
     }
 
     private void estilosProducto() {
@@ -168,13 +176,16 @@ public class AdminView extends javax.swing.JPanel {
 
         lblPrecio.setFont(labelFont);
         lblPrecio.setForeground(labelColor);
+        
+        lblPrecioCompra.setFont(labelFont);
+        lblPrecioCompra.setForeground(labelColor);
 
         lblCategoria.setFont(labelFont);
         lblCategoria.setForeground(labelColor);
-        
+
         lblProveedor.setFont(labelFont);
         lblProveedor.setForeground(labelColor);
-        
+
         lblMedida.setFont(labelFont);
         lblMedida.setForeground(labelColor);
 
@@ -192,6 +203,24 @@ public class AdminView extends javax.swing.JPanel {
 
         txtPrecio.setFont(textFont);
         txtPrecio.setBorder(textBorder);
+        
+        txtPrecioCompra.setFont(textFont);
+        txtPrecioCompra.setBorder(textBorder);
+        
+        cmbCategoria.setFont(textFont);
+        cmbCategoria.setBackground(Color.WHITE);
+        cmbCategoria.setForeground(labelColor);
+        cmbCategoria.setBorder(BorderFactory.createLineBorder(new Color(188, 47, 33), 2));
+        
+        cmbProveedor.setFont(textFont);
+        cmbProveedor.setBackground(Color.WHITE);
+        cmbProveedor.setForeground(labelColor);
+        cmbProveedor.setBorder(BorderFactory.createLineBorder(new Color(188, 47, 33), 2));
+        
+        cmbMedida.setFont(textFont);
+        cmbMedida.setBackground(Color.WHITE);
+        cmbMedida.setForeground(labelColor);
+        cmbMedida.setBorder(BorderFactory.createLineBorder(new Color(188, 47, 33), 2));
 
         btnGuardarProducto.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnGuardarProducto.setBackground(new Color(188, 47, 33));
@@ -201,15 +230,14 @@ public class AdminView extends javax.swing.JPanel {
         btnGuardarProducto.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         boton(btnGuardarProducto);
 
-        
         btnLimpiarProducto.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnLimpiarProducto.setBackground(new Color(188, 47, 33));
         btnLimpiarProducto.setForeground(Color.WHITE);
         btnLimpiarProducto.setFocusPainted(false);
         btnLimpiarProducto.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         btnLimpiarProducto.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        boton(btnLimpiarProducto);        
-        
+        boton(btnLimpiarProducto);
+
         tblProducto.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tblProducto.setRowHeight(32);
         tblProducto.setForeground(Color.BLACK);
@@ -230,8 +258,8 @@ public class AdminView extends javax.swing.JPanel {
             scroll.getViewport().setBackground(Color.WHITE);
         }
     }
-    
-    private void boton (JButton boton){
+
+    private void boton(JButton boton) {
         boton.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -244,6 +272,7 @@ public class AdminView extends javax.swing.JPanel {
             }
         });
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -288,6 +317,8 @@ public class AdminView extends javax.swing.JPanel {
         cmbCategoria = new javax.swing.JComboBox<>();
         cmbProveedor = new javax.swing.JComboBox<>();
         cmbMedida = new javax.swing.JComboBox<>();
+        lblPrecioCompra = new javax.swing.JLabel();
+        txtPrecioCompra = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblProducto = new javax.swing.JTable();
@@ -387,37 +418,46 @@ public class AdminView extends javax.swing.JPanel {
         jPanel6.add(lblProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, -1, -1));
 
         lblDescripcion.setText("Descripcion:");
-        jPanel6.add(lblDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, -1, -1));
+        jPanel6.add(lblDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, -1, -1));
 
         lblCategoria.setText("Categoria:");
-        jPanel6.add(lblCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, -1, -1));
-        jPanel6.add(txtProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 130, -1));
-        jPanel6.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 130, 130, -1));
+        jPanel6.add(lblCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, -1, -1));
+        jPanel6.add(txtProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 130, -1));
+        jPanel6.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, 130, -1));
 
         btnGuardarProducto.setText("Guardar");
+        btnGuardarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarProductoActionPerformed(evt);
+            }
+        });
         jPanel6.add(btnGuardarProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 400, -1, -1));
 
         btnLimpiarProducto.setText("Limpiar");
         jPanel6.add(btnLimpiarProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 400, -1, -1));
 
         lblPrecio.setText("Precio:");
-        jPanel6.add(lblPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, -1, -1));
-        jPanel6.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 180, 130, -1));
+        jPanel6.add(lblPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
+        jPanel6.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 160, 130, -1));
 
         lblTituloProducto.setText("REGISTRO PRODUCTO");
         jPanel6.add(lblTituloProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         lblMedida.setText("Medida:");
-        jPanel6.add(lblMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, -1, -1));
+        jPanel6.add(lblMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, -1, -1));
 
         lblProveedor.setText("Proveedor:");
-        jPanel6.add(lblProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, -1, -1));
+        jPanel6.add(lblProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, -1, -1));
 
-        jPanel6.add(cmbCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 230, 130, -1));
+        jPanel6.add(cmbCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 240, 130, -1));
 
-        jPanel6.add(cmbProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, 130, -1));
+        jPanel6.add(cmbProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 280, 130, -1));
 
-        jPanel6.add(cmbMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 310, 130, -1));
+        jPanel6.add(cmbMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, 130, -1));
+
+        lblPrecioCompra.setText("Precio Compra:");
+        jPanel6.add(lblPrecioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
+        jPanel6.add(txtPrecioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 200, 130, -1));
 
         jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 360, 470));
 
@@ -425,13 +465,13 @@ public class AdminView extends javax.swing.JPanel {
 
         tblProducto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Nombre Producto", "Descripcion", "Categoria"
+                "Nombre Producto", "Descripcion", "Categoria", "Precio Compra (S/.)"
             }
         ));
         tblProducto.setGridColor(new java.awt.Color(255, 255, 255));
@@ -511,6 +551,80 @@ public class AdminView extends javax.swing.JPanel {
         limpiarCamposUsuario();
     }//GEN-LAST:event_btnLimpiarUsuarioActionPerformed
 
+    private void btnGuardarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarProductoActionPerformed
+        String producto = txtProducto.getText().trim();
+        String descripcion = txtDescripcion.getText().trim();
+        String precioTexto = txtPrecio.getText().trim();
+        String precioCompraTexto = txtPrecioCompra.getText().trim();
+        Categoria categoriaSeleccionada = (Categoria) cmbCategoria.getSelectedItem();
+        Proveedor proveedorSeleccionado = (Proveedor) cmbProveedor.getSelectedItem();
+        Medida medidaSeleccionada = (Medida) cmbMedida.getSelectedItem();
+
+        if (producto.isEmpty() || descripcion.isEmpty() || precioTexto.isEmpty() || precioCompraTexto.isEmpty()
+                || categoriaSeleccionada == null || proveedorSeleccionado == null || medidaSeleccionada == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Por favor, completa todos los campos antes de guardar.",
+                    "Campos obligatorios",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        double precio;
+        try {
+            precio = Double.parseDouble(precioTexto);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Por favor, ingresa un precio válido.",
+                    "Error de precio",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double precioCompra;
+        try {
+            precioCompra = Double.parseDouble(precioTexto);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Por favor, ingresa un precio válido.",
+                    "Error de precio",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int idCategoria = categoriaSeleccionada.getIdCat();
+        int idProveedor = proveedorSeleccionado.getIdProveedor();
+        int idMedida = medidaSeleccionada.getIdMedida();
+
+        Producto productoObj = new Producto();
+        productoObj.setNombre(producto);
+        productoObj.setDescripcion(descripcion);
+        productoObj.setPrecio(precio);
+        productoObj.setPrecioCompra(precioCompra);
+
+        productoObj.setIdProveedor(idProveedor);
+        productoObj.setIdMedida(idMedida);
+        productoObj.setIdCategoria(idCategoria);
+
+        ProductoDAO productoDAO = new ProductoDAO();
+        int errorCode = productoDAO.insertar(productoObj);
+
+        if (errorCode == 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Producto registrado exitosamente.",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            refreshProductos();  
+            limpiarCamposProducto(); 
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Error: No se pudo registrar el producto. Código: " + errorCode,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnGuardarProductoActionPerformed
+
     //PRODUCTOS
     private void loadProductosInventario() {
         DefaultTableModel model = (DefaultTableModel) tblProducto.getModel();
@@ -523,7 +637,8 @@ public class AdminView extends javax.swing.JPanel {
             model.addRow(new Object[]{
                 p.getNombre(),
                 p.getDescripcion(),
-                p.getPrecio(),
+                p.getNomCategoria(),
+                p.getPrecioCompra()
             });
         }
     }
@@ -539,7 +654,7 @@ public class AdminView extends javax.swing.JPanel {
         txtProducto.setText("");
         txtDescripcion.setText("");
         txtPrecio.setText("");
-
+        txtPrecioCompra.setText("");
     }
 
     //USUARIOS
@@ -575,6 +690,12 @@ public class AdminView extends javax.swing.JPanel {
         loadUsuarios();
     }
 
+    public void refreshProductos() {
+        DefaultTableModel model = (DefaultTableModel) tblProducto.getModel();
+        model.setRowCount(0);
+        loadProductosInventario();
+    }
+
     private void limpiarCamposUsuario() {
         txtNombre.setText("");
         txtApellido.setText("");
@@ -585,18 +706,49 @@ public class AdminView extends javax.swing.JPanel {
         cmbRol.setSelectedIndex(0);
     }
 
-    private void a(){
-        
+    //COMBOS
+    private void cargarProveedoresComboBox() {
+        ProveedorDAO proveedorDAO = new ProveedorDAO();
+        List<Proveedor> proveedores = proveedorDAO.listar();
+
+        cmbProveedor.removeAllItems();
+
+        for (Proveedor proveedor : proveedores) {
+            cmbProveedor.addItem(proveedor);
+        }
     }
-            
+
+    private void cargarCategoriasComboBox() {
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        List<Categoria> categorias = categoriaDAO.listar();
+
+        cmbCategoria.removeAllItems();
+
+        for (Categoria categoria : categorias) {
+            cmbCategoria.addItem(categoria);
+        }
+    }
+
+    private void cargarMedidasComboBox() {
+        MedidaDAO medidaDAO = new MedidaDAO();
+        List<Medida> medidas = medidaDAO.listar();
+
+        cmbMedida.removeAllItems();
+
+        for (Medida medida : medidas) {
+            cmbMedida.addItem(medida);
+        }
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardarProducto;
     private javax.swing.JButton btnGuardarUsuario;
     private javax.swing.JButton btnLimpiarProducto;
     private javax.swing.JButton btnLimpiarUsuario;
-    private javax.swing.JComboBox<String> cmbCategoria;
-    private javax.swing.JComboBox<String> cmbMedida;
-    private javax.swing.JComboBox<String> cmbProveedor;
+    public javax.swing.JComboBox<Object> cmbCategoria;
+    public javax.swing.JComboBox<Object> cmbMedida;
+    public javax.swing.JComboBox<Object> cmbProveedor;
     private javax.swing.JComboBox<String> cmbRol;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -614,6 +766,7 @@ public class AdminView extends javax.swing.JPanel {
     private javax.swing.JLabel lblMedida;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPrecio;
+    private javax.swing.JLabel lblPrecioCompra;
     private javax.swing.JLabel lblProducto;
     private javax.swing.JLabel lblProveedor;
     private javax.swing.JLabel lblRol;
@@ -630,8 +783,10 @@ public class AdminView extends javax.swing.JPanel {
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;
+    private javax.swing.JTextField txtPrecioCompra;
     private javax.swing.JTextField txtProducto;
     private javax.swing.JTextField txtTelefono;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
+
 }

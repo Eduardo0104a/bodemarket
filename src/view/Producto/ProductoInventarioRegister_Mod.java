@@ -1,7 +1,9 @@
 package view.Producto;
 
+import dao.CategoriaDAO;
 import dto.Producto;
 import dao.ProductoDAO;
+import dto.Categoria;
 import dto.Usuario;
 
 import javax.swing.*;
@@ -10,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 /**
  *
  * @author user
@@ -20,22 +23,25 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
     private ProductoInventarioView productoInventarioView;
     private boolean isModify;
     private int idProducto;
+
     /**
      * Creates new form ProductoPrueba
      */
     public ProductoInventarioRegister_Mod(java.awt.Frame parent, Usuario usuario, ProductoInventarioView productoInventarioView, boolean isModify, int idProducto) {
         super(parent, isModify ? "Modificar Producto Inventario" : "Registro de Producto Inventario", true);
         this.usuario = usuario;
-        this.productoInventarioView = productoInventarioView; 
+        this.productoInventarioView = productoInventarioView;
         this.isModify = isModify;
         this.idProducto = idProducto;
         initComponents();
         addNumberInputValidation();
+        cargarCategoriasComboBox();
         if (isModify) {
             loadProductData();
         }
-         setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
     }
+
     private void addNumberInputValidation() {
         KeyAdapter numberInputValidation = new KeyAdapter() {
             @Override
@@ -43,7 +49,7 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
                 char c = e.getKeyChar();
                 JTextField textField = (JTextField) e.getSource();
                 String text = textField.getText();
-                
+
                 if (!Character.isDigit(c) && c != '.') {
                     e.consume();
                 } else if (c == '.' && text.contains(".")) {
@@ -51,23 +57,43 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
                 }
             }
         };
-        
+
         txtPrecio.addKeyListener(numberInputValidation);
         txtStock.addKeyListener(numberInputValidation);
     }
-    
+
+    private void cargarCategoriasComboBox() {
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        java.util.List<Categoria> categorias = categoriaDAO.listar();
+
+        cmbCat.removeAllItems();
+
+        for (Categoria categoria : categorias) {
+            cmbCat.addItem(categoria);
+        }
+    }
+
     private void loadProductData() {
         ProductoDAO productoDAO = new ProductoDAO();
-        Producto producto = productoDAO.obtenerProductoInventarioPorId(idProducto);
+        Producto producto = productoDAO.obtenerProductoPorId(idProducto);
         if (producto != null) {
             txtNombre.setText(producto.getNombre());
             txtDescripcion.setText(producto.getDescripcion());
             txtPrecio.setText(String.valueOf(producto.getPrecio()));
             txtStock.setText(String.valueOf(producto.getStock()));
-            txtCategoria.setText(producto.getCategoria());
+
+            // Seleccionar la categoría correspondiente en el JComboBox
+            int idCategoriaProducto = producto.getIdCategoria();
+
+            for (int i = 0; i < cmbCat.getItemCount(); i++) {
+                Categoria categoria = (Categoria) cmbCat.getItemAt(i);
+                if (categoria.getIdCat() == idCategoriaProducto) {
+                    cmbCat.setSelectedIndex(i);
+                    break;
+                }
+            }
         }
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -85,7 +111,7 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
         txtStock = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        txtCategoria = new javax.swing.JTextField();
+        cmbCat = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -142,12 +168,7 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
         });
         jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 310, -1, -1));
 
-        txtCategoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCategoriaActionPerformed(evt);
-            }
-        });
-        jPanel1.add(txtCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, 220, -1));
+        jPanel1.add(cmbCat, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, 220, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -164,49 +185,46 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        
-                String nombre = txtNombre.getText().trim();
-                String descripcion = txtDescripcion.getText().trim();
-                double precio = Double.parseDouble(txtPrecio.getText().trim());
-                int stock = Integer.parseInt(txtStock.getText().trim());
-                String categoria = txtCategoria.getText().trim();
-                Producto nuevoProducto = new Producto(idProducto, nombre, descripcion, precio, 0, stock, categoria);
-                ProductoDAO productoDAO = new ProductoDAO();
-                int errorCode;
-                    
-                if (isModify) {
-                    errorCode = productoDAO.modificar(nuevoProducto);
-                } else {
-                    errorCode = productoDAO.insertar(nuevoProducto);
-                }    
+        String nombre = txtNombre.getText().trim();
+        String descripcion = txtDescripcion.getText().trim();
+        double precio = Double.parseDouble(txtPrecio.getText().trim());
+        Categoria categoriaSeleccionada = (Categoria) cmbCat.getSelectedItem();
+        int idCategoria = categoriaSeleccionada.getIdCat();
 
-                if (errorCode == 0) {
-                    JOptionPane.showMessageDialog(ProductoInventarioRegister_Mod.this,
-                            isModify ? "Producto modificado exitosamente." : "Producto registrado exitosamente.",
-                            "Éxito",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    if (productoInventarioView != null) {
-                        productoInventarioView.refreshProductosInventario(); 
-                    }
-                    dispose();
+        ProductoDAO productoDAO = new ProductoDAO();
+
+        try {
+            Producto productoOriginal = productoDAO.obtenerProductoPorId(idProducto);
+
+            if (productoOriginal != null) {
+                productoOriginal.setNombre(nombre);
+                productoOriginal.setDescripcion(descripcion);
+                productoOriginal.setPrecio(precio);
+                productoOriginal.setIdCategoria(idCategoria);
+
+                int resultado = productoDAO.modificarBasico(productoOriginal);
+
+                if (resultado == 0) {
+                    JOptionPane.showMessageDialog(this, "Producto actualizado con éxito.");
+                    productoInventarioView.refreshProductosInventario();
+                    this.dispose();
+
                 } else {
-                    JOptionPane.showMessageDialog(ProductoInventarioRegister_Mod.this,
-                            "Error al " + (isModify ? "modificar" : "registrar") + " el producto.",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }                               
+                    JOptionPane.showMessageDialog(this, "Error al actualizar el producto.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró el producto.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado.");
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-
-                dispose();
-      
-
+        dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void txtCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCategoriaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCategoriaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,13 +232,13 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
+    public javax.swing.JComboBox<Object> cmbCat;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPrecio;
     private javax.swing.JLabel lblStock;
-    private javax.swing.JTextField txtCategoria;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;

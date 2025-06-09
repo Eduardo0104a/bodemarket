@@ -11,6 +11,7 @@ import view.Admin.AdminView;
 import javax.swing.*;
 import java.awt.*;
 import view.Admin.AdminView;
+import view.Compras.ComprasView;
 import view.Proveedor.ProveedorView;
 
 /**
@@ -47,6 +48,7 @@ public class MainView extends javax.swing.JFrame {
         });
 
         btnCompras.addActionListener(e -> {
+            showComprasView();
         });
         
         btnInventario.addActionListener(e -> {
@@ -123,6 +125,13 @@ public class MainView extends javax.swing.JFrame {
     private void showAdminView(){
         conPanel.removeAll();
         conPanel.add(new AdminView(usuario), BorderLayout.CENTER);
+        conPanel.revalidate();
+        conPanel.repaint();
+    }
+    
+    private void showComprasView(){
+        conPanel.removeAll();
+        conPanel.add(new ComprasView(usuario), BorderLayout.CENTER);
         conPanel.revalidate();
         conPanel.repaint();
     }

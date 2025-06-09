@@ -8,7 +8,7 @@ public class Categoria {
     private int idCat;
     private String descripcionCat;
 
-    public Categoria(int idCat, String codigoCat, String descripcionCat) {
+    public Categoria(int idCat, String descripcionCat) {
         this.idCat = idCat;
         this.descripcionCat = descripcionCat;
     }
@@ -28,4 +28,10 @@ public class Categoria {
     public void setDescripcionCat(String descripcionCat) {
         this.descripcionCat = descripcionCat;
     }
+
+    @Override
+    public String toString() {
+        return  descripcionCat;
+    }
+ 
 }

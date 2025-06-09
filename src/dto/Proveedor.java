@@ -7,7 +7,7 @@ package dto;
 public class Proveedor {
 
     private int idProveedor;
-    private String nombre;     
+    private String nombre;
     private String correo;
     private String telefono;
     private String ruc;
@@ -62,4 +62,10 @@ public class Proveedor {
     public void setRuc(String ruc) {
         this.ruc = ruc;
     }
+
+    @Override
+    public String toString() {
+        return nombre; 
+    }
+
 }

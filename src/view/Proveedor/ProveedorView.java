@@ -87,6 +87,17 @@ public class ProveedorView extends javax.swing.JPanel {
         header.setForeground(Color.WHITE);
         header.setBorder(BorderFactory.createLineBorder(header.getBackground()));
 
+        TableColumnModel columnModel = tblProveedor.getColumnModel();
+        TableColumn modificarColumn = columnModel.getColumn(0);
+        modificarColumn.setCellRenderer(new IconButtonRenderer());
+        modificarColumn.setCellEditor(new IconButtonEditor(new JCheckBox(), tblProveedor, usuario, this));
+        modificarColumn.setMaxWidth(35);
+
+        TableColumn eliminarColumn = columnModel.getColumn(1);
+        eliminarColumn.setCellRenderer(new IconButtonRenderer());
+        eliminarColumn.setCellEditor(new IconButtonEditor(new JCheckBox(), tblProveedor, usuario, this));
+        eliminarColumn.setMaxWidth(35);
+        
         JScrollPane scrollPane = new JScrollPane(tblProveedor);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getViewport().setBackground(Color.WHITE);
@@ -116,6 +127,13 @@ public class ProveedorView extends javax.swing.JPanel {
         }
     }
 
+    public void refreshProveedor() {
+        DefaultTableModel model = (DefaultTableModel) tblProveedor.getModel();
+        model.setRowCount(0);
+
+        loadProveedor();
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

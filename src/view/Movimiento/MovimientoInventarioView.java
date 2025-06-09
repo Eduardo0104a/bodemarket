@@ -1,5 +1,7 @@
 package view.Movimiento;
 
+import Utilitarios.IconButtonEditor;
+import Utilitarios.IconButtonRenderer;
 import dto.Usuario;
 import dao.MovimientoInventarioDAO;
 import dto.MovimientoInventario;
@@ -16,57 +18,87 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableRowSorter;
+
 /**
  *
  * @author Eduardo
  */
 public class MovimientoInventarioView extends javax.swing.JPanel {
+
     private JTable tblMovimientoInventario;
     private JButton btnModificar;
     private JButton btnEliminar;
     private Usuario usuario;
-    
+    private JTextField txtBuscar;
+    private TableRowSorter<DefaultTableModel> sorter;
+
     public MovimientoInventarioView(Usuario usuario) {
         this.usuario = usuario;
-        setBackground(new Color(175, 18, 128));
+        setBackground(new Color(233, 164, 157));
         initComponents();
         inicio();
         loadMovimientosInventario();
     }
-    
-     private void inicio() {
-    setLayout(new BorderLayout());
 
-    JPanel panelTituloBotones = new JPanel(new BorderLayout());
-    panelTituloBotones.setBackground(new Color(175, 18, 128));
+    private void inicio() {
+        setLayout(new BorderLayout());
 
-    JLabel lblTitulo = new JLabel("MOVIMIENTO INVENTARIO", SwingConstants.CENTER);
-    lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-    lblTitulo.setForeground(new Color(255,238,0)); 
+        JPanel panelTituloBuscar = new JPanel(new BorderLayout());
+        panelTituloBuscar.setBackground(Color.WHITE);
 
-    panelTituloBotones.add(lblTitulo, BorderLayout.CENTER);
-    add(panelTituloBotones, BorderLayout.NORTH);
+        JLabel lblTitulo = new JLabel("SALIDAS E INGRESOS DE PRODUCTOS");
+        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        lblTitulo.setForeground(new Color(120, 30, 20));
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 0));
 
-    tblMovimientoInventario = new JTable(new DefaultTableModel(
-            new Object[][]{},
-            new String[]{"ID Movimiento", "Producto", "Tipo", "Cantidad", "Fecha", "Descripción"}
-    ));
-    tblMovimientoInventario.setBackground(new Color(220, 190, 255)); 
-    tblMovimientoInventario.setForeground(new Color(75, 0, 130)); 
+        txtBuscar = new JTextField();
+        txtBuscar.setPreferredSize(new Dimension(250, 30));
+        txtBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        txtBuscar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(188, 47, 33), 2),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
 
-    tblMovimientoInventario.setSelectionBackground(new Color(180, 130, 255)); 
-    tblMovimientoInventario.setSelectionForeground(Color.WHITE); 
+        JPanel panelBuscar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelBuscar.setOpaque(false);
+        panelBuscar.add(txtBuscar);
 
-    tblMovimientoInventario.getTableHeader().setBackground(new Color(75, 0, 130)); 
-    tblMovimientoInventario.getTableHeader().setForeground(new Color(75, 0, 130));
-        
-    tblMovimientoInventario.setForeground(Color.BLACK); 
-    JScrollPane scrollPane = new JScrollPane(tblMovimientoInventario);
-    scrollPane.getViewport().setBackground(new Color(175, 18, 128)); 
-    add(scrollPane, BorderLayout.CENTER);
-}
-     
-     private void loadMovimientosInventario() {
+        panelTituloBuscar.add(lblTitulo, BorderLayout.WEST);
+        panelTituloBuscar.add(panelBuscar, BorderLayout.EAST);
+        add(panelTituloBuscar, BorderLayout.NORTH);
+
+        tblMovimientoInventario = new JTable(new DefaultTableModel(
+                new Object[][]{},
+                new String[]{"ID Movimiento", "Producto", "Tipo", "Cantidad", "Fecha", "Descripción"}
+        ));
+        tblMovimientoInventario.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tblMovimientoInventario.setRowHeight(32);
+        tblMovimientoInventario.setForeground(Color.BLACK);
+        tblMovimientoInventario.setBackground(new Color(233, 164, 157));
+        tblMovimientoInventario.setSelectionBackground(new Color(255, 153, 153));
+        tblMovimientoInventario.setSelectionForeground(Color.BLACK);
+        tblMovimientoInventario.setGridColor(Color.LIGHT_GRAY);
+        DefaultTableModel model = (DefaultTableModel) tblMovimientoInventario.getModel();
+        sorter = new TableRowSorter<>(model);
+        tblMovimientoInventario.setRowSorter(sorter);
+
+        JTableHeader header = tblMovimientoInventario.getTableHeader();
+        header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        header.setBackground(new Color(120, 30, 20));
+        header.setForeground(Color.WHITE);
+        header.setBorder(BorderFactory.createLineBorder(header.getBackground()));
+
+        JScrollPane scrollPane = new JScrollPane(tblMovimientoInventario);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(Color.WHITE);
+        add(scrollPane, BorderLayout.CENTER);
+    }
+
+    private void loadMovimientosInventario() {
         MovimientoInventarioDAO movimientoInventarioDAO = new MovimientoInventarioDAO();
         List<MovimientoInventario> movimientos = movimientoInventarioDAO.obtenerMovimientosInventario();
         DefaultTableModel model = (DefaultTableModel) tblMovimientoInventario.getModel();
@@ -77,10 +109,10 @@ public class MovimientoInventarioView extends javax.swing.JPanel {
             int cantidad = movimiento.getCantidad();
             Date fecha = movimiento.getFecha();
             String descripcion = movimiento.getDescripcion();
-    
-            Object[] rowData = new Object[model.getColumnCount()]; 
 
-            rowData[0] = idMovimiento; 
+            Object[] rowData = new Object[model.getColumnCount()];
+
+            rowData[0] = idMovimiento;
             rowData[1] = nombreProducto;
             rowData[2] = tipo;
             rowData[3] = cantidad;

@@ -58,7 +58,6 @@ public class UsuarioRegister_Modf extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setFocusTraversalPolicyProvider(true);
-        setLocationByPlatform(true);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(175, 18, 128));
@@ -176,7 +175,6 @@ public class UsuarioRegister_Modf extends javax.swing.JDialog {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 

@@ -13,18 +13,22 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableRowSorter;
 
 public class ProductoInventarioView extends javax.swing.JPanel {
 
-    private JTable tblProductoInventario;
+    private JTable tblProducto;
     private JButton btnInsertar;
     private Usuario usuario;
+    private JTextField txtBuscar;
+    private TableRowSorter<DefaultTableModel> sorter;
     
     public ProductoInventarioView(Usuario usuario) {
         this.usuario = usuario;
-        setBackground(new Color(175, 18, 128));
+        setBackground(new Color(233, 164, 157)); 
         initComponents();
         inicio();
         loadProductosInventario();
@@ -33,70 +37,75 @@ public class ProductoInventarioView extends javax.swing.JPanel {
     private void inicio() {
         setLayout(new BorderLayout());
 
-        JPanel panelTituloBotones = new JPanel(new BorderLayout());
-        panelTituloBotones.setBackground(new Color(175, 18, 128));
+        JPanel panelTituloBuscar = new JPanel(new BorderLayout());
+        panelTituloBuscar.setBackground(Color.WHITE);
 
-        JLabel lblTitulo = new JLabel("PRODUCTO - INVENTARIO");
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setForeground(new Color(255,238,0));
-        panelTituloBotones.add(lblTitulo, BorderLayout.CENTER);
+        JLabel lblTitulo = new JLabel("INVENTARIO");
+        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        lblTitulo.setForeground(new Color(120, 30, 20));
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 0));
 
-        JPanel panelBotones = new JPanel();
-        btnInsertar = new JButton("Insertar");
-        panelBotones.setBackground(new Color(175, 18, 128));
+        txtBuscar = new JTextField();
+        txtBuscar.setPreferredSize(new Dimension(250, 30));
+        txtBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        txtBuscar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(188, 47, 33), 2),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
 
-        panelBotones.add(btnInsertar);
+        JPanel panelBuscar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelBuscar.setOpaque(false);
+        panelBuscar.add(txtBuscar);
 
-        btnInsertar.setBackground(new Color(255,238,0));
-        btnInsertar.setForeground(new Color(175, 18, 128));
-        panelTituloBotones.add(panelBotones, BorderLayout.EAST);
-        add(panelTituloBotones, BorderLayout.NORTH);
+        panelTituloBuscar.add(lblTitulo, BorderLayout.WEST);
+        panelTituloBuscar.add(panelBuscar, BorderLayout.EAST);
+        add(panelTituloBuscar, BorderLayout.NORTH);
 
-        tblProductoInventario = new JTable(new DefaultTableModel(
+        tblProducto = new JTable(new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"", "", "ID Producto", "Nombre", "Descripcion", "Precio", "Stock", "Categoria"}
         ));
+        tblProducto.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tblProducto.setRowHeight(32);
+        tblProducto.setForeground(Color.BLACK);
+        tblProducto.setBackground(new Color(233, 164, 157));
+        tblProducto.setSelectionBackground(new Color(255, 153, 153)); 
+        tblProducto.setSelectionForeground(Color.BLACK);
+        tblProducto.setGridColor(Color.LIGHT_GRAY);
+        DefaultTableModel model = (DefaultTableModel) tblProducto.getModel();
+        sorter = new TableRowSorter<>(model);
+        tblProducto.setRowSorter(sorter);
         
-        TableColumnModel columnModel = tblProductoInventario.getColumnModel();
+        JTableHeader header = tblProducto.getTableHeader();
+        header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        header.setBackground(new Color(120, 30, 20));
+        header.setForeground(Color.WHITE);
+        header.setBorder(BorderFactory.createLineBorder(header.getBackground()));
+
+        TableColumnModel columnModel = tblProducto.getColumnModel();
 
         TableColumn modificarColumn = columnModel.getColumn(0);
         modificarColumn.setCellRenderer(new IconButtonRenderer());
-        modificarColumn.setCellEditor(new IconButtonEditor(new JCheckBox(), tblProductoInventario, usuario, ProductoInventarioView.this));
-        modificarColumn.setMaxWidth(25);
+        modificarColumn.setCellEditor(new IconButtonEditor(new JCheckBox(), tblProducto, usuario, this));
+        modificarColumn.setMaxWidth(35);
 
         TableColumn eliminarColumn = columnModel.getColumn(1);
         eliminarColumn.setCellRenderer(new IconButtonRenderer());
-        eliminarColumn.setCellEditor(new IconButtonEditor(new JCheckBox(), tblProductoInventario, usuario, ProductoInventarioView.this));
-        eliminarColumn.setMaxWidth(25);
-        
-        int alturaFila = 30;
-        tblProductoInventario.setRowHeight(alturaFila);
-        
-        tblProductoInventario.setBackground(new Color(220, 190, 255)); 
-        tblProductoInventario.setForeground(new Color(75, 0, 130)); 
+        eliminarColumn.setCellEditor(new IconButtonEditor(new JCheckBox(), tblProducto, usuario, this));
+        eliminarColumn.setMaxWidth(35);
 
-        tblProductoInventario.setSelectionBackground(new Color(180, 130, 255)); 
-        tblProductoInventario.setSelectionForeground(Color.WHITE); 
-
-        tblProductoInventario.getTableHeader().setBackground(new Color(75, 0, 130)); 
-        tblProductoInventario.getTableHeader().setForeground(new Color(75, 0, 130));
-        
-        JScrollPane scrollPane = new JScrollPane(tblProductoInventario);
-        scrollPane.getViewport().setBackground(new Color(175, 18, 128)); // Amarillo suave
+        JScrollPane scrollPane = new JScrollPane(tblProducto);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(Color.WHITE);
         add(scrollPane, BorderLayout.CENTER);
-        
-        btnInsertar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                abrirFormularioRegistro();
-            }
-        });
+
+ 
     }
     
     private void loadProductosInventario() {
         ProductoDAO productoDAO = new ProductoDAO();
         List<Producto> productos = productoDAO.listar();
-        DefaultTableModel model = (DefaultTableModel) tblProductoInventario.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblProducto.getModel();
         for (Producto productoInventario : productos) {
             int idProducto = productoInventario.getIdProducto();
             String nombre = productoInventario.getNombre();
@@ -125,7 +134,7 @@ public class ProductoInventarioView extends javax.swing.JPanel {
     }
     
     public void refreshProductosInventario() {
-        DefaultTableModel model = (DefaultTableModel) tblProductoInventario.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblProducto.getModel();
         model.setRowCount(0);
         
         loadProductosInventario();

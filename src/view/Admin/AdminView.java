@@ -390,10 +390,7 @@ public class AdminView extends javax.swing.JPanel {
 
         tblUsuario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Nombre", "Apellido", "Usuario", "Rol"

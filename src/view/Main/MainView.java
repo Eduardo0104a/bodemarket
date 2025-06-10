@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import view.Admin.AdminView;
 import view.Compras.ComprasView;
+import view.Compras.ComprasVista;
 import view.Proveedor.ProveedorView;
 
 /**
@@ -64,6 +65,7 @@ public class MainView extends javax.swing.JFrame {
         });
         
         btnReportes.addActionListener(e -> {
+            showReportesView();
         });
         
         btnSalir.addActionListener(e -> {
@@ -100,6 +102,13 @@ public class MainView extends javax.swing.JFrame {
         conPanel.revalidate();
         conPanel.repaint();
     }
+    
+    private void showComprasView(){
+        conPanel.removeAll();
+        conPanel.add(new ComprasView(usuario), BorderLayout.CENTER);
+        conPanel.revalidate();
+        conPanel.repaint();
+    }
 
     private void showMovimientoView() {
         conPanel.removeAll();
@@ -129,12 +138,14 @@ public class MainView extends javax.swing.JFrame {
         conPanel.repaint();
     }
     
-    private void showComprasView(){
+    private void showReportesView(){
         conPanel.removeAll();
-        conPanel.add(new ComprasView(usuario), BorderLayout.CENTER);
+        conPanel.add(new ComprasVista(usuario), BorderLayout.CENTER);
         conPanel.revalidate();
         conPanel.repaint();
     }
+    
+    
 
     private void btnEstilos(JButton boton, Color fondo, Color fondoHover, Color texto, Font fuente) {
         boton.setFocusPainted(false);

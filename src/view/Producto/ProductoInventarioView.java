@@ -61,11 +61,17 @@ public class ProductoInventarioView extends javax.swing.JPanel {
         panelTituloBuscar.add(panelBuscar, BorderLayout.EAST);
         add(panelTituloBuscar, BorderLayout.NORTH);
 
-        tblProducto = new JTable(new DefaultTableModel(
+        DefaultTableModel model = new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"", "", "ID Producto", "Nombre", "Descripcion", "Precio", "Stock", "Categoria", "Medida", "Proveedor"}
-        ));
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 0 || column == 1; 
+            }
+        };
 
+        tblProducto = new JTable(model);
         tblProducto.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tblProducto.setRowHeight(32);
         tblProducto.setForeground(Color.BLACK);
@@ -73,7 +79,6 @@ public class ProductoInventarioView extends javax.swing.JPanel {
         tblProducto.setSelectionBackground(new Color(255, 153, 153));
         tblProducto.setSelectionForeground(Color.BLACK);
         tblProducto.setGridColor(Color.LIGHT_GRAY);
-        DefaultTableModel model = (DefaultTableModel) tblProducto.getModel();
         sorter = new TableRowSorter<>(model);
         tblProducto.setRowSorter(sorter);
 
@@ -82,8 +87,7 @@ public class ProductoInventarioView extends javax.swing.JPanel {
         header.setBackground(new Color(120, 30, 20));
         header.setForeground(Color.WHITE);
         header.setBorder(BorderFactory.createLineBorder(header.getBackground()));
-        
-        
+
         TableColumnModel columnModel = tblProducto.getColumnModel();
         TableColumn modificarColumn = columnModel.getColumn(0);
         modificarColumn.setCellRenderer(new IconButtonRenderer());
@@ -101,6 +105,7 @@ public class ProductoInventarioView extends javax.swing.JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
     }
+
     private void loadProductosInventario() {
         ProductoDAO productoDAO = new ProductoDAO();
         List<Producto> productos = productoDAO.listar();

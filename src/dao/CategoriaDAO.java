@@ -161,5 +161,4 @@ public class CategoriaDAO {
 
         return categoria;
     }
-
 }

@@ -25,6 +25,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.table.JTableHeader;
+import view.Movimiento.MovimientoInventarioView;
 
 public class VentaRegister_Modf extends javax.swing.JDialog {
 
@@ -40,9 +41,11 @@ public class VentaRegister_Modf extends javax.swing.JDialog {
     private VentaView ventaView;
     private boolean isModify;
     private int id;
+    private MovimientoInventarioView movimientoInventarioView;
 
     public VentaRegister_Modf(Frame parent, Usuario usuario, VentaView ventaView, boolean isModify, int id) {
         super(parent, isModify ? "Modificar Venta" : "Registro de Venta", true);
+        this.movimientoInventarioView = movimientoInventarioView;
         this.usuario = usuario;
         this.isModify = isModify;
         this.id = id;
@@ -54,10 +57,6 @@ public class VentaRegister_Modf extends javax.swing.JDialog {
 
         configureVendedores();
         configureProductosInventario();
-
-        if (isModify) {
-            loadVentaData();
-        }
     }
 
     private void inicio(Frame parent) {
@@ -156,135 +155,149 @@ public class VentaRegister_Modf extends javax.swing.JDialog {
         headerInv.setForeground(Color.WHITE);
 
         tblProductosInventario.getColumnModel().getColumn(4).setCellEditor(new SpinnerEditor());
-        
+
         JScrollPane scrollInv = new JScrollPane(tblProductosInventario);
-    panelProductos.add(scrollInv, BorderLayout.CENTER);
+        panelProductos.add(scrollInv, BorderLayout.CENTER);
 
-    // Panel Detalle Venta
-    JPanel panelDetalleVenta = new JPanel(new BorderLayout());
-    panelDetalleVenta.setBackground(colorFondo);
-    panelDetalleVenta.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        // Panel Detalle Venta
+        JPanel panelDetalleVenta = new JPanel(new BorderLayout());
+        panelDetalleVenta.setBackground(colorFondo);
+        panelDetalleVenta.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-    JLabel lblDetalleVenta = new JLabel("Detalle de Venta");
-    lblDetalleVenta.setFont(fuenteTitulo);
-    lblDetalleVenta.setForeground(colorPrincipal);
+        JLabel lblDetalleVenta = new JLabel("Detalle de Venta");
+        lblDetalleVenta.setFont(fuenteTitulo);
+        lblDetalleVenta.setForeground(colorPrincipal);
 
-    btnLimpiarDetalle = new JButton("Limpiar");
-    btnLimpiarDetalle.setBackground(colorAcento);
-    btnLimpiarDetalle.setForeground(colorPrincipal);
-    btnLimpiarDetalle.setFont(fuentePrincipal);
+        btnLimpiarDetalle = new JButton("Limpiar");
 
-    JPanel topDetalle = new JPanel(new BorderLayout());
-    topDetalle.setOpaque(false);
-    topDetalle.add(lblDetalleVenta, BorderLayout.WEST);
-    topDetalle.add(btnLimpiarDetalle, BorderLayout.EAST);
+        JPanel topDetalle = new JPanel(new BorderLayout());
+        topDetalle.setOpaque(false);
+        topDetalle.add(lblDetalleVenta, BorderLayout.WEST);
+        topDetalle.add(btnLimpiarDetalle, BorderLayout.EAST);
 
-    tblDetalleVenta = new JTable(new DefaultTableModel(new Object[]{"ID", "Producto", "Cantidad", "P. Unitario", "Subtotal"}, 0));
-    tblDetalleVenta.setFont(fuentePrincipal);
-    tblDetalleVenta.setRowHeight(28);
-    tblDetalleVenta.setSelectionBackground(new Color(230, 200, 255));
-    tblDetalleVenta.setSelectionForeground(Color.BLACK);
+        tblDetalleVenta = new JTable(new DefaultTableModel(new Object[]{"ID", "Producto", "Cantidad", "P. Unitario", "Subtotal"}, 0));
+        tblDetalleVenta.setFont(fuentePrincipal);
+        tblDetalleVenta.setRowHeight(28);
+        tblDetalleVenta.setSelectionBackground(new Color(230, 200, 255));
+        tblDetalleVenta.setSelectionForeground(Color.BLACK);
 
-    JTableHeader headerDet = tblDetalleVenta.getTableHeader();
-    headerDet.setFont(fuentePrincipal.deriveFont(Font.BOLD));
-    headerDet.setBackground(colorPrincipal);
-    headerDet.setForeground(Color.WHITE);
+        JTableHeader headerDet = tblDetalleVenta.getTableHeader();
+        headerDet.setFont(fuentePrincipal.deriveFont(Font.BOLD));
+        headerDet.setBackground(colorPrincipal);
+        headerDet.setForeground(Color.WHITE);
 
-    JScrollPane scrollDet = new JScrollPane(tblDetalleVenta);
+        JScrollPane scrollDet = new JScrollPane(tblDetalleVenta);
 
-    panelDetalleVenta.add(topDetalle, BorderLayout.NORTH);
-    panelDetalleVenta.add(scrollDet, BorderLayout.CENTER);
+        panelDetalleVenta.add(topDetalle, BorderLayout.NORTH);
+        panelDetalleVenta.add(scrollDet, BorderLayout.CENTER);
 
-    // Split Panes
-    JSplitPane splitVertical = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panelDatosVenta, panelProductos);
-    splitVertical.setDividerLocation(220);
+        // Split Panes
+        JSplitPane splitVertical = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panelDatosVenta, panelProductos);
+        splitVertical.setDividerLocation(220);
 
-    JSplitPane splitHorizontal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitVertical, panelDetalleVenta);
-    splitHorizontal.setDividerLocation(420);
+        JSplitPane splitHorizontal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitVertical, panelDetalleVenta);
+        splitHorizontal.setDividerLocation(420);
 
-    // Panel Botones
-    JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-    panelBotones.setBackground(colorFondo);
+        // Panel Botones
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelBotones.setBackground(colorFondo);
 
-    btnGuardar = new JButton("Guardar");
-    btnGuardar.setBackground(colorAcento);
-    btnGuardar.setForeground(colorPrincipal);
-    btnGuardar.setFont(fuentePrincipal);
+        btnGuardar = new JButton("Guardar");
+        btnCancelar = new JButton("Cancelar");
+        Color colorF = new Color(255, 238, 0);
+        Color colorTexto = new Color(175, 18, 128);
+        Color colorHover = new Color(255, 215, 0);
 
-    btnCancelar = new JButton("Cancelar");
-    btnCancelar.setBackground(colorAcento);
-    btnCancelar.setForeground(colorPrincipal);
-    btnCancelar.setFont(fuentePrincipal);
+        for (JButton btn : new JButton[]{btnGuardar, btnCancelar, btnLimpiarDetalle}) {
+            btn.setBackground(colorF);
+            btn.setForeground(colorTexto);
+            btn.setFocusPainted(false);
+            btn.setBorderPainted(false);
+            btn.setContentAreaFilled(true);
+            btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-    panelBotones.add(btnGuardar);
-    panelBotones.add(btnCancelar);
+            btn.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(colorHover);
+                }
 
-    // Añadir todo al frame
-    getContentPane().add(splitHorizontal, BorderLayout.CENTER);
-    getContentPane().add(panelBotones, BorderLayout.SOUTH);
+                @Override
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(colorF);
+                }
+            });
+        }
+        panelBotones.add(btnGuardar);
+        panelBotones.add(btnCancelar);
 
-    pack();
-    setLocationRelativeTo(parent);
+        // Añadir todo al frame
+        getContentPane().add(splitHorizontal, BorderLayout.CENTER);
+        getContentPane().add(panelBotones, BorderLayout.SOUTH);
 
-    // Listeners
-    tblProductosInventario.addMouseListener(new MouseAdapter() {
-        public void mouseClicked(MouseEvent e) {
-            if (e.getClickCount() == 2) {
-                int row = tblProductosInventario.rowAtPoint(e.getPoint());
-                if (row >= 0) {
-                    int id_prod = (int) tblProductosInventario.getValueAt(row, 0);
-                    String producto = tblProductosInventario.getValueAt(row, 1).toString();
-                    int stock = (int) tblProductosInventario.getValueAt(row, 2);
-                    int cantidad = (int) tblProductosInventario.getValueAt(row, 4);
-                    double precio = (double) tblProductosInventario.getValueAt(row, 3);
+        pack();
+        setLocationRelativeTo(parent);
 
-                    if (cantidad > stock) {
-                        JOptionPane.showMessageDialog(null, "Stock insuficiente para el producto: " + producto);
-                        return;
-                    }
+        // Listeners
+        tblProductosInventario.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int row = tblProductosInventario.rowAtPoint(e.getPoint());
+                    if (row >= 0) {
+                        int id_prod = (int) tblProductosInventario.getValueAt(row, 0);
+                        String producto = tblProductosInventario.getValueAt(row, 1).toString();
+                        int stock = (int) tblProductosInventario.getValueAt(row, 2);
+                        int cantidad = (int) tblProductosInventario.getValueAt(row, 4);
+                        double precio = (double) tblProductosInventario.getValueAt(row, 3);
 
-                    DefaultTableModel detalleModel = (DefaultTableModel) tblDetalleVenta.getModel();
-                    int fila = -1;
-                    for (int i = 0; i < detalleModel.getRowCount(); i++) {
-                        if ((int) detalleModel.getValueAt(i, 0) == id_prod) {
-                            fila = i;
-                            break;
-                        }
-                    }
-
-                    if (fila >= 0) {
-                        int cantidadActual = (int) detalleModel.getValueAt(fila, 2);
-                        int nuevaCantidad = cantidadActual + cantidad;
-                        if (nuevaCantidad > stock) {
+                        if (cantidad > stock) {
                             JOptionPane.showMessageDialog(null, "Stock insuficiente para el producto: " + producto);
-                        } else {
-                            detalleModel.setValueAt(nuevaCantidad, fila, 2);
-                            detalleModel.setValueAt(nuevaCantidad * precio, fila, 4);
+                            return;
                         }
-                    } else {
-                        detalleModel.addRow(new Object[]{id_prod, producto, cantidad, precio, cantidad * precio});
-                    }
 
-                    double total = 0.0;
-                    for (int i = 0; i < detalleModel.getRowCount(); i++) {
-                        total += (double) detalleModel.getValueAt(i, 4);
+                        DefaultTableModel detalleModel = (DefaultTableModel) tblDetalleVenta.getModel();
+                        int fila = -1;
+                        for (int i = 0; i < detalleModel.getRowCount(); i++) {
+                            if ((int) detalleModel.getValueAt(i, 0) == id_prod) {
+                                fila = i;
+                                break;
+                            }
+                        }
+
+                        if (fila >= 0) {
+                            int cantidadActual = (int) detalleModel.getValueAt(fila, 2);
+                            int nuevaCantidad = cantidadActual + cantidad;
+                            if (nuevaCantidad > stock) {
+                                JOptionPane.showMessageDialog(null, "Stock insuficiente para el producto: " + producto);
+                            } else {
+                                detalleModel.setValueAt(nuevaCantidad, fila, 2);
+                                detalleModel.setValueAt(nuevaCantidad * precio, fila, 4);
+                            }
+                        } else {
+                            detalleModel.addRow(new Object[]{id_prod, producto, cantidad, precio, cantidad * precio});
+                        }
+
+                        double total = 0.0;
+                        for (int i = 0; i < detalleModel.getRowCount(); i++) {
+                            total += (double) detalleModel.getValueAt(i, 4);
+                        }
+                        txtTotal.setText(String.format("%.2f", total));
                     }
-                    txtTotal.setText(String.format("%.2f", total));
                 }
             }
-        }
-    });
+        });
 
-    btnLimpiarDetalle.addActionListener(e -> {
-        DefaultTableModel detalleModel = (DefaultTableModel) tblDetalleVenta.getModel();
-        detalleModel.setRowCount(0);
-        txtTotal.setText("0.00");
-    });
+        btnLimpiarDetalle.addActionListener(e -> {
+            DefaultTableModel detalleModel = (DefaultTableModel) tblDetalleVenta.getModel();
+            detalleModel.setRowCount(0);
+            txtTotal.setText("0.00");
+        });
 
-    btnGuardar.addActionListener(e -> guardarVenta());
+        btnGuardar.addActionListener(e -> guardarVenta());
 
-    btnCancelar.addActionListener(e -> dispose());
-}
+        btnCancelar.addActionListener(e -> dispose());
+    }
 
     private void configureVendedores() {
         try {
@@ -355,9 +368,14 @@ public class VentaRegister_Modf extends javax.swing.JDialog {
 
             if (resultado > 0) {
                 JOptionPane.showMessageDialog(this, "Venta registrada correctamente.");
+
                 if (ventaView != null) {
                     ventaView.refreshVentas();
                 }
+                if (movimientoInventarioView != null) {
+                    movimientoInventarioView.refresh();
+                }
+
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Error al registrar la venta.");
@@ -366,9 +384,6 @@ public class VentaRegister_Modf extends javax.swing.JDialog {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         }
-    }
-
-    private void loadVentaData() {
     }
 
     @SuppressWarnings("unchecked")

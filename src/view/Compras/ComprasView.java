@@ -9,16 +9,9 @@ import dto.DetalleCompra;
 import dto.Producto;
 import dto.Proveedor;
 import dto.Usuario;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -26,159 +19,160 @@ import java.awt.event.MouseEvent;
 import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
- * @author Eduardo
+ * @author EduardoPC
  */
 public class ComprasView extends javax.swing.JPanel {
 
-    private JTextField txtIdProducto, txtIdProveedor, txtNombreProducto, txtCantidad, txtPrecioCompra, txtTotal, txtTotalCompra;
-    private JButton btnAgregar, btnRealizarCompra;
-    private JTable tablaDetalle;
-    private DefaultTableModel modeloTabla;
-    private JComboBox<Object> comboProveedor;
     private Usuario usuario;
+    private ComprasView compraVista;
+    private int id;
+    private DefaultTableModel modeloTabla;
 
     public ComprasView(Usuario usuario) {
-        this.usuario = usuario;
-        setBackground(new Color(233, 164, 157));
+        initComponents();
+        iniciarModeloTabla();
         inicio();
         configurarEventos();
         cargarProveedoresComboBox();
     }
 
     private void inicio() {
-        setLayout(new BorderLayout());
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        Font labelFont = new Font("Segoe UI", Font.BOLD, 14);
+            Color labelColor = Color.BLACK;
 
-        JLabel lblTitulo = new JLabel("COMPRA DE PRODUCTOS");
         lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
         lblTitulo.setForeground(new Color(120, 30, 20));
-        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-        add(lblTitulo, BorderLayout.NORTH);
 
-        JPanel panelFormulario = new JPanel(new GridBagLayout());
-        panelFormulario.setOpaque(false);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        lblId.setFont(labelFont);
+        lblId.setForeground(labelColor);
 
-        txtIdProducto = crearCampoTexto(10);
-        txtNombreProducto = crearCampoTexto(15);
-        txtNombreProducto.setEditable(false);
-        txtCantidad = crearCampoTexto(6);
-        txtPrecioCompra = crearCampoTexto(6);
-        txtPrecioCompra.setEditable(false);
-        txtTotal = crearCampoTexto(8);
-        txtTotal.setEditable(false);
+        lblNombre.setFont(labelFont);
+        lblNombre.setForeground(labelColor);
 
-        btnAgregar = crearBoton("Agregar Producto");
+        lblPrecio.setFont(labelFont);
+        lblPrecio.setForeground(labelColor);
 
-        int fila = 0;
-        gbc.gridy = fila;
-        gbc.gridx = 0;
-        panelFormulario.add(new JLabel("ID Producto:"), gbc);
-        gbc.gridx = 1;
-        panelFormulario.add(txtIdProducto, gbc);
-        gbc.gridx = 2;
-        panelFormulario.add(new JLabel("Nombre:"), gbc);
-        gbc.gridx = 3;
-        panelFormulario.add(txtNombreProducto, gbc);
+        lblCantidad.setFont(labelFont);
+        lblCantidad.setForeground(labelColor);
 
-        fila++;
-        gbc.gridy = fila;
-        gbc.gridx = 0;
-        panelFormulario.add(new JLabel("Cantidad:"), gbc);
-        gbc.gridx = 1;
-        panelFormulario.add(txtCantidad, gbc);
-        gbc.gridx = 2;
-        panelFormulario.add(new JLabel("Precio Compra:"), gbc);
-        gbc.gridx = 3;
-        panelFormulario.add(txtPrecioCompra, gbc);
+        lblTotalM.setFont(labelFont);
+        lblTotalM.setForeground(labelColor);
 
-        fila++;
-        gbc.gridy = fila;
-        gbc.gridx = 0;
-        panelFormulario.add(new JLabel("Total:"), gbc);
-        gbc.gridx = 1;
-        panelFormulario.add(txtTotal, gbc);
-        gbc.gridx = 3;
-        panelFormulario.add(btnAgregar, gbc);
+        lblProveedor.setFont(labelFont);
+        lblProveedor.setForeground(labelColor);
 
-        add(panelFormulario, BorderLayout.CENTER);
+        lblTotalFinal.setFont(labelFont);
+        lblTotalFinal.setForeground(labelColor);
 
-        modeloTabla = new DefaultTableModel(new String[]{"ID", "Nombre", "Cantidad", "Precio Compra", "Total"}, 0);
-        tablaDetalle = new JTable(modeloTabla);
-        tablaDetalle.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        tablaDetalle.setRowHeight(30);
-        tablaDetalle.setBackground(Color.WHITE);
-        JScrollPane scrollTabla = new JScrollPane(tablaDetalle);
-        scrollTabla.setPreferredSize(new Dimension(700, 200));
-
-        JPanel panelInferior = new JPanel();
-        panelInferior.setLayout(new BoxLayout(panelInferior, BoxLayout.Y_AXIS));
-        panelInferior.setOpaque(false);
-        panelInferior.add(Box.createVerticalStrut(15));
-        panelInferior.add(scrollTabla);
-
-        JPanel panelProveedor = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panelProveedor.setOpaque(false);
-        comboProveedor = new JComboBox<>();
-        comboProveedor.setPreferredSize(new Dimension(200, 30));
-        comboProveedor.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        panelProveedor.add(new JLabel("Proveedor:"));
-        panelProveedor.add(comboProveedor);
-
-        btnRealizarCompra = crearBoton("Realizar Compra");
-        panelProveedor.add(btnRealizarCompra);
-        panelInferior.add(panelProveedor);
-
-        JPanel panelTotalFinal = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panelTotalFinal.setOpaque(false);
-        panelTotalFinal.add(new JLabel("Total de la Compra:"));
-        txtTotalCompra = crearCampoTexto(10);
-        txtTotalCompra.setEditable(false);
-        txtTotalCompra.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        txtTotalCompra.setHorizontalAlignment(JTextField.RIGHT);
-        panelTotalFinal.add(txtTotalCompra);
-        panelInferior.add(panelTotalFinal);
-
-        add(panelInferior, BorderLayout.SOUTH);
-
-    }
-
-    private JTextField crearCampoTexto(int cols) {
-        JTextField txt = new JTextField(cols);
-        txt.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        txt.setBorder(BorderFactory.createCompoundBorder(
+        Font textFont = new Font("Segoe UI", Font.PLAIN, 14);
+        Border textBorder = BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(188, 47, 33), 2),
-                BorderFactory.createEmptyBorder(5, 10, 5, 10)
-        ));
-        return txt;
+                BorderFactory.createEmptyBorder(1, 1, 1, 1)
+        );
+
+        txtIdProducto.setFont(textFont);
+        txtIdProducto.setBorder(textBorder);
+
+        txtNombreProducto.setFont(textFont);
+        txtNombreProducto.setBorder(textBorder);
+
+        txtCantidad.setFont(textFont);
+        txtCantidad.setBorder(textBorder);
+
+        txtPrecioCompra.setFont(textFont);
+        txtPrecioCompra.setBorder(textBorder);
+
+        txtTotal.setFont(textFont);
+        txtTotal.setBorder(textBorder);
+
+        txtTotalCompra.setFont(textFont);
+        txtTotalCompra.setBorder(textBorder);
+
+        Color fondoNoEditable = new Color(255, 233, 210);
+        txtNombreProducto.setEditable(false);
+        txtNombreProducto.setBackground(fondoNoEditable);
+        txtPrecioCompra.setEditable(false);
+        txtPrecioCompra.setBackground(fondoNoEditable);
+        txtTotal.setEditable(false);
+        txtTotal.setBackground(fondoNoEditable);
+
+        txtTotalCompra.setEditable(false);
+        txtTotalCompra.setBackground(fondoNoEditable);
+
+        comboProveedor.setFont(textFont);
+        comboProveedor.setBackground(Color.WHITE);
+        comboProveedor.setBorder(BorderFactory.createLineBorder(new Color(188, 47, 33), 2));
+
+        btnAgregar.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnAgregar.setBackground(new Color(188, 47, 33));
+        btnAgregar.setForeground(Color.WHITE);
+        btnAgregar.setFocusPainted(false);
+        btnAgregar.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        btnAgregar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        boton(btnAgregar);
+
+        btnRealizarCompra.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnRealizarCompra.setBackground(new Color(188, 47, 33));
+        btnRealizarCompra.setForeground(Color.WHITE);
+        btnRealizarCompra.setFocusPainted(false);
+        btnRealizarCompra.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        btnRealizarCompra.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        boton(btnRealizarCompra);
+
+        tablaDetalle.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tablaDetalle.setRowHeight(32);
+        tablaDetalle.setForeground(Color.BLACK);
+        tablaDetalle.setBackground(new Color(233, 164, 157));
+        tablaDetalle.setSelectionBackground(new Color(255, 153, 153));
+        tablaDetalle.setSelectionForeground(Color.BLACK);
+        tablaDetalle.setGridColor(Color.LIGHT_GRAY);
+
+        JTableHeader header = tablaDetalle.getTableHeader();
+        header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        header.setBackground(new Color(120, 30, 20));
+        header.setForeground(Color.WHITE);
+        header.setBorder(BorderFactory.createLineBorder(header.getBackground()));
+
+        JScrollPane scroll = (JScrollPane) tablaDetalle.getParent().getParent();
+        if (scroll != null) {
+            scroll.setBorder(BorderFactory.createEmptyBorder());
+            scroll.getViewport().setBackground(Color.WHITE);
+        }
     }
 
-    private JButton crearBoton(String texto) {
-        JButton btn = new JButton(texto);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        btn.setBackground(new Color(175, 18, 128));
-        btn.setForeground(Color.WHITE);
-        btn.setFocusPainted(false);
-        btn.setBorder(BorderFactory.createEmptyBorder(8, 16, 8, 16));
-        return btn;
+    private void iniciarModeloTabla() {
+        modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        modeloTabla.setColumnIdentifiers(new Object[]{"ID", "Nombre", "Cantidad", "Precio Compra", "SubTotal"});
+        tablaDetalle.setModel(modeloTabla);
+    }
+
+    private void boton(JButton boton) {
+        boton.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                boton.setBackground(new Color(160, 0, 0));
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                boton.setBackground(new Color(188, 47, 33));
+            }
+        });
     }
 
     private void configurarEventos() {
@@ -209,8 +203,7 @@ public class ComprasView extends javax.swing.JPanel {
                     int row = tablaDetalle.rowAtPoint(e.getPoint());
                     if (row != -1) {
                         tablaDetalle.setRowSelectionInterval(row, row);
-                        int confirm = JOptionPane.showConfirmDialog(
-                                ComprasView.this,
+                        int confirm = JOptionPane.showConfirmDialog(ComprasView.this,
                                 "¿Deseas eliminar este producto?",
                                 "Confirmar eliminación",
                                 JOptionPane.YES_NO_OPTION
@@ -304,7 +297,6 @@ public class ComprasView extends javax.swing.JPanel {
     }
 
     private void realizarCompra() {
-        // Validación: no permitir compra sin productos
         if (modeloTabla.getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "No se puede registrar una compra sin productos.");
             return;
@@ -313,7 +305,7 @@ public class ComprasView extends javax.swing.JPanel {
         Proveedor proveedorSeleccionado = (Proveedor) comboProveedor.getSelectedItem();
         int idProveedor = proveedorSeleccionado.getIdProveedor();
 
-        Date fecha = new Date(); // Fecha actual
+        Date fecha = new Date();
         double total = Double.parseDouble(txtTotalCompra.getText().trim());
 
         Compra compra = new Compra();
@@ -363,10 +355,107 @@ public class ComprasView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblTitulo = new javax.swing.JLabel();
+        lblId = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblPrecio = new javax.swing.JLabel();
+        lblCantidad = new javax.swing.JLabel();
+        lblTotalM = new javax.swing.JLabel();
+        txtTotal = new javax.swing.JTextField();
+        txtCantidad = new javax.swing.JTextField();
+        txtPrecioCompra = new javax.swing.JTextField();
+        txtNombreProducto = new javax.swing.JTextField();
+        txtIdProducto = new javax.swing.JTextField();
+        btnAgregar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaDetalle = new javax.swing.JTable();
+        lblProveedor = new javax.swing.JLabel();
+        comboProveedor = new javax.swing.JComboBox<>();
+        lblTotalFinal = new javax.swing.JLabel();
+        txtTotalCompra = new javax.swing.JTextField();
+        btnRealizarCompra = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblTitulo.setText("COMPRA DE PRODUCTOS");
+        add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+
+        lblId.setText("ID Producto");
+        add(lblId, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, -1, -1));
+
+        lblNombre.setText("Nombre Producto:");
+        add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, -1, -1));
+
+        lblPrecio.setText("Precio Compra:");
+        add(lblPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, -1, -1));
+
+        lblCantidad.setText("Cantidad:");
+        add(lblCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, -1, -1));
+
+        lblTotalM.setText("Total:");
+        add(lblTotalM, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, -1, -1));
+        add(txtTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 320, 130, -1));
+        add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, 130, -1));
+        add(txtPrecioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 220, 130, -1));
+        add(txtNombreProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 170, 130, -1));
+        add(txtIdProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 120, 130, -1));
+
+        btnAgregar.setText("AGREGAR PRODUCTO");
+        add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 400, 270, 40));
+
+        tablaDetalle.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nombre", "Cantidad", "Precio Compra", "SubTotal"
+            }
+        ));
+        jScrollPane1.setViewportView(tablaDetalle);
+        if (tablaDetalle.getColumnModel().getColumnCount() > 0) {
+            tablaDetalle.getColumnModel().getColumn(0).setHeaderValue("ID");
+            tablaDetalle.getColumnModel().getColumn(1).setHeaderValue("Nombre");
+            tablaDetalle.getColumnModel().getColumn(2).setHeaderValue("Cantidad");
+            tablaDetalle.getColumnModel().getColumn(3).setHeaderValue("Precio Compra");
+            tablaDetalle.getColumnModel().getColumn(4).setHeaderValue("SubTotal");
+        }
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 40, 720, 390));
+
+        lblProveedor.setText("Proveedor:");
+        add(lblProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 460, -1, -1));
+
+        add(comboProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 452, 150, 30));
+
+        lblTotalFinal.setText("Total de la compra:");
+        add(lblTotalFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 510, -1, -1));
+        add(txtTotalCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 502, 100, 30));
+
+        btnRealizarCompra.setText("Realizar Compra");
+        add(btnRealizarCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 460, 250, 50));
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnRealizarCompra;
+    public javax.swing.JComboBox<Object> comboProveedor;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblCantidad;
+    private javax.swing.JLabel lblId;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblPrecio;
+    private javax.swing.JLabel lblProveedor;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblTotalFinal;
+    private javax.swing.JLabel lblTotalM;
+    private javax.swing.JTable tablaDetalle;
+    private javax.swing.JTextField txtCantidad;
+    private javax.swing.JTextField txtIdProducto;
+    private javax.swing.JTextField txtNombreProducto;
+    private javax.swing.JTextField txtPrecioCompra;
+    private javax.swing.JTextField txtTotal;
+    private javax.swing.JTextField txtTotalCompra;
     // End of variables declaration//GEN-END:variables
 }

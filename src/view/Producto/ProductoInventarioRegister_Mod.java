@@ -59,7 +59,6 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
         };
 
         txtPrecio.addKeyListener(numberInputValidation);
-        txtStock.addKeyListener(numberInputValidation);
     }
 
     private void cargarCategoriasComboBox() {
@@ -80,7 +79,6 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
             txtNombre.setText(producto.getNombre());
             txtDescripcion.setText(producto.getDescripcion());
             txtPrecio.setText(String.valueOf(producto.getPrecio()));
-            txtStock.setText(String.valueOf(producto.getStock()));
 
             // Seleccionar la categoría correspondiente en el JComboBox
             int idCategoriaProducto = producto.getIdCategoria();
@@ -103,12 +101,10 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
         lblNombre = new javax.swing.JLabel();
         lblDescripcion = new javax.swing.JLabel();
         lblPrecio = new javax.swing.JLabel();
-        lblStock = new javax.swing.JLabel();
         lblCategoria = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         txtDescripcion = new javax.swing.JTextField();
         txtPrecio = new javax.swing.JTextField();
-        txtStock = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         cmbCat = new javax.swing.JComboBox<>();
@@ -116,37 +112,27 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(175, 18, 128));
+        jPanel1.setBackground(new java.awt.Color(233, 164, 157));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblNombre.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        lblNombre.setForeground(new java.awt.Color(255, 255, 255));
         lblNombre.setText("Nombre:");
-        jPanel1.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
+        jPanel1.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
 
         lblDescripcion.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        lblDescripcion.setForeground(new java.awt.Color(255, 255, 255));
         lblDescripcion.setText("Descripción:");
-        jPanel1.add(lblDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
+        jPanel1.add(lblDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 40, -1, -1));
 
         lblPrecio.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        lblPrecio.setForeground(new java.awt.Color(255, 255, 255));
         lblPrecio.setText("Precio:");
-        jPanel1.add(lblPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
-
-        lblStock.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        lblStock.setForeground(new java.awt.Color(255, 255, 255));
-        lblStock.setText("Stock:");
-        jPanel1.add(lblStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, -1));
+        jPanel1.add(lblPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
 
         lblCategoria.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        lblCategoria.setForeground(new java.awt.Color(255, 255, 255));
         lblCategoria.setText("Categoria:");
-        jPanel1.add(lblCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, -1, -1));
-        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 220, -1));
-        jPanel1.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 140, 220, -1));
-        jPanel1.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, 220, -1));
-        jPanel1.add(txtStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, 220, -1));
+        jPanel1.add(lblCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 100, -1, -1));
+        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 40, 140, -1));
+        jPanel1.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 200, -1));
+        jPanel1.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 140, -1));
 
         btnGuardar.setBackground(new java.awt.Color(255, 238, 0));
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-lazo-marcapáginas-24.png"))); // NOI18N
@@ -156,7 +142,7 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
                 btnGuardarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, -1, -1));
+        jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 160, -1, -1));
 
         btnCancelar.setBackground(new java.awt.Color(255, 238, 0));
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-eliminar-24 (1).png"))); // NOI18N
@@ -166,19 +152,21 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
                 btnCancelarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 310, -1, -1));
+        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 160, -1, -1));
 
-        jPanel1.add(cmbCat, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, 220, -1));
+        jPanel1.add(cmbCat, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 100, 200, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
         );
 
         pack();
@@ -238,10 +226,8 @@ public class ProductoInventarioRegister_Mod extends javax.swing.JDialog {
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPrecio;
-    private javax.swing.JLabel lblStock;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;
-    private javax.swing.JTextField txtStock;
     // End of variables declaration//GEN-END:variables
 }

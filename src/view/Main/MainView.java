@@ -6,14 +6,13 @@ import view.Login.LoginView;
 import view.Producto.ProductoInventarioView;
 import view.Movimiento.MovimientoInventarioView;
 import view.Venta.VentaView;
-import view.Admin.AdminView;
 
 import javax.swing.*;
 import java.awt.*;
 import view.Admin.AdminView;
 import view.Compras.ComprasView;
-import view.Compras.ComprasVista;
 import view.Proveedor.ProveedorView;
+import view.Reporte.ReporteView;
 
 /**
  *
@@ -22,52 +21,58 @@ import view.Proveedor.ProveedorView;
 public class MainView extends javax.swing.JFrame {
 
     private final Usuario usuario;
+    private CardLayout cardLayout;
+    private UsuarioView usuarioView;
+    private ProductoInventarioView productoView;
+    private ComprasView comprasView;
+    private MovimientoInventarioView movimientoView;
+    private ProveedorView proveedorView;
+    private VentaView ventaView;
+    private AdminView adminView;
+    private ReporteView reporteView;
 
-    /**
-     * Creates new form MainVista
-     */
     public MainView(Usuario usuario) {
         this.usuario = usuario;
         initComponents();
+        iniciarVistas();
         inicio();
         setTitle("Sistema de Ventas");
         setLocationRelativeTo(null);
         showUsuarioView();
     }
 
+    private void iniciarVistas() {
+        usuarioView = new UsuarioView(usuario);
+        productoView = new ProductoInventarioView(usuario);
+        comprasView = new ComprasView(usuario);
+        movimientoView = new MovimientoInventarioView(usuario);
+        proveedorView = new ProveedorView(usuario);
+        ventaView = new VentaView(usuario);
+        adminView = new AdminView(usuario);
+        reporteView = new ReporteView(usuario);
+     
+        cardLayout = new CardLayout();
+        conPanel.setLayout(cardLayout);
+
+        conPanel.add(usuarioView, "usuario");
+        conPanel.add(productoView, "producto");
+        conPanel.add(comprasView, "compras");
+        conPanel.add(movimientoView, "movimiento");
+        conPanel.add(proveedorView, "proveedor");
+        conPanel.add(ventaView, "venta");
+        conPanel.add(adminView, "admin");
+        conPanel.add(reporteView, "reportes");
+    }
+
     private void inicio() {
-        btnUsuarios.addActionListener(e -> {
-            showUsuarioView();
-        });
-
-        btnVenta.addActionListener(e -> {
-            showVentaView();
-        });
-
-        btnProductos.addActionListener(e -> {
-            showProductoView();
-        });
-
-        btnCompras.addActionListener(e -> {
-            showComprasView();
-        });
-        
-        btnInventario.addActionListener(e -> {
-            showMovimientoView();
-        });
-        
-        btnProveedores.addActionListener(e -> {
-            showProveedorView();
-        });
-        
-        btnAdmin.addActionListener(e -> {
-            showAdminView();
-        });
-        
-        btnReportes.addActionListener(e -> {
-            showReportesView();
-        });
-        
+        btnUsuarios.addActionListener(e -> showUsuarioView());
+        btnVenta.addActionListener(e -> showVentaView());
+        btnProductos.addActionListener(e -> showProductoView());
+        btnCompras.addActionListener(e -> showComprasView());
+        btnInventario.addActionListener(e -> showMovimientoView());
+        btnProveedores.addActionListener(e -> showProveedorView());
+        btnAdmin.addActionListener(e -> showAdminView());
+        btnReportes.addActionListener(e -> showReportesView());
         btnSalir.addActionListener(e -> {
             dispose();
             new LoginView().setVisible(true);
@@ -84,68 +89,47 @@ public class MainView extends javax.swing.JFrame {
         btnEstilos(btnProductos, colorPrincipal, colorHover, textoBlanco, fuenteBoton);
         btnEstilos(btnProveedores, colorPrincipal, colorHover, textoBlanco, fuenteBoton);
         btnEstilos(btnReportes, colorPrincipal, colorHover, textoBlanco, fuenteBoton);
-        btnEstilos(btnSalir, new Color(120, 30, 20), new Color(160, 0, 0), Color.WHITE, fuenteBoton); // Botón rojo
+        btnEstilos(btnSalir, new Color(120, 30, 20), new Color(160, 0, 0), Color.WHITE, fuenteBoton);
         btnEstilos(btnUsuarios, colorPrincipal, colorHover, textoBlanco, fuenteBoton);
         btnEstilos(btnVenta, colorPrincipal, colorHover, textoBlanco, fuenteBoton);
     }
 
     private void showUsuarioView() {
-        conPanel.removeAll();
-        conPanel.add(new UsuarioView(usuario), BorderLayout.CENTER);
-        conPanel.revalidate();
-        conPanel.repaint();
+        usuarioView.refreshUsuarios();
+        cardLayout.show(conPanel, "usuario");
     }
 
     private void showProductoView() {
-        conPanel.removeAll();
-        conPanel.add(new ProductoInventarioView(usuario), BorderLayout.CENTER);
-        conPanel.revalidate();
-        conPanel.repaint();
+        productoView.refreshProductosInventario();
+        cardLayout.show(conPanel, "producto");
     }
-    
-    private void showComprasView(){
-        conPanel.removeAll();
-        conPanel.add(new ComprasView(usuario), BorderLayout.CENTER);
-        conPanel.revalidate();
-        conPanel.repaint();
+
+    private void showComprasView() {
+        cardLayout.show(conPanel, "compras");
     }
 
     private void showMovimientoView() {
-        conPanel.removeAll();
-        conPanel.add(new MovimientoInventarioView(usuario), BorderLayout.CENTER);
-        conPanel.revalidate();
-        conPanel.repaint();
+        movimientoView.refresh();
+        cardLayout.show(conPanel, "movimiento");
     }
-    
-    private void showProveedorView(){
-        conPanel.removeAll();
-        conPanel.add(new ProveedorView(usuario), BorderLayout.CENTER);
-        conPanel.revalidate();
-        conPanel.repaint();
+
+    private void showProveedorView() {
+        cardLayout.show(conPanel, "proveedor");
     }
 
     private void showVentaView() {
-        conPanel.removeAll();
-        conPanel.add(new VentaView(usuario), BorderLayout.CENTER);
-        conPanel.revalidate();
-        conPanel.repaint();
+        cardLayout.show(conPanel, "venta");
     }
-    
-    private void showAdminView(){
-        conPanel.removeAll();
-        conPanel.add(new AdminView(usuario), BorderLayout.CENTER);
-        conPanel.revalidate();
-        conPanel.repaint();
+
+    private void showAdminView() {
+        cardLayout.show(conPanel, "admin");
     }
-    
-    private void showReportesView(){
-        conPanel.removeAll();
-        conPanel.add(new ComprasVista(usuario), BorderLayout.CENTER);
-        conPanel.revalidate();
-        conPanel.repaint();
-    }
-    
-    
+
+    private void showReportesView() {
+    reporteView.refrescarGraficos(); 
+    cardLayout.show(conPanel, "reportes");
+}
+
 
     private void btnEstilos(JButton boton, Color fondo, Color fondoHover, Color texto, Font fuente) {
         boton.setFocusPainted(false);
@@ -169,6 +153,8 @@ public class MainView extends javax.swing.JFrame {
             }
         });
     }
+
+
 
 
     @SuppressWarnings("unchecked")

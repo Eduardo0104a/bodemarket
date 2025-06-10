@@ -29,7 +29,7 @@ public class UsuarioView extends javax.swing.JPanel {
 
     public UsuarioView(Usuario usuario) {
         this.usuario = usuario;
-        setBackground(new Color(233, 164, 157)); 
+        setBackground(new Color(233, 164, 157));
         initComponents();
         inicio();
         loadUsuarios();
@@ -62,18 +62,23 @@ public class UsuarioView extends javax.swing.JPanel {
         panelTituloBuscar.add(panelBuscar, BorderLayout.EAST);
         add(panelTituloBuscar, BorderLayout.NORTH);
 
-        tblUsuario = new JTable(new DefaultTableModel(
+        DefaultTableModel model = new DefaultTableModel(
                 new Object[][]{},
-                new String[]{"", "", "ID", "Nombre", "Apellido", "Correo Electrónico", "telefono", "UserName", "Rol"}
-        ));
+                new String[]{"", "", "ID", "Nombre", "Apellido", "Correo Electrónico", "Teléfono", "UserName", "Rol"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 0 || column == 1; 
+            }
+        };
+        tblUsuario = new JTable(model);
         tblUsuario.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tblUsuario.setRowHeight(32);
         tblUsuario.setForeground(Color.BLACK);
         tblUsuario.setBackground(new Color(233, 164, 157));
-        tblUsuario.setSelectionBackground(new Color(255, 153, 153)); 
+        tblUsuario.setSelectionBackground(new Color(255, 153, 153));
         tblUsuario.setSelectionForeground(Color.BLACK);
         tblUsuario.setGridColor(Color.LIGHT_GRAY);
-        DefaultTableModel model = (DefaultTableModel) tblUsuario.getModel();
         sorter = new TableRowSorter<>(model);
         tblUsuario.setRowSorter(sorter);
 

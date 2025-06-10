@@ -69,7 +69,12 @@ public class ProveedorView extends javax.swing.JPanel {
         tblProveedor = new JTable(new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"", "", "ID", "Nombre Prov.", "Correo", "Telefono", "RUC"}
-        ));
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 0 || column == 1;
+            }
+        });
         tblProveedor.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tblProveedor.setRowHeight(32);
         tblProveedor.setForeground(Color.BLACK);
@@ -97,12 +102,39 @@ public class ProveedorView extends javax.swing.JPanel {
         eliminarColumn.setCellRenderer(new IconButtonRenderer());
         eliminarColumn.setCellEditor(new IconButtonEditor(new JCheckBox(), tblProveedor, usuario, this));
         eliminarColumn.setMaxWidth(35);
-        
+
         JScrollPane scrollPane = new JScrollPane(tblProveedor);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getViewport().setBackground(Color.WHITE);
         add(scrollPane, BorderLayout.CENTER);
 
+        txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filtrar();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filtrar();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                filtrar();
+            }
+        });
+    }
+
+    private void filtrar() {
+        if (sorter != null) {
+            String texto = txtBuscar.getText();
+            if (texto.trim().isEmpty()) {
+                sorter.setRowFilter(null);
+            } else {
+                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+            }
+        }
     }
 
     private void loadProveedor() {
@@ -133,10 +165,12 @@ public class ProveedorView extends javax.swing.JPanel {
 
         loadProveedor();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

@@ -19,6 +19,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -35,6 +36,7 @@ public class AdminView extends javax.swing.JPanel {
     private UsuarioView usuarioView;
     private int id;
     private AdminView adminVista;
+    private DefaultTableModel modeloTabla;
 
     public AdminView(Usuario usuario) {
         this.usuario = usuario;
@@ -53,10 +55,10 @@ public class AdminView extends javax.swing.JPanel {
     private void estilosUsuario() {
 
         Font labelFont = new Font("Segoe UI", Font.BOLD, 14);
-        Color labelColor = new Color(120, 30, 20);
+        Color labelColor = Color.BLACK;
 
         lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        lblTitulo.setForeground(labelColor);
+        lblTitulo.setForeground(new Color(120, 30, 20));
 
         lblNombre.setFont(labelFont);
         lblNombre.setForeground(labelColor);
@@ -131,7 +133,7 @@ public class AdminView extends javax.swing.JPanel {
         tblUsuario.setSelectionBackground(new Color(255, 153, 153));
         tblUsuario.setSelectionForeground(Color.BLACK);
         tblUsuario.setGridColor(Color.LIGHT_GRAY);
-
+        
         JTableHeader header = tblUsuario.getTableHeader();
         header.setFont(new Font("Segoe UI", Font.BOLD, 13));
         header.setBackground(new Color(120, 30, 20));
@@ -158,15 +160,14 @@ public class AdminView extends javax.swing.JPanel {
                 contentBorderInsets = new Insets(0, 0, 0, 0);
             }
         });
-
     }
 
     private void estilosProducto() {
         Font labelFont = new Font("Segoe UI", Font.BOLD, 14);
-        Color labelColor = new Color(120, 30, 20);
+        Color labelColor = Color.BLACK;
 
         lblTituloProducto.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        lblTituloProducto.setForeground(labelColor);
+        lblTituloProducto.setForeground(new Color(120, 30, 20));
 
         lblProducto.setFont(labelFont);
         lblProducto.setForeground(labelColor);
@@ -176,7 +177,7 @@ public class AdminView extends javax.swing.JPanel {
 
         lblPrecio.setFont(labelFont);
         lblPrecio.setForeground(labelColor);
-        
+
         lblPrecioCompra.setFont(labelFont);
         lblPrecioCompra.setForeground(labelColor);
 
@@ -203,20 +204,20 @@ public class AdminView extends javax.swing.JPanel {
 
         txtPrecio.setFont(textFont);
         txtPrecio.setBorder(textBorder);
-        
+
         txtPrecioCompra.setFont(textFont);
         txtPrecioCompra.setBorder(textBorder);
-        
+
         cmbCategoria.setFont(textFont);
         cmbCategoria.setBackground(Color.WHITE);
         cmbCategoria.setForeground(labelColor);
         cmbCategoria.setBorder(BorderFactory.createLineBorder(new Color(188, 47, 33), 2));
-        
+
         cmbProveedor.setFont(textFont);
         cmbProveedor.setBackground(Color.WHITE);
         cmbProveedor.setForeground(labelColor);
         cmbProveedor.setBorder(BorderFactory.createLineBorder(new Color(188, 47, 33), 2));
-        
+
         cmbMedida.setFont(textFont);
         cmbMedida.setBackground(Color.WHITE);
         cmbMedida.setForeground(labelColor);
@@ -258,7 +259,7 @@ public class AdminView extends javax.swing.JPanel {
             scroll.getViewport().setBackground(Color.WHITE);
         }
     }
-
+    
     private void boton(JButton boton) {
         boton.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -395,7 +396,15 @@ public class AdminView extends javax.swing.JPanel {
             new String [] {
                 "Nombre", "Apellido", "Usuario", "Rol"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblUsuario.setGridColor(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(tblUsuario);
 
@@ -470,7 +479,15 @@ public class AdminView extends javax.swing.JPanel {
             new String [] {
                 "Nombre Producto", "Descripcion", "Categoria", "Precio Compra (S/.)"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblProducto.setGridColor(new java.awt.Color(255, 255, 255));
         jScrollPane2.setViewportView(tblProducto);
 
@@ -611,8 +628,8 @@ public class AdminView extends javax.swing.JPanel {
                     "Éxito",
                     JOptionPane.INFORMATION_MESSAGE);
 
-            refreshProductos();  
-            limpiarCamposProducto(); 
+            refreshProductos();
+            limpiarCamposProducto();
         } else {
             JOptionPane.showMessageDialog(this,
                     "Error: No se pudo registrar el producto. Código: " + errorCode,

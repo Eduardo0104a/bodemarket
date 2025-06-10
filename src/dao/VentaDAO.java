@@ -15,6 +15,9 @@ import java.util.List;
 import java.sql.CallableStatement;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  *
@@ -186,7 +189,7 @@ public class VentaDAO {
         return ventas;
     }
 
-   public Venta obtenerVentaPorId(int id) {
+    public Venta obtenerVentaPorId(int id) {
         Venta venta = null;
         Connection conn = null;
         CallableStatement stmt = null;
@@ -216,6 +219,122 @@ public class VentaDAO {
         }
 
         return venta;
+    }
+
+    public Map<String, Double> obtenerVentasPorCategoria() {
+        Connection conn = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+        Map<String, Double> ventasPorCategoria = new HashMap<>();
+
+        try {
+            DBConnection conexionSQL = new DBConnection();
+            conn = conexionSQL.getConnection();
+
+            String query = "{CALL sp_ventas_por_categoria()}";
+            stmt = conn.prepareCall(query);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String categoria = rs.getString("categoria");
+                double total = rs.getDouble("total_ventas");
+                ventasPorCategoria.put(categoria, total);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBConnection.close(conn, stmt, rs);
+        }
+
+        return ventasPorCategoria;
+    }
+
+    public Map<String, Double> obtenerVentasPorMes() {
+        Connection conn = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+        Map<String, Double> datos = new LinkedHashMap<>();
+
+        try {
+            DBConnection conexionSQL = new DBConnection();
+            conn = conexionSQL.getConnection();
+
+            String query = "{CALL sp_ventas_por_mes()}";
+            stmt = conn.prepareCall(query);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String mes = rs.getString("mes");
+                double total = rs.getDouble("total_ventas");
+                datos.put(mes, total);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBConnection.close(conn, stmt, rs);
+        }
+
+        return datos;
+    }
+
+    public Map<String, Double> obtenerVentasPorDia() {
+        Connection conn = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+        Map<String, Double> datos = new LinkedHashMap<>();
+
+        try {
+            DBConnection conexionSQL = new DBConnection();
+            conn = conexionSQL.getConnection();
+
+            String query = "{CALL sp_ventas_por_dia()}";
+            stmt = conn.prepareCall(query);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String dia = rs.getString("dia");
+                double total = rs.getDouble("total_ventas");
+                datos.put(dia, total);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBConnection.close(conn, stmt, rs);
+        }
+
+        return datos;
+    }
+
+    public Map<String, Integer> obtenerProductosMasVendidos() {
+        Connection conn = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+        Map<String, Integer> datos = new LinkedHashMap<>();
+
+        try {
+            DBConnection conexionSQL = new DBConnection();
+            conn = conexionSQL.getConnection();
+
+            String query = "{CALL sp_productos_mas_vendidos()}";
+            stmt = conn.prepareCall(query);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String nombreProducto = rs.getString("producto");
+                int totalVendido = rs.getInt("total_vendido");
+                datos.put(nombreProducto, totalVendido);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBConnection.close(conn, stmt, rs);
+        }
+
+        return datos;
     }
 
 }

@@ -55,44 +55,41 @@ public class UsuarioRegister_Modf extends javax.swing.JDialog {
         btnCancelar = new javax.swing.JButton();
         txtTelefono = new javax.swing.JTextField();
         txtUsuario = new javax.swing.JTextField();
+        lblApellido1 = new javax.swing.JLabel();
+        lblContraseña1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setFocusTraversalPolicyProvider(true);
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(175, 18, 128));
+        jPanel1.setBackground(new java.awt.Color(233, 164, 157));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, 220, -1));
+        jPanel1.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 190, 160, -1));
 
         lblNombre.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        lblNombre.setForeground(new java.awt.Color(255, 255, 255));
         lblNombre.setText("Nombre:");
         jPanel1.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
 
         lblApellido.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        lblApellido.setForeground(new java.awt.Color(255, 255, 255));
-        lblApellido.setText("Apellido:");
-        jPanel1.add(lblApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
+        lblApellido.setText("Telefono:");
+        jPanel1.add(lblApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 120, -1, -1));
 
         lblCorreo.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        lblCorreo.setForeground(new java.awt.Color(255, 255, 255));
         lblCorreo.setText("Correo Electronico:");
-        jPanel1.add(lblCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
+        jPanel1.add(lblCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
 
         lblContraseña.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        lblContraseña.setForeground(new java.awt.Color(255, 255, 255));
-        lblContraseña.setText("Contraseña:");
-        jPanel1.add(lblContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, -1, -1));
+        lblContraseña.setText("Usuario");
+        jPanel1.add(lblContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
 
         lblRol.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        lblRol.setForeground(new java.awt.Color(255, 255, 255));
         lblRol.setText("Rol:");
-        jPanel1.add(lblRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, -1, -1));
-        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 60, 220, -1));
-        jPanel1.add(txtApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 220, -1));
-        jPanel1.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 220, -1));
+        jPanel1.add(lblRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, -1, -1));
+        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 60, 180, -1));
+        jPanel1.add(txtApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 60, 160, -1));
+        jPanel1.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, 180, -1));
 
-        jPanel1.add(cmbRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 310, 220, -1));
+        jPanel1.add(cmbRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 260, 180, -1));
 
         btnGuardar.setBackground(new java.awt.Color(255, 238, 0));
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-lazo-marcapáginas-24.png"))); // NOI18N
@@ -102,7 +99,7 @@ public class UsuarioRegister_Modf extends javax.swing.JDialog {
                 btnGuardarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 410, -1, -1));
+        jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, -1, -1));
 
         btnCancelar.setBackground(new java.awt.Color(255, 238, 0));
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-eliminar-24 (1).png"))); // NOI18N
@@ -112,19 +109,27 @@ public class UsuarioRegister_Modf extends javax.swing.JDialog {
                 btnCancelarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 410, -1, -1));
-        jPanel1.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 180, 220, -1));
-        jPanel1.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, 210, -1));
+        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 330, -1, -1));
+        jPanel1.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 120, 160, -1));
+        jPanel1.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 190, 180, -1));
+
+        lblApellido1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        lblApellido1.setText("Apellido:");
+        jPanel1.add(lblApellido1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, -1, -1));
+
+        lblContraseña1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        lblContraseña1.setText("Contraseña:");
+        jPanel1.add(lblContraseña1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 190, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
         );
 
         pack();
@@ -207,7 +212,9 @@ public class UsuarioRegister_Modf extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> cmbRol;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblApellido;
+    private javax.swing.JLabel lblApellido1;
     private javax.swing.JLabel lblContraseña;
+    private javax.swing.JLabel lblContraseña1;
     private javax.swing.JLabel lblCorreo;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblRol;

@@ -53,33 +53,49 @@ public class VentaView extends javax.swing.JPanel {
 
     private void inicio() {
         setLayout(new BorderLayout());
-
-        // Panel superior con campo de búsqueda y botones
         JPanel panelSuperior = new JPanel(new BorderLayout());
         panelSuperior.setBackground(Color.WHITE);
 
         txtBuscar = new JTextField();
         txtBuscar.setPreferredSize(new Dimension(250, 30));
-        txtBuscar.setFont(new Font("SansSerif", Font.PLAIN, 14)); // Usamos SansSerif por compatibilidad
+        txtBuscar.setFont(new Font("SansSerif", Font.PLAIN, 14));
         txtBuscar.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(188, 47, 33), 2),
                 BorderFactory.createEmptyBorder(5, 10, 5, 10)
         ));
 
-        // Panel de búsqueda
         JPanel panelBuscar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelBuscar.setOpaque(false);
         panelBuscar.add(txtBuscar);
 
-        // Botones arriba
         btnInsertar = new JButton("Insertar");
         btnVoucher = new JButton("Voucher");
 
-        btnInsertar.setBackground(new Color(255, 238, 0));
-        btnInsertar.setForeground(new Color(175, 18, 128));
+        Color colorFondo = new Color(255, 238, 0); 
+        Color colorTexto = new Color(175, 18, 128);
+        Color colorHover = new Color(255, 215, 0); 
 
-        btnVoucher.setBackground(new Color(255, 238, 0));
-        btnVoucher.setForeground(new Color(175, 18, 128));
+        for (JButton btn : new JButton[]{btnInsertar, btnVoucher}) {
+            btn.setBackground(colorFondo);
+            btn.setForeground(colorTexto);
+            btn.setFocusPainted(false); 
+            btn.setBorderPainted(false);
+            btn.setContentAreaFilled(true); 
+            btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR)); 
+
+            btn.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(colorHover);
+                }
+
+                @Override
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(colorFondo);
+                }
+            });
+        }
 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelBotones.setOpaque(false);
@@ -100,10 +116,16 @@ public class VentaView extends javax.swing.JPanel {
         lblTablaVentas.setForeground(new Color(120, 30, 20));
         lblTablaVentas.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 0));
 
-        tblVenta = new JTable(new DefaultTableModel(
+        DefaultTableModel modelVenta = new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"ID Venta", "Vendedor", "Fecha", "Total"}
-        ));
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tblVenta = new JTable(modelVenta);
         tblVenta.setFont(new Font("SansSerif", Font.PLAIN, 13));
         tblVenta.setRowHeight(32);
         tblVenta.setForeground(Color.BLACK);
@@ -112,20 +134,21 @@ public class VentaView extends javax.swing.JPanel {
         tblVenta.setSelectionForeground(Color.BLACK);
         tblVenta.setGridColor(Color.LIGHT_GRAY);
         tblVenta.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        DefaultTableModel modelVenta = (DefaultTableModel) tblVenta.getModel();
         sorter = new TableRowSorter<>(modelVenta);
         tblVenta.setRowSorter(sorter);
 
         txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
             public void insertUpdate(DocumentEvent e) {
                 filtrar();
             }
 
+            @Override
             public void removeUpdate(DocumentEvent e) {
                 filtrar();
             }
 
+            @Override
             public void changedUpdate(DocumentEvent e) {
                 filtrar();
             }
@@ -153,10 +176,17 @@ public class VentaView extends javax.swing.JPanel {
         lblTablaDetalle.setForeground(new Color(175, 18, 128));
         lblTablaDetalle.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 0));
 
-        tblDetalleVenta = new JTable(new DefaultTableModel(
+        DefaultTableModel modelDetalleVenta = new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"ID Detalle", "ID Venta", "Producto", "Cantidad", "Precio Unitario", "SubTotal"}
-        ));
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        tblDetalleVenta = new JTable(modelDetalleVenta);
         tblDetalleVenta.setFont(new Font("SansSerif", Font.PLAIN, 13));
         tblDetalleVenta.setRowHeight(30);
         tblDetalleVenta.setForeground(new Color(75, 0, 130));
@@ -175,13 +205,11 @@ public class VentaView extends javax.swing.JPanel {
         panelDetalle.add(lblTablaDetalle, BorderLayout.NORTH);
         panelDetalle.add(new JScrollPane(tblDetalleVenta), BorderLayout.CENTER);
 
-        // Panel dividido
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelVenta, panelDetalle);
         splitPane.setDividerLocation(500);
         splitPane.setResizeWeight(0.5);
         add(splitPane, BorderLayout.CENTER);
 
-        // Acciones de botones
         btnInsertar.addActionListener(e -> abrirFormularioRegistro());
         btnVoucher.addActionListener(e -> exportarVoucher());
     }

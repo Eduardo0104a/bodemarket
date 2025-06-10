@@ -71,18 +71,18 @@ public class VentaView extends javax.swing.JPanel {
         btnInsertar = new JButton("Insertar");
         btnVoucher = new JButton("Voucher");
 
-        Color colorFondo = new Color(255, 238, 0); 
+        Color colorFondo = new Color(255, 238, 0);
         Color colorTexto = new Color(175, 18, 128);
-        Color colorHover = new Color(255, 215, 0); 
+        Color colorHover = new Color(255, 215, 0);
 
         for (JButton btn : new JButton[]{btnInsertar, btnVoucher}) {
             btn.setBackground(colorFondo);
             btn.setForeground(colorTexto);
-            btn.setFocusPainted(false); 
+            btn.setFocusPainted(false);
             btn.setBorderPainted(false);
-            btn.setContentAreaFilled(true); 
+            btn.setContentAreaFilled(true);
             btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
-            btn.setCursor(new Cursor(Cursor.HAND_CURSOR)); 
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
             btn.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
@@ -296,59 +296,71 @@ public class VentaView extends javax.swing.JPanel {
         String fileName = "Voucher_Venta_" + idVenta + ".pdf";
         File file = new File(folder, fileName);
 
-        Document document = new Document(PageSize.A4);
+        Document document = new Document(PageSize.A4, 40, 40, 50, 50);
         try (FileOutputStream fos = new FileOutputStream(file)) {
-            PdfWriter writer = PdfWriter.getInstance(document, fos);
+            PdfWriter.getInstance(document, fos);
             document.open();
 
-            PdfPTable table = new PdfPTable(2);
-            table.setWidthPercentage(100);
-            float[] columnWidths = {4f, 1f};
-            table.setWidths(columnWidths);
+            Paragraph titulo = new Paragraph("COMPROBANTE DE VENTA",
+                    FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.BLACK));
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            titulo.setSpacingAfter(20);
+            document.add(titulo);
 
-            PdfPCell contentCell = new PdfPCell();
-            contentCell.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
-            contentCell.setPadding(10);
+            PdfPTable infoTable = new PdfPTable(2);
+            infoTable.setWidths(new float[]{1, 2});
+            infoTable.setWidthPercentage(100);
+            infoTable.setSpacingAfter(20);
 
-            Paragraph title = new Paragraph("Voucher", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16));
-            title.setAlignment(Element.ALIGN_CENTER);
-            contentCell.addElement(title);
-            contentCell.addElement(Chunk.NEWLINE);
+            infoTable.addCell(getCell("ID Venta:", PdfPCell.ALIGN_LEFT, true));
+            infoTable.addCell(getCell(String.valueOf(idVenta), PdfPCell.ALIGN_LEFT, false));
 
-            Paragraph ventaInfo = new Paragraph(
-                    String.format("ID Venta: %d\nVendedor: %s\nFecha: %s\nTotal: %.2f",
-                            idVenta, vendedor, fecha, total),
-                    FontFactory.getFont(FontFactory.HELVETICA, 12)
-            );
-            ventaInfo.setSpacingBefore(10);
-            ventaInfo.setSpacingAfter(10);
-            contentCell.addElement(ventaInfo);
+            infoTable.addCell(getCell("Vendedor:", PdfPCell.ALIGN_LEFT, true));
+            infoTable.addCell(getCell(vendedor, PdfPCell.ALIGN_LEFT, false));
+
+            infoTable.addCell(getCell("Fecha:", PdfPCell.ALIGN_LEFT, true));
+            infoTable.addCell(getCell(fecha, PdfPCell.ALIGN_LEFT, false));
+
+            infoTable.addCell(getCell("Total:", PdfPCell.ALIGN_LEFT, true));
+            infoTable.addCell(getCell(String.format("S/ %.2f", total), PdfPCell.ALIGN_LEFT, false));
+
+            document.add(infoTable);
+
+            Paragraph detalleTitulo = new Paragraph("DETALLE DE PRODUCTOS",
+                    FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14));
+            detalleTitulo.setAlignment(Element.ALIGN_LEFT);
+            detalleTitulo.setSpacingAfter(10);
+            document.add(detalleTitulo);
 
             PdfPTable detalleTable = new PdfPTable(detalleModel.getColumnCount());
             detalleTable.setWidthPercentage(100);
+            detalleTable.setSpacingBefore(5);
+            detalleTable.setSpacingAfter(20);
 
             for (int i = 0; i < detalleModel.getColumnCount(); i++) {
-                PdfPCell headerCell = new PdfPCell(new Phrase(detalleModel.getColumnName(i)));
-                headerCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                PdfPCell headerCell = new PdfPCell(new Phrase(detalleModel.getColumnName(i),
+                        FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11)));
+                headerCell.setBackgroundColor(new BaseColor(230, 230, 250));
+                headerCell.setPadding(8);
                 detalleTable.addCell(headerCell);
             }
 
             for (int i = 0; i < detalleModel.getRowCount(); i++) {
                 for (int j = 0; j < detalleModel.getColumnCount(); j++) {
-                    detalleTable.addCell(detalleModel.getValueAt(i, j).toString());
+                    PdfPCell dataCell = new PdfPCell(new Phrase(detalleModel.getValueAt(i, j).toString(),
+                            FontFactory.getFont(FontFactory.HELVETICA, 10)));
+                    dataCell.setPadding(6);
+                    detalleTable.addCell(dataCell);
                 }
             }
 
-            contentCell.addElement(detalleTable);
+            document.add(detalleTable);
 
-            PdfPCell imageCell = new PdfPCell();
-            imageCell.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
-            imageCell.setPadding(10);
-
-            table.addCell(contentCell);
-            table.addCell(imageCell);
-
-            document.add(table);
+            Paragraph gracias = new Paragraph("¡Gracias por su compra!",
+                    FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 12, BaseColor.DARK_GRAY));
+            gracias.setAlignment(Element.ALIGN_CENTER);
+            gracias.setSpacingBefore(30);
+            document.add(gracias);
 
             document.close();
             JOptionPane.showMessageDialog(this, "Voucher exportado correctamente.");
@@ -356,6 +368,18 @@ public class VentaView extends javax.swing.JPanel {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al exportar el voucher: " + e.getMessage());
         }
+    }
+
+    private PdfPCell getCell(String text, int alignment, boolean bold) {
+        com.itextpdf.text.Font font = bold
+                ? FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11)
+                : FontFactory.getFont(FontFactory.HELVETICA, 11);
+
+        PdfPCell cell = new PdfPCell(new Phrase(text, font));
+        cell.setHorizontalAlignment(alignment);
+        cell.setBorder(com.itextpdf.text.Rectangle.NO_BORDER); 
+        cell.setPadding(5);
+        return cell;
     }
 
     public void refreshVentas() {

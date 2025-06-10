@@ -28,7 +28,7 @@ CREATE TABLE `categoria` (
   `id_categoria` int NOT NULL AUTO_INCREMENT,
   `descripcion_categoria` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `categoria` (
 
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (1,'Gaseosas'),(2,'Bebidas'),(3,'Lácteos'),(4,'Snacks');
+INSERT INTO `categoria` VALUES (1,'Gaseosas'),(2,'Bebidas'),(3,'Lácteos'),(4,'Snacks'),(5,'Abarrotes'),(6,'Limpieza'),(7,'Panadería'),(8,'Conservas'),(9,'Cuidado Personal'),(10,'Golosinas');
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -56,7 +56,7 @@ CREATE TABLE `compra` (
   PRIMARY KEY (`id_compra`),
   KEY `id_proveedor` (`id_proveedor`),
   CONSTRAINT `compra_ibfk_1` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor` (`id_proveedor`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +65,7 @@ CREATE TABLE `compra` (
 
 LOCK TABLES `compra` WRITE;
 /*!40000 ALTER TABLE `compra` DISABLE KEYS */;
-INSERT INTO `compra` VALUES (1,1,'2025-06-09 00:00:00',12.60),(2,1,'2025-06-09 00:00:00',8.40),(3,1,'2025-06-09 00:00:00',8.40),(4,1,'2025-06-09 00:00:00',8.40),(5,1,'2025-06-09 00:00:00',8.40),(6,1,'2025-06-09 00:00:00',8.40),(7,1,'2025-06-09 00:00:00',8.40),(8,1,'2025-06-09 00:00:00',42.00),(9,1,'2025-06-09 00:00:00',63.00),(10,2,'2025-06-09 00:00:00',42.00),(11,2,'2025-06-09 00:00:00',4.20),(12,3,'2025-06-09 00:00:00',110.00),(13,1,'2025-06-09 00:00:00',0.00);
+INSERT INTO `compra` VALUES (1,1,'2025-06-10 00:00:00',160.00),(2,2,'2025-06-10 00:00:00',540.00),(3,3,'2025-06-10 00:00:00',405.00);
 /*!40000 ALTER TABLE `compra` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,7 +88,7 @@ CREATE TABLE `detalle_compra` (
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `detalle_compra_ibfk_1` FOREIGN KEY (`id_compra`) REFERENCES `compra` (`id_compra`),
   CONSTRAINT `detalle_compra_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +97,7 @@ CREATE TABLE `detalle_compra` (
 
 LOCK TABLES `detalle_compra` WRITE;
 /*!40000 ALTER TABLE `detalle_compra` DISABLE KEYS */;
-INSERT INTO `detalle_compra` VALUES (1,7,6,2,4.20,0.00),(2,8,6,10,4.20,0.00),(3,9,6,10,4.20,0.00),(4,9,6,5,4.20,0.00),(5,10,6,10,4.20,0.00),(6,11,6,1,4.20,0.00),(7,12,11,20,5.50,0.00);
+INSERT INTO `detalle_compra` VALUES (1,1,1,10,16.00,0.00),(2,2,2,20,18.00,0.00),(3,2,3,30,6.00,0.00),(4,3,4,20,7.50,0.00),(5,3,5,15,17.00,0.00);
 /*!40000 ALTER TABLE `detalle_compra` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -120,7 +120,7 @@ CREATE TABLE `detalle_venta` (
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `detalle_venta_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`),
   CONSTRAINT `detalle_venta_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +129,7 @@ CREATE TABLE `detalle_venta` (
 
 LOCK TABLES `detalle_venta` WRITE;
 /*!40000 ALTER TABLE `detalle_venta` DISABLE KEYS */;
-INSERT INTO `detalle_venta` VALUES (11,11,6,4,50.00,200.00),(12,11,11,4,5.50,22.00),(13,12,6,1,50.00,50.00),(14,12,11,2,5.50,11.00),(15,13,6,1,50.00,50.00),(16,13,11,1,5.50,5.50);
+INSERT INTO `detalle_venta` VALUES (1,1,4,4,7.50,30.00),(2,1,3,1,6.00,6.00),(3,1,2,1,18.00,18.00),(4,1,5,1,17.00,17.00);
 /*!40000 ALTER TABLE `detalle_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,7 +156,7 @@ CREATE TABLE `inventario` (
   CONSTRAINT `fk_medida` FOREIGN KEY (`id_medida`) REFERENCES `medidas` (`id_medida`),
   CONSTRAINT `fk_proveedor` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor` (`id_proveedor`),
   CONSTRAINT `inventario_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +165,7 @@ CREATE TABLE `inventario` (
 
 LOCK TABLES `inventario` WRITE;
 /*!40000 ALTER TABLE `inventario` DISABLE KEYS */;
-INSERT INTO `inventario` VALUES (6,6,32,1,1,1),(11,11,13,3,3,2);
+INSERT INTO `inventario` VALUES (1,1,10,5,1,7),(2,2,19,5,2,7),(3,3,29,5,2,6),(4,4,16,3,3,2),(5,5,14,3,3,9),(6,6,0,2,4,4),(7,7,0,2,4,2),(8,8,0,6,5,2),(9,9,0,6,5,10),(10,10,0,8,7,5),(11,11,0,8,7,5),(12,12,0,10,8,7),(13,13,0,5,9,5),(14,14,0,5,9,5);
 /*!40000 ALTER TABLE `inventario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -181,7 +181,7 @@ CREATE TABLE `medidas` (
   `nombre` varchar(20) DEFAULT NULL,
   `nombre_corto` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id_medida`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -190,7 +190,7 @@ CREATE TABLE `medidas` (
 
 LOCK TABLES `medidas` WRITE;
 /*!40000 ALTER TABLE `medidas` DISABLE KEYS */;
-INSERT INTO `medidas` VALUES (1,'Unidad','u'),(2,'Litro','L'),(3,'Kilogramo','kg');
+INSERT INTO `medidas` VALUES (1,'Unidad','u'),(2,'Litro','L'),(3,'Kilogramo','kg'),(4,'Mililitro','ml'),(5,'Gramo','g'),(6,'Paquete','pqt'),(7,'Bolsa','bol'),(8,'Docena','dz'),(9,'Caja','cj'),(10,'Galón','gal');
 /*!40000 ALTER TABLE `medidas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,7 +211,7 @@ CREATE TABLE `movimiento_inventario` (
   PRIMARY KEY (`id_movimiento`),
   KEY `id_inventario` (`id_inventario`),
   CONSTRAINT `movimiento_inventario_ibfk_1` FOREIGN KEY (`id_inventario`) REFERENCES `inventario` (`id_inventario`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,7 +220,7 @@ CREATE TABLE `movimiento_inventario` (
 
 LOCK TABLES `movimiento_inventario` WRITE;
 /*!40000 ALTER TABLE `movimiento_inventario` DISABLE KEYS */;
-INSERT INTO `movimiento_inventario` VALUES (10,6,'E',2,'2025-06-09','Entrada por compra'),(11,6,'E',10,'2025-06-09','Entrada por compra'),(12,6,'E',10,'2025-06-09','Entrada por compra'),(13,6,'E',5,'2025-06-09','Entrada por compra'),(14,6,'E',10,'2025-06-09','Entrada por compra'),(15,6,'E',1,'2025-06-09','Entrada por compra'),(16,11,'E',20,'2025-06-09','Entrada por compra'),(17,6,'S',4,'2025-06-09','Salida'),(18,11,'S',4,'2025-06-09','Salida'),(19,6,'S',1,'2025-06-09','Salida'),(20,11,'S',2,'2025-06-09','Salida'),(21,6,'S',1,'2025-06-09','Salida'),(22,11,'S',1,'2025-06-09','Salida');
+INSERT INTO `movimiento_inventario` VALUES (1,1,'E',10,'2025-06-10','Entrada por compra'),(2,2,'E',20,'2025-06-10','Entrada por compra'),(3,3,'E',30,'2025-06-10','Entrada por compra'),(4,4,'E',20,'2025-06-10','Entrada por compra'),(5,5,'E',15,'2025-06-10','Entrada por compra'),(6,4,'S',4,'2025-06-10','Salida por venta'),(7,3,'S',1,'2025-06-10','Salida por venta'),(8,2,'S',1,'2025-06-10','Salida por venta'),(9,5,'S',1,'2025-06-10','Salida por venta');
 /*!40000 ALTER TABLE `movimiento_inventario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -238,7 +238,7 @@ CREATE TABLE `producto` (
   `precio` decimal(10,2) NOT NULL,
   `precio_compra` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id_producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -247,7 +247,7 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` VALUES (6,'Coca Cola 600ml','Bebida Sola',50.00,4.20),(11,'Gloria','Leche gloria',5.50,5.50);
+INSERT INTO `producto` VALUES (1,'Azúcar rubia 5 kg','Azúcar rubia granulada en bolsa',16.00,16.00),(2,'Arroz Superior 5 kg','Arroz extra superior ideal para consumo diario',18.00,18.00),(3,'Fideos Tornillo 1 kg','Pasta de trigo en presentación tornillo',6.00,6.00),(4,'Yogurt Fresa 1L','Yogurt sabor fresa en presentación de litro',7.50,7.50),(5,'Leche Evaporada x6','Pack de 6 latas de leche evaporada',17.00,17.00),(6,'Refresco de Cebada 500 ml','Bebida tradicional andina refrescante',3.00,3.00),(7,'Chicha Morada 1L','Bebida de maíz morado lista para consumir',4.50,4.50),(8,'Detergente Líquido 3L','Detergente líquido para ropa',19.00,19.00),(9,'Lejía Clásica 1 galón','Desinfectante multiuso para el hogar',9.50,9.50),(10,'Atún en Aceite 170g','Lata de atún conservado en aceite',5.20,5.20),(11,'Sardinas en Tomate 120g','Conserva de sardinas en salsa de tomate',4.00,4.00),(12,'Caramelos surtidos 1kg','Bolsa de caramelos surtidos',9.00,9.00),(13,'Mayonesa 500g','Mayonesa cremosa en sachet',4.20,4.20),(14,'Ketchup 400g','Salsa ketchup clásica',3.80,3.80);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,7 +266,7 @@ CREATE TABLE `proveedor` (
   `ruc` varchar(15) NOT NULL,
   PRIMARY KEY (`id_proveedor`),
   UNIQUE KEY `ruc` (`ruc`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -275,7 +275,7 @@ CREATE TABLE `proveedor` (
 
 LOCK TABLES `proveedor` WRITE;
 /*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
-INSERT INTO `proveedor` VALUES (1,'COCA COLA','cocacola@example.com','990990990','9080102'),(2,'Distribuidora Lima S.A.','contacto@dls.pe','999-111-111','20512345671'),(3,'Lácteos Andinos SAC','ventas@andinos.pe','988-222-222','20598765432'),(4,'SnackWorld EIRL','info@snackworld.pe','977-333-333','20654321987');
+INSERT INTO `proveedor` VALUES (1,'Distribuidora Santa Rosa S.A.C.','ventas@santarosa.pe','987123456','20654321098'),(2,'Abarrotes El Buen Precio','contacto@buenprecio.com','912345678','20765432109'),(3,'Productos La Colina E.I.R.L.','lacolina@proveedores.pe','956789432','20543210987'),(4,'Bebidas Andinas S.A.C.','andinas@bebidas.pe','934567821','20432109876'),(5,'Limpia Hogar Perú S.R.L.','ventas@limpiahogar.pe','945612378','20876543210'),(6,'Mayorista Norte Chico','nortechico@mayoristas.com','922334455','20321098765'),(7,'Conservas El Marino','elmarino@productos.pe','911223344','20987654321'),(8,'Dulces y Snacks S.A.','snacks@dulces.pe','955667799','20210987654'),(9,'Distribuciones Don Pepe','donpepe@proveedores.pe','987665544','20678900123'),(10,'Papelería y Más E.I.R.L.','papeleria@ymas.com','923456789','20450012345');
 /*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -297,7 +297,7 @@ CREATE TABLE `usuario` (
   `rol` enum('admin','vendedor') NOT NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `nombre_usuario` (`nombre_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -306,7 +306,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Eduardo','Ayala','eduardo@example','922172475','eduardo0104','1234','admin'),(6,'example','example','example.com','909909909','example','123','vendedor'),(17,'asd','asd','asd@asd','12313','asd','asd','vendedor');
+INSERT INTO `usuario` VALUES (1,'Eduardo','Ayala','eduardo@gmail.com','922172475','eduardo0104','1234','admin');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -325,7 +325,7 @@ CREATE TABLE `venta` (
   PRIMARY KEY (`id_venta`),
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -334,7 +334,7 @@ CREATE TABLE `venta` (
 
 LOCK TABLES `venta` WRITE;
 /*!40000 ALTER TABLE `venta` DISABLE KEYS */;
-INSERT INTO `venta` VALUES (11,'2025-06-09 00:00:00',1,222.00),(12,'2025-06-09 00:00:00',1,61.00),(13,'2025-06-09 00:00:00',1,55.50);
+INSERT INTO `venta` VALUES (1,'2025-06-10 00:00:00',1,71.00);
 /*!40000 ALTER TABLE `venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -374,271 +374,6 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'bodemarketv1'
 --
-/*!50003 DROP PROCEDURE IF EXISTS `actualizarProveedor` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarProveedor`(
-    IN p_id INT,
-    IN p_nombre VARCHAR(100),
-    IN p_correo VARCHAR(100),
-    IN p_telefono VARCHAR(20),
-    IN p_ruc VARCHAR(15)
-)
-BEGIN
-    UPDATE proveedor
-    SET nombre = p_nombre,
-        correo = p_correo,
-        telefono = p_telefono,
-        ruc = p_ruc
-    WHERE id_proveedor = p_id;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `actualizar_categoria` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_categoria`(
-	IN p_idCategoria int,
-    IN p_descripcion VARCHAR(100)
-)
-BEGIN
-    UPDATE categoria 
-    SET descripcion = p_descripcion
-	where id_categoria = p_idCategoria;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `actualizar_usuario` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_usuario`(
-    IN p_id_usuario INT,
-    IN p_nombre VARCHAR(100),
-    IN p_apellido VARCHAR(100),
-    IN p_correo VARCHAR(100),
-    IN p_telefono VARCHAR(20),
-    IN p_nombre_usuario VARCHAR(50),
-    IN p_clave VARCHAR(100),
-    IN p_rol VARCHAR(100),
-    OUT p_Resultado INT
-)
-BEGIN
-    DECLARE v_exists INT DEFAULT 0;
-
-    -- Inicializa el código de resultado
-    SET p_Resultado = 1;
-
-    -- Verifica si el usuario existe
-    SELECT COUNT(*) INTO v_exists
-    FROM usuario
-    WHERE id_usuario = p_id_usuario;
-
-    IF v_exists > 0 THEN
-        -- Actualiza los datos del usuario
-        UPDATE usuario
-        SET nombre = p_nombre,
-            apellido = p_apellido,
-            correo = p_correo,
-            telefono = p_telefono,
-            nombre_usuario = p_nombre_usuario,
-            clave = p_clave,
-            rol = p_rol
-        WHERE id_usuario = p_id_usuario;
-
-        -- Establece el código de resultado a 0 (éxito)
-        SET p_Resultado = 0;
-    ELSE
-        -- Usuario no encontrado
-        SET p_Resultado = -1;
-    END IF;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `buscar_producto_por_id` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `buscar_producto_por_id`(
-    IN p_id_producto INT
-)
-BEGIN
-    SELECT p.id_producto, p.nombre, p.precio, p.stock,
-           c.id_categoria, c.nombre AS nombre_categoria
-    FROM producto p
-    JOIN categoria c ON p.id_categoria = c.id_categoria
-    WHERE p.id_producto = p_id_producto;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `buscar_usuario` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `buscar_usuario`(
-    IN p_id_usuario INT
-)
-BEGIN
-    SELECT * FROM usuario WHERE id_usuario = p_id_usuario;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `eliminarProveedor` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarProveedor`(
-    IN p_id INT
-)
-BEGIN
-    DELETE FROM proveedor
-    WHERE id_proveedor = p_id;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `eliminar_categoria` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_categoria`(
-    IN p_idCategoria INT
-)
-BEGIN
-    DELETE FROM categoria WHERE id_categoria = p_idCategoria;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `eliminar_producto_inventario` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_producto_inventario`(
-    IN p_id_producto INT
-)
-BEGIN
-    DECLARE v_id_inventario INT;
-
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        ROLLBACK;
-    END;
-
-    START TRANSACTION;
-
-    -- Obtener el ID de inventario correspondiente al producto
-    SELECT id_inventario INTO v_id_inventario
-    FROM inventario
-    WHERE id_producto = p_id_producto
-    LIMIT 1;
-
-    -- Eliminar movimientos de inventario asociados
-    DELETE FROM movimiento_inventario WHERE id_inventario = v_id_inventario;
-
-    -- Eliminar inventario
-    DELETE FROM inventario WHERE id_producto = p_id_producto;
-
-    -- Eliminar producto
-    DELETE FROM producto WHERE id_producto = p_id_producto;
-
-    COMMIT;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `eliminar_usuario` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_usuario`(
-    IN p_id_usuario INT
-)
-BEGIN
-    DELETE FROM usuario WHERE id_usuario = p_id_usuario;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `getAllVouchers` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -700,184 +435,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `insertarProveedor` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarProveedor`(
-    IN p_nombre VARCHAR(100),
-    IN p_correo VARCHAR(100),
-    IN p_telefono VARCHAR(20),
-    IN p_ruc VARCHAR(15)
-)
-BEGIN
-    INSERT INTO proveedor (nombre, correo, telefono, ruc)
-    VALUES (p_nombre, p_correo, p_telefono, p_ruc);
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `insertarVenta` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarVenta`(
-    IN p_id_usuario INT,
-    IN p_fecha DATETIME,
-    IN p_total DECIMAL(10,2),
-    OUT p_idVenta INT
-)
-BEGIN
-    INSERT INTO venta (id_usuario, fecha, total)
-    VALUES (p_id_usuario, p_fecha, p_total);
-
-    SET p_idVenta = LAST_INSERT_ID();
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `insertar_categoria` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_categoria`(
-    IN p_descripcion VARCHAR(100)
-)
-BEGIN
-    INSERT INTO categoria (descripcion_categoria) VALUES (p_descripcion);
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `insertar_producto` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_producto`(
-    IN p_nombre VARCHAR(50),
-    IN p_descripcion VARCHAR(255),
-    IN p_precio DECIMAL(10,2),
-    IN p_stock INT,
-    IN p_categoria VARCHAR(50),
-    OUT p_error_code INT
-)
-BEGIN
-    DECLARE v_id_producto INT;
-    DECLARE v_id_inventario INT;
-
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        SET p_error_code = 1;
-        ROLLBACK;
-    END;
-
-    START TRANSACTION;
-
-    SET p_error_code = 0;
-
-    -- Insertar en Producto
-    INSERT INTO producto (nombre, descripcion, precio)
-    VALUES (p_nombre, p_descripcion, p_precio);
-
-    SET v_id_producto = LAST_INSERT_ID();
-
-    -- Insertar en Inventario
-    INSERT INTO inventario (id_producto, stock, categoria)
-    VALUES (v_id_producto, p_stock, p_categoria);
-
-    SET v_id_inventario = LAST_INSERT_ID();
-
-    -- Insertar movimiento de inventario
-    INSERT INTO movimiento_inventario (id_inventario, tipo, cantidad, fecha, descripcion)
-    VALUES (v_id_inventario, 'E', p_stock, CURDATE(), 'Entrada');
-
-    COMMIT;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `insertar_usuario` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_usuario`(
-    IN p_Nombre VARCHAR(50),
-    IN p_Apellido VARCHAR(50),
-    IN p_correo VARCHAR(100),
-    IN p_telefono VARCHAR(20),
-    IN p_nombre_usuario VARCHAR(50),
-    IN p_clave VARCHAR(100),
-    IN p_rol VARCHAR(100),
-    OUT p_ID_Usuario INT,
-    OUT p_ErrorCode INT
-)
-proc: BEGIN
-    DECLARE v_exists INT DEFAULT 0;
-
-    -- Inicializar el código de error
-    SET p_ErrorCode = 0;
-
-    -- Verificar si el correo electrónico ya está registrado
-    SELECT COUNT(*) INTO v_exists
-    FROM Usuario
-    WHERE correo = p_correo;
-
-    IF v_exists > 0 THEN
-        SET p_ErrorCode = 1;
-        SET p_ID_Usuario = NULL;
-        LEAVE proc;
-    END IF;
-
-    -- Insertar el nuevo usuario
-    INSERT INTO usuario (nombre, apellido, correo, telefono, nombre_usuario, clave, rol)
-    VALUES (p_nombre, p_apellido, p_correo, p_telefono, p_nombre_usuario, p_clave, p_rol);
-
-    -- Obtener el ID del usuario recién insertado
-    SET p_ID_Usuario = LAST_INSERT_ID();
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `insertVoucher` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -897,196 +454,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insertVoucher`(
 BEGIN
     INSERT INTO voucher (id_venta, codigo, descuento, fecha)
     VALUES (p_id_venta, p_codigo, p_descuento, p_fecha);
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `listarProveedores` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `listarProveedores`()
-BEGIN
-    SELECT * FROM proveedor;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `listarVentas` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `listarVentas`()
-BEGIN
-    SELECT 
-        v.id_venta,
-        v.fecha,
-        v.total,
-        v.id_usuario,
-        u.nombre AS nombreUsuario
-    FROM venta v
-    INNER JOIN usuario u ON v.id_usuario = u.id_usuario;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `listar_categoria` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_categoria`()
-SELECT*FROM categoria ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `listar_productos` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_productos`()
-BEGIN
-    SELECT 
-        p.id_producto, 
-        p.nombre,
-        p.descripcion, 
-        p.precio, 
-        i.id_inventario,
-        i.stock, 
-        i.categoria
-    FROM 
-        producto p
-    JOIN 
-        inventario i ON p.id_producto = i.id_producto;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `listar_usuarios` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_usuarios`()
-BEGIN
-    SELECT * FROM usuario;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `obtenerProveedorPorId` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `obtenerProveedorPorId`(
-    IN p_id INT
-)
-BEGIN
-    SELECT * FROM proveedor
-    WHERE id_proveedor = p_id;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `obtener_movimientos_inventario` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_movimientos_inventario`()
-BEGIN
-    SELECT 
-        id_movimiento, 
-        id_inventario, 
-        tipo, 
-        cantidad, 
-        fecha, 
-        descripcion
-    FROM movimiento_inventario;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `obtener_producto_inventario_por_id` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_producto_inventario_por_id`(
-    IN p_id_producto INT
-)
-BEGIN
-    SELECT 
-        p.id_producto,
-        p.nombre,
-        p.descripcion,
-        p.precio,
-        i.id_inventario,
-        i.stock,
-        i.categoria
-    FROM producto p
-    JOIN inventario i ON p.id_producto = i.id_producto
-    WHERE p.id_producto = p_id_producto;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1136,79 +503,6 @@ BEGIN
             p_id_inventario,
             'E',       -- Entrada
             p_cantidad,
-            CURDATE(),
-            'Entrada'
-        );
-    END IF;
-
-    COMMIT;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `sp_actualizar_producto` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizar_producto`(
-    IN p_id_producto INT,
-    IN p_nombre VARCHAR(100),
-    IN p_descripcion VARCHAR(100),
-    IN p_precio DECIMAL(10,2),
-    IN p_stock INT,
-    IN p_categoria VARCHAR(100),
-    OUT p_error INT
-)
-BEGIN
-    -- Primero van todas las declaraciones de variables
-    DECLARE v_stock_ant INT;
-    DECLARE v_id_inventario INT;
-
-    -- Luego los handlers
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        SET p_error = 1;
-        ROLLBACK;
-    END;
-
-    SET p_error = 0;
-
-    START TRANSACTION;
-
-    -- Obtener stock anterior e ID de inventario
-    SELECT stock, id_inventario INTO v_stock_ant, v_id_inventario
-    FROM inventario
-    WHERE id_producto = p_id_producto
-    LIMIT 1;
-
-    -- Actualizar producto
-    UPDATE producto
-    SET nombre = p_nombre,
-        descripcion = p_descripcion,
-        precio = p_precio
-    WHERE id_producto = p_id_producto;
-
-    -- Actualizar inventario
-    UPDATE inventario
-    SET stock = p_stock,
-        categoria = p_categoria
-    WHERE id_producto = p_id_producto;
-
-    -- Registrar movimiento solo si cambia el stock
-    IF p_stock != v_stock_ant THEN
-        INSERT INTO movimiento_inventario (id_inventario, tipo, cantidad, fecha, descripcion)
-        VALUES (
-            v_id_inventario,
-            'E',
-            p_stock - v_stock_ant,
             CURDATE(),
             'Entrada'
         );
@@ -1276,25 +570,6 @@ BEGIN
     ELSE
         COMMIT;
     END IF;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `sp_borrar_detalles_venta` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_borrar_detalles_venta`(IN id_venta INT)
-BEGIN
-    DELETE FROM detalle_venta WHERE id_venta = id_venta;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1454,58 +729,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `sp_get_detalleventa_by_venta` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_detalleventa_by_venta`(
-    IN p_id_venta INT
-)
-BEGIN
-    SELECT 
-        dv.id_Detalle,
-        dv.id_Venta,
-        dv.id_Producto,
-        dv.cantidad,
-        dv.precio_Unitario,
-        dv.subtotal,
-        p.nombre AS ProductoNombre
-    FROM Detalle_Venta dv
-    INNER JOIN Producto p ON dv.id_producto = p.id_producto
-    WHERE dv.id_Venta = @ID_Venta;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `sp_get_movimientos_by_producto` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_movimientos_by_producto`(
-    IN p_id_producto INT
-)
-BEGIN
-    SELECT * FROM movimiento_inventario WHERE id_producto = p_id_producto ORDER BY fecha DESC;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `sp_insertar_categoria` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1651,24 +874,20 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertar_detalle_venta`(
 BEGIN
     DECLARE v_ID_Inventario INT;
 
-    -- Obtener el ID_Inventario basado en el ID_Producto
     SELECT ID_Inventario INTO v_ID_Inventario
     FROM Inventario
     WHERE ID_Producto = p_ID_Producto
     LIMIT 1;
 
-    -- Actualizar el Stock en la tabla Inventario
     UPDATE Inventario
     SET Stock = Stock - p_Cantidad
     WHERE ID_Producto = p_ID_Producto;
 
-    -- Insertar el detalle de venta en la tabla Detalle_Venta
     INSERT INTO Detalle_Venta (ID_Venta, ID_Producto, Cantidad, Precio_Unitario, SubTotal)
     VALUES (p_ID_Venta, p_ID_Producto, p_Cantidad, p_Precio_Unitario, p_SubTotal);
 
-    -- Insertar el movimiento de inventario en la tabla Movimiento_Inventario
     INSERT INTO Movimiento_Inventario (ID_Inventario, Tipo, Cantidad, Fecha, Descripcion)
-    VALUES (v_ID_Inventario, 'S', p_Cantidad, NOW(), 'Salida');
+    VALUES (v_ID_Inventario, 'S', p_Cantidad, NOW(), 'Salida por venta');
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1891,32 +1110,6 @@ BEGIN
     VALUES (p_id_usuario, p_fecha, p_total);
 
     SET p_idVenta = LAST_INSERT_ID();
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `sp_insert_movimiento_inventario` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insert_movimiento_inventario`(
-    IN p_id_producto INT,
-    IN p_tipo ENUM('E','S'),
-    IN p_cantidad INT,
-    IN p_fecha DATETIME,
-    IN p_descripcion VARCHAR(255)
-)
-BEGIN
-    INSERT INTO movimiento_inventario(id_producto, tipo, cantidad, fecha, descripcion)
-    VALUES (p_id_producto, p_tipo, p_cantidad, p_fecha, p_descripcion);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2397,7 +1590,8 @@ BEGIN
         p.nombre as nombreProducto
     FROM movimiento_inventario m
     INNER JOIN inventario i ON m.id_inventario = i.id_inventario
-    INNER JOIN producto p ON i.id_producto = p.id_producto;
+    INNER JOIN producto p ON i.id_producto = p.id_producto
+    ORDER BY m.id_movimiento ASC;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2528,6 +1722,32 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_productos_mas_vendidos` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_productos_mas_vendidos`()
+BEGIN
+    SELECT 
+        p.nombre AS producto,
+        SUM(dv.cantidad) AS total_vendido
+    FROM detalle_venta dv
+    INNER JOIN producto p ON dv.id_producto = p.id_producto
+    GROUP BY p.nombre
+    ORDER BY total_vendido DESC
+    LIMIT 10;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `sp_registrar_compra` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2632,7 +1852,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `validar_usuario` */;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_ventas_por_categoria` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -2642,13 +1862,69 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `validar_usuario`(
-    IN p_nombre_usuario VARCHAR(50),
-    IN p_clave VARCHAR(100)
-)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ventas_por_categoria`()
 BEGIN
-    SELECT * FROM usuario
-    WHERE nombre_usuario = p_nombre_usuario AND clave = p_clave;
+    SELECT 
+        c.descripcion_categoria AS categoria,
+        SUM(dv.subtotal) AS total_ventas
+    FROM 
+        detalle_venta dv
+    JOIN 
+        producto p ON dv.id_producto = p.id_producto
+    JOIN 
+        inventario i ON p.id_producto = i.id_producto
+    JOIN 
+        categoria c ON i.id_categoria = c.id_categoria
+    GROUP BY 
+        c.descripcion_categoria;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_ventas_por_dia` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ventas_por_dia`()
+BEGIN
+    SELECT 
+        DATE(fecha) AS dia,
+        SUM(total) AS total_ventas
+    FROM venta
+    GROUP BY DATE(fecha)
+    ORDER BY dia;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_ventas_por_mes` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ventas_por_mes`()
+BEGIN
+    SELECT 
+        DATE_FORMAT(fecha, '%Y-%m') AS mes,
+        SUM(total) AS total_ventas
+    FROM venta
+    GROUP BY DATE_FORMAT(fecha, '%Y-%m')
+    ORDER BY mes;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2665,4 +1941,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-09 22:22:05
+-- Dump completed on 2025-06-10 17:01:42

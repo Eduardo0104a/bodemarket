@@ -13,6 +13,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableColumn;
@@ -132,12 +134,39 @@ public class ProductoInventarioView extends javax.swing.JPanel {
 
             model.addRow(rowData);
         }
+        txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filtrar();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filtrar();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                filtrar();
+            }
+        });
     }
 
     private void abrirFormularioRegistro() {
         JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         ProductoInventarioRegister_Mod registroUsuarioForm = new ProductoInventarioRegister_Mod(parentFrame, usuario, ProductoInventarioView.this, false, 0);
         registroUsuarioForm.setVisible(true);
+    }
+    
+    private void filtrar() {
+        if (sorter != null) {
+            String texto = txtBuscar.getText();
+            if (texto.trim().isEmpty()) {
+                sorter.setRowFilter(null);
+            } else {
+                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+            }
+        }
     }
 
     public void refreshProductosInventario() {

@@ -41,6 +41,6 @@ public class Medida {
     
     @Override
     public String toString() {
-        return  nombreCorto;
+        return  nombre;
     }
 }

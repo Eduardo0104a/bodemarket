@@ -428,8 +428,8 @@ public class AdminView extends javax.swing.JPanel {
 
         lblCategoria.setText("Categoria:");
         jPanel6.add(lblCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, -1, -1));
-        jPanel6.add(txtProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 130, -1));
-        jPanel6.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, 130, -1));
+        jPanel6.add(txtProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 190, -1));
+        jPanel6.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, 190, -1));
 
         btnGuardarProducto.setText("Guardar");
         btnGuardarProducto.addActionListener(new java.awt.event.ActionListener() {
@@ -437,35 +437,35 @@ public class AdminView extends javax.swing.JPanel {
                 btnGuardarProductoActionPerformed(evt);
             }
         });
-        jPanel6.add(btnGuardarProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 400, -1, -1));
+        jPanel6.add(btnGuardarProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 390, -1, -1));
 
         btnLimpiarProducto.setText("Limpiar");
-        jPanel6.add(btnLimpiarProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 400, -1, -1));
+        jPanel6.add(btnLimpiarProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 390, -1, -1));
 
         lblPrecio.setText("Precio:");
         jPanel6.add(lblPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
-        jPanel6.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 160, 130, -1));
+        jPanel6.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 160, 190, -1));
 
         lblTituloProducto.setText("REGISTRO PRODUCTO");
         jPanel6.add(lblTituloProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         lblMedida.setText("Medida:");
-        jPanel6.add(lblMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, -1, -1));
+        jPanel6.add(lblMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, -1, -1));
 
         lblProveedor.setText("Proveedor:");
-        jPanel6.add(lblProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, -1, -1));
+        jPanel6.add(lblProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 300, -1, -1));
 
-        jPanel6.add(cmbCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 240, 130, -1));
+        jPanel6.add(cmbCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 250, 200, -1));
 
-        jPanel6.add(cmbProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 280, 130, -1));
+        jPanel6.add(cmbProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 290, 200, -1));
 
-        jPanel6.add(cmbMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, 130, -1));
+        jPanel6.add(cmbMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 330, 200, -1));
 
         lblPrecioCompra.setText("Precio Compra:");
         jPanel6.add(lblPrecioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
-        jPanel6.add(txtPrecioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 200, 130, -1));
+        jPanel6.add(txtPrecioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 200, 190, -1));
 
-        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 360, 470));
+        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 410, 470));
 
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -491,7 +491,7 @@ public class AdminView extends javax.swing.JPanel {
         tblProducto.setGridColor(new java.awt.Color(255, 255, 255));
         jScrollPane2.setViewportView(tblProducto);
 
-        jPanel7.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 470));
+        jPanel7.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 730, 470));
 
         jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 0, 780, 470));
 

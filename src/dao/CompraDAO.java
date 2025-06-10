@@ -31,7 +31,7 @@ public class CompraDAO {
 
             stmt.executeUpdate();
 
-            int idGenerado = stmt.getInt(4); // ✅ Corrección aquí
+            int idGenerado = stmt.getInt(4);
             compra.setIdCompra(idGenerado);
 
         } catch (SQLException e) {

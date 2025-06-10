@@ -223,40 +223,4 @@ public class UsuarioDAO {
 
         return result;
     }
-    
-    public Usuario buscar(int idUsuario) {
-        Connection conn = null;
-        CallableStatement stmt = null;
-        ResultSet rs = null;
-        Usuario usuario = null;
-
-        try {
-            DBConnection conexionSQL = new DBConnection();
-            conn = conexionSQL.getConnection();
-
-            String query = "{CALL sp_obtener_usuario_por_id(?)}";
-            stmt = conn.prepareCall(query);
-            stmt.setInt(1, idUsuario);
-            rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                String nombre = rs.getString("nombre");
-                String apellido = rs.getString("apellido");
-                String correo = rs.getString("correo");
-                String telefono = rs.getString("telefono");
-                String nombreUsuario = rs.getString("nombre_usuario");
-                String clave = rs.getString("clave");
-                String rol = rs.getString("rol");
-
-                usuario = new Usuario(idUsuario, nombre, apellido, correo, telefono, nombreUsuario, clave, rol);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DBConnection.close(conn, stmt, rs);
-        }
-
-        return usuario;
-    }
 }

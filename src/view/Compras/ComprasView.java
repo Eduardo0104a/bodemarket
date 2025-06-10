@@ -426,7 +426,7 @@ public class ComprasView extends javax.swing.JPanel {
         lblProveedor.setText("Proveedor:");
         add(lblProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 460, -1, -1));
 
-        add(comboProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 452, 150, 30));
+        add(comboProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 452, 200, 30));
 
         lblTotalFinal.setText("Total de la compra:");
         add(lblTotalFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 510, -1, -1));

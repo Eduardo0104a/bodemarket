@@ -107,9 +107,9 @@ public class ProductoDAO {
             String query = "{CALL sp_actualizar_entrada_stock(?, ?, ?)}";
             stmt = conn.prepareCall(query);
 
-            stmt.setInt(1, idInventario);   // p_id_inventario
-            stmt.setInt(2, cantidad);       // p_cantidad
-            stmt.registerOutParameter(3, java.sql.Types.INTEGER);  // p_error_code
+            stmt.setInt(1, idInventario);   
+            stmt.setInt(2, cantidad);       
+            stmt.registerOutParameter(3, java.sql.Types.INTEGER);  
 
             stmt.executeUpdate();
 
@@ -121,7 +121,7 @@ public class ProductoDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            errorCode = -1;  // Código de error para excepciones
+            errorCode = -1;  
         } finally {
             DBConnection.close(conn, stmt, null);
         }
@@ -145,12 +145,12 @@ public class ProductoDAO {
             stmt.setString(2, producto.getNombre());
             stmt.setString(3, producto.getDescripcion());
             stmt.setDouble(4, producto.getPrecio());
-            stmt.setDouble(5, producto.getPrecioCompra());  // nuevo parámetro
-            stmt.setInt(6, producto.getStock());           // nuevo parámetro
+            stmt.setDouble(5, producto.getPrecioCompra());  
+            stmt.setInt(6, producto.getStock());           
             stmt.setInt(7, producto.getIdProveedor());
             stmt.setInt(8, producto.getIdMedida());
             stmt.setInt(9, producto.getIdCategoria());
-            stmt.registerOutParameter(10, java.sql.Types.INTEGER); // Parámetro de salida p_error
+            stmt.registerOutParameter(10, java.sql.Types.INTEGER); 
 
             stmt.executeUpdate();
 

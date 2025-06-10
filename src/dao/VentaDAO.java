@@ -72,54 +72,6 @@ public class VentaDAO {
         return result;
     }
 
-    public int modificarVenta(Venta venta, List<DetalleVenta> detallesVenta) {
-        int result = 0;
-        Connection conn = null;
-        CallableStatement stmt = null;
-
-        try {
-            DBConnection conexionSQL = new DBConnection();
-            conn = conexionSQL.getConnection();
-            conn.setAutoCommit(false);
-
-            String queryModificarVenta = "{call sp_modificar_venta(?, ?, ?, ?)}";
-            stmt = conn.prepareCall(queryModificarVenta);
-            stmt.setInt(1, venta.getId());
-            stmt.setInt(2, venta.getIdUsuario());
-            stmt.setDate(3, new java.sql.Date(venta.getFecha().getTime()));
-            stmt.setDouble(4, venta.getTotal());
-
-            result = stmt.executeUpdate();
-
-            String queryBorrarDetalles = "{call sp_borrar_detalles_venta(?)}";
-            stmt = conn.prepareCall(queryBorrarDetalles);
-            stmt.setInt(1, venta.getId());
-            stmt.executeUpdate();
-
-            DetalleVentaDAO detalleVentaDAO = new DetalleVentaDAO();
-            for (DetalleVenta detalle : detallesVenta) {
-                detalle.setIdVenta(venta.getId());
-                detalleVentaDAO.insertarDetalleVenta(detalle, conn);
-            }
-
-            conn.commit();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
-            }
-        } finally {
-            DBConnection.close(conn, stmt, null);
-        }
-
-        return result;
-    }
-
     public int eliminarVenta(int id) {
         int result = 0;
         Connection conn = null;
